@@ -1,0 +1,35 @@
+.mb{
+    position:absolute;
+    left: -10000px;
+    top: -10000px;
+    font: pFont;
+    background-color: #f4f8ff;
+    border: 2px solid #5e93ab;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    padding: 4px;
+}
+.header{
+    color: pColorDarkBlue;
+    font-size: 12px;
+    font-weight: bold;
+}
+.inner{
+    padding: 10px;
+    overflow: hidden;
+}
+.buttons{
+    padding: 0 10px;
+    text-align: center;
+}
+.modal{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #000;
+    opacity: 0.3;
+    filter: literal("alpha(opacity=30)");
+}

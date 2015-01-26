@@ -1,0 +1,102 @@
+/*
+ * Copyright 2015 Valeriy Filatov.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
+package ru.fly.client.ui.field;
+
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.Event;
+import ru.fly.client.ui.FElement;
+
+/**
+ * User: fil
+ * Date: 04.09.13
+ * Time: 23:40
+ */
+public abstract class Expander {
+
+    private boolean enabled = true;
+    private boolean expanded = false;
+    private HandlerRegistration hReg;
+    private FElement element;
+    private FElement expandElement;
+
+    public Expander(FElement element, FElement expandElement){
+        this.element = element;
+        this.expandElement = expandElement;
+    }
+
+    public void setEnabled(boolean val){
+        this.enabled = val;
+    }
+
+    private void addGlobalHideListener(){
+        if(hReg != null)
+            removeGlobalHideListener();
+        hReg = Event.addNativePreviewHandler(new Event.NativePreviewHandler() {
+            @Override
+            public void onPreviewNativeEvent(Event.NativePreviewEvent event) {
+                switch (event.getTypeInt()) {
+                    case Event.ONSCROLL:
+                    case Event.ONCLICK:
+                        Element target = event.getNativeEvent().getEventTarget().cast();
+                        if (!DOM.isOrHasChild(element, target)
+                                && (expandElement == null || !DOM.isOrHasChild(expandElement, target)))
+                            collapse();
+                }
+            }
+        });
+    }
+
+    private void removeGlobalHideListener(){
+        if(hReg != null){
+            hReg.removeHandler();
+            hReg = null;
+        }
+    }
+
+    public void expandCollapse(){
+        if(expanded){
+            collapse();
+        }else{
+            expand(false);
+        }
+    }
+
+    public void expand(boolean force){
+        if(!enabled || (expanded && !force))
+            return;
+        expanded = true;
+        addGlobalHideListener();
+        onExpand();
+    }
+
+    public void collapse(){
+        expanded = false;
+        removeGlobalHideListener();
+        onCollapse();
+    }
+
+    public boolean isExpanded(){
+        return expanded;
+    }
+
+    public abstract void onExpand();
+
+    public abstract void onCollapse();
+
+}

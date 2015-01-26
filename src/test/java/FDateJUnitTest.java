@@ -1,0 +1,45 @@
+/*
+ * Copyright 2015 Valeriy Filatov.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
+import org.junit.Assert;
+import org.junit.Test;
+import ru.fly.shared.FDate;
+
+/**
+ * fil
+ * 03.07.14
+ */
+public class FDateJUnitTest extends Assert {
+
+    @Test
+    public void testGetYearPeriod(){
+        //один год полный, второй не полный не хватает месяца
+        assertEquals(1, new FDate(1,2,2000).getYearPeriod(new FDate(1,1,2002)));
+
+        //попадание в день рождения
+        assertEquals(2, new FDate(1,2,2000).getYearPeriod(new FDate(1,2,2002)));
+
+        //прошел месяц после дня рождения
+        assertEquals(2, new FDate(1,2,2000).getYearPeriod(new FDate(1,3,2002)));
+
+        //за день до дня рождения
+        assertEquals(1, new FDate(1,2,2000).getYearPeriod(new FDate(1,2,2002).addDay(-1)));
+
+        //прошел день полсе дня рождения
+        assertEquals(2, new FDate(1,2,2000).getYearPeriod(new FDate(2,2,2002)));
+    }
+
+}

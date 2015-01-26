@@ -1,0 +1,27 @@
+.error{
+    margin-right: 18px;
+    border-color: red !important;
+}
+
+@sprite .field-error-icon{
+    gwt-image: 'error16';
+    position: absolute;
+    right: -18px;
+    top: 3px;
+    display: none;
+}
+
+.error .field-error-icon{
+    display: block;
+}
+
+.field{
+    position: relative;
+}
+
+.tooltip.error{
+    border: 2px solid #ff2222;
+    background-color: #fff4f4;
+    color: #000;
+}
+

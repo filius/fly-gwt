@@ -1,0 +1,16 @@
+.split{
+    position: absolute;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    cursor: col-resize;
+}
+.dragLine{
+    position: absolute;
+    top: 0;
+    width: 0;
+    height: 100%;
+    border-left: 1px solid #000;
+    border-right: 1px solid #fff;
+    z-index: 3;
+}

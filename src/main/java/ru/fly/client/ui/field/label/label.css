@@ -1,0 +1,24 @@
+@def pLabelMargin 4px;
+
+.label{
+    display: inline-block;
+    font: pFont;
+    color: #555;
+    font-weight: bold;
+    line-height: 24px;
+}
+.label span{
+    display: inline-block;
+    line-height: 12px;
+}
+.field-label{
+    /*margin: 4px;*/
+    padding: 4px 4px 0 4px;
+    overflow: hidden;
+    box-sizing: border-box;
+    \-moz-box-sizing: border-box;
+    \-webkit-box-sizing: border-box;
+}
+.field-label .label{
+    margin-left: pLabelMargin;
+}

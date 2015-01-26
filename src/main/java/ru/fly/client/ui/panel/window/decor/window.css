@@ -1,0 +1,40 @@
+.window{
+    position:absolute;
+    left: -10000px;
+    top: -10000px;
+    font: pFont;
+    background-color: #f4f8ff;
+    border: 2px solid #5e93ab;
+    border-radius: 4px;
+    height: auto;
+}
+.header{
+    color: pColorDarkBlue;
+    font-weight: bold;
+    padding: 4px;
+}
+.inner{
+    background-color: #fff;
+    border: 1px solid #c1d4e7;
+    margin-left: 2px;
+}
+.button-panel{
+    text-align: center;
+}
+@sprite .close{
+    gwt-image: 'cross';
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    cursor: pointer;
+}
+.modal{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #000;
+    opacity: 0.3;
+    filter: literal("alpha(opacity=30)");
+}

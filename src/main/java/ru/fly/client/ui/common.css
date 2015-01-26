@@ -1,0 +1,35 @@
+@def pZComboBoxListView 1000000;
+@def pZTooltip 1000001;
+
+@def pFont 11px arial;
+@def pColorOrange #ffe2a5;
+@def pColorBackground #f4f8ff;
+@def pColorDarkBlue #003168;
+
+.font{
+    font: pFont;
+}
+
+.over{}
+
+.selected{}
+
+.disabled{}
+
+.focused{}
+
+.tooltip{
+    font: pFont;
+    border: 1px solid #fff;
+    background-color: #000;
+    color: #fff;
+    padding: 4px 10px;
+    font-weight: bold;
+    z-index: pZTooltip;
+}
+
+.disableTextSelection{
+    \-moz-user-select: none;
+    \-khtml-user-select: none;
+    \-webkit-user-select: none;
+}

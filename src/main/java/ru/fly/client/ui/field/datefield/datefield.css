@@ -1,0 +1,111 @@
+@external datePicker*;
+
+.datefield{
+    border: 1px solid #5e93ab;
+    background-color: #fff;
+    /*box-shadow: inset 1px 1px 2px #ddd;*/
+    height: 22px;
+}
+
+.datefield-view{
+    font :pFont;
+    position: absolute;
+    top: 0;
+    right: 18px;
+    bottom: 0;
+    left: 0;
+    padding: 0 4px;
+    line-height: 22px;
+    overflow: hidden;
+    cursor: default;
+    text-align: right;
+}
+.disabled .datefield-view{
+    background-color: #eee;
+    color: #444;
+}
+
+.dateFieldTrigger{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 18px;
+    height: 22px;
+    background: #c1d4e7; /* Old browsers */
+    background: linear-gradient(to bottom, #E0F0FF 0%,#b3c3d6 64%,#d7e1ef 100%); /* W3C */
+    border-left: 1px solid #5e93ab;
+    cursor: pointer;
+}
+.dateFieldTrigger.over{
+    background: #fdf5e3; /* Old browsers */
+    background: linear-gradient(to bottom, #fdf5e3 0%,#f5d38a 63%,#fbe9c1 100%); /* W3C */
+}
+@sprite .dateFieldTriggerIcon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    gwt-image: 'trigger';
+}
+
+.date-picker{
+    background-color: #fff;
+    border: 1px solid #5e93ab;
+    padding: 2px;
+    text-align: center;
+    box-shadow: 0 3px 5px rgb(34, 34, 34);
+}
+
+.datePickerMonthSelector{
+    font: pFont;
+    width: 100%;
+    text-align: center;
+    cursor: default;
+}
+.datePickerMonth{
+    width: 50%;
+}
+.datePickerPreviousButton, .datePickerNextButton{
+    cursor: pointer;
+    margin: 4px;
+    border: 1px solid #aaa;
+}
+.datePickerPreviousButton-up-hovering, .datePickerNextButton-up-hovering{
+    background-color: pColorOrange;
+}
+.datePickerWeekdayLabel, .datePickerWeekendLabel{
+    font: pFont;
+    border-right: 1px solid #fff;
+    text-align: center;
+}
+.datePickerWeekdayLabel{
+    background-color: pColorOrange;
+    cursor: default;
+}
+.datePickerWeekendLabel{
+    background-color: #f88;
+    cursor: default;
+}
+.datePickerDay{
+    font: pFont;
+    border: 1px solid transparent;
+    padding: 2px 4px;
+    cursor: pointer;
+    text-align: center;
+}
+.datePickerDayIsWeekend{
+    background-color: #fff2f2;
+}
+.datePickerDayIsFiller{
+    color: #aaa;
+}
+.datePickerDayIsHighlighted{
+    border-color: pColorOrange;
+    background-color: #c1d4e7;
+}
+.datePickerDayIsToday{
+    border: 1px solid #c1d4e7;
+    background-color: #eee;
+}
+.datePickerDayIsValue{
+    background-color: #c1d4e7;
+}

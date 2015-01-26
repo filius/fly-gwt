@@ -1,0 +1,13 @@
+.error-wnd{
+    position: absolute;
+    right: 10px;
+    left: 10px;
+    bottom: 10px;
+    width: auto;
+    height: 30%;
+    border: 2px solid red;
+    z-index: 100000;
+}
+.error-wnd textarea{
+    color: red;
+}

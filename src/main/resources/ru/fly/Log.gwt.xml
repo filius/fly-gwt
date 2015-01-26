@@ -1,0 +1,32 @@
+<!--
+  ~ Copyright 2015 Valeriy Filatov.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License"); you may not
+  ~ use this file except in compliance with the License. You may obtain a copy of
+  ~ the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+  ~ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing permissions and limitations under
+  ~ the License.
+  -->
+
+<module>
+
+    <inherits name='ru.fly.UI'/>
+
+    <!--включение логера GWT и вывод только в консоль-->
+    <inherits name='com.google.gwt.logging.Logging'/>
+    <set-property name='gwt.logging.logLevel' value='SEVERE'/>
+    <set-property name='gwt.logging.enabled' value='TRUE'/>
+    <set-property name='gwt.logging.consoleHandler' value='ENABLED' />
+    <set-property name='gwt.logging.popupHandler' value='DISABLED' />
+
+    <replace-with class="ru.fly.client.log.LogBaseImpl">
+        <when-type-is class="ru.fly.client.log.ILog" />
+    </replace-with>
+
+</module>

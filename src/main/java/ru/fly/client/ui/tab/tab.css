@@ -1,0 +1,44 @@
+@def pHdrHeight 27px;
+
+.tab-panel{
+    border: 1px solid #c1d4e7;
+}
+
+.tab-hdr{
+    height: pHdrHeight;
+    padding: 0 2px;
+    background: #e2e5e9; /* Old browsers */
+    background: linear-gradient(to bottom, #e2e5e9 0%,#c1ccdc 100%); /* W3C */
+    border-bottom: 1px solid #ababab;
+}
+.tab-content{
+    position: relative;
+}
+
+.tab-btn{
+    float: left;
+    color: #003168;
+    border: 2px solid #5e93ab;
+    border-bottom: 0 none;
+    border-radius: 4px 4px 0 0;
+    background: #c1d4e7; /* Old browsers */
+    background: linear-gradient(to bottom, #E0F0FF 0%,#b3c3d6 64%,#d7e1ef 100%); /* W3C */
+    height: 23px;
+    margin: 2px 2px 0;
+    padding: 0 6px;
+    font: bold pFont;
+    cursor: pointer;
+}
+.tab-btn span{
+    line-height: 23px;
+}
+.tab-btn.over{
+    background: #fdf5e3; /* Old browsers */
+    background: linear-gradient(to bottom, #fdf5e3 0%,#f5d38a 63%,#fbe9c1 100%); /* W3C */
+}
+.tab-btn.selected{
+    border-color: #F2BD54;
+    background: pColorOrange none;
+    filter: literal("progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffe2a5', endColorstr='#ffe2a5',GradientType=0 )");/* IE6-9 */
+    height: 24px;
+}

@@ -1,0 +1,49 @@
+@def pLlistViewItemHeight 20px;
+@def pLlistViewPadding 4px;
+
+.listview{
+    font: pFont;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border: 1px solid #ababab;
+    background-color: #fff;
+    text-align: center;
+    padding: pLlistViewPadding;
+    box-sizing: border-box;
+    \-moz-box-sizing: border-box;
+    \-webkit-box-sizing: border-box;
+}
+.listview.disabled{
+    opacity: .5;
+}
+
+.listview-item{
+    font: pFont;
+    height: pLlistViewItemHeight;
+    line-height: pLlistViewItemHeight;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    padding: 0 4px;
+    box-sizing: border-box;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    cursor: default;
+    \-moz-box-sizing: border-box;
+    \-webkit-box-sizing: border-box;
+}
+.listview-item.over{
+    border-color: #F2BD54;
+    background: #fbe9c1;
+    /*background: -moz-linear-gradient(top, #fdf5e3 0%, #f5d38a 63%, #fbe9c1 100%); *//* FF3.6+ */
+    /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fdf5e3), color-stop(63%,#f5d38a), color-stop(100%,#fbe9c1)); *//* Chrome,Safari4+ */
+    /*background: -webkit-linear-gradient(top, #fdf5e3 0%,#f5d38a 63%,#fbe9c1 100%); *//* Chrome10+,Safari5.1+ */
+    /*background: -o-linear-gradient(top, #fdf5e3 0%,#f5d38a 63%,#fbe9c1 100%); *//* Opera 11.10+ */
+    /*background: -ms-linear-gradient(top, #fdf5e3 0%,#f5d38a 63%,#fbe9c1 100%); *//* IE10+ */
+    background: linear-gradient(to bottom, #fdf5e3 0%,#f5d38a 63%,#fbe9c1 100%); /* W3C */
+    /*filter: literal("progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdf5e3', endColorstr='#fbe9c1',GradientType=0 )");*//* IE6-9 */
+}
+.listview-item.selected{
+    background: pColorOrange;
+    border-color: #aaa;
+}

@@ -1,0 +1,15 @@
+.checkbox{
+    overflow: hidden;
+}
+.checkbox input{
+    float: left;
+    margin: 4px;
+    padding: 0;
+}
+.checkbox img{
+    float: left;
+    margin: 2px;
+}
+.checkbox label{
+    font: pFont;
+}
