@@ -14,7 +14,7 @@
  * the License.
  */
 
-package ru.fly.client.ui.tab;
+package ru.fly.client.ui.panel.tab;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
