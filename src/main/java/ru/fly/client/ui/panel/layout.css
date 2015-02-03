@@ -14,3 +14,19 @@
     border-right: 1px solid #fff;
     z-index: 3;
 }
+
+.contentPanel{
+    font: pFont;
+    background-color: #f4f8ff;
+    border: 2px solid #5e93ab;
+}
+.header{
+    color: pColorDarkBlue;
+    font-weight: bold;
+    padding: 4px;
+}
+.inner{
+    background-color: #fff;
+    border: 1px solid #c1d4e7;
+    margin-left: 2px;
+}

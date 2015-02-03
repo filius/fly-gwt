@@ -18,10 +18,6 @@ public class WindowDecor {
         @Source({"ru/fly/client/ui/common.css", "window.css"})
         public Styles css();
 
-        @Source("hdr.png")
-        @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.Horizontal)
-        ImageResource hdr();
-
         @Source("cross.png")
         @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
         ImageResource cross();
@@ -37,7 +33,6 @@ public class WindowDecor {
 
         String inner();
 
-        @ClassName("button-panel")
         String buttonPanel();
 
         String modal();

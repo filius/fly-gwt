@@ -21,7 +21,6 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Widget;
 import ru.fly.client.ui.Container;
-import ru.fly.client.ui.FElement;
 
 /**
  * User: fil
@@ -32,18 +31,9 @@ public class ToolBar extends Container {
 
     private final ToolbarDecor res = GWT.create(ToolbarDecor.class);
 
-    private FElement hFiller;
-
     public ToolBar(){
         super(DOM.createDiv());
         setStyleName(res.css().toolbar());
-    }
-
-    @Override
-    protected void onAfterFirstAttach() {
-        super.onAfterFirstAttach();
-        hFiller = DOM.createDiv().cast();
-        getElement().insertFirst(hFiller);
     }
 
     public void addRight(Widget child){
@@ -56,28 +46,4 @@ public class ToolBar extends Container {
     public void setPixelSize(int width, int height) {
         super.setPixelSize(width, (height < 0)?height:height-2);
     }
-
-    //    public void add(Widget w){
-//        add(w, new VHLayoutData(-1, -1));
-//    }
-//
-//    public void addFiller(){
-//        FlowPanel filler = new FlowPanel();
-//        add(filler, new VHLayoutData(1, -1));
-//    }
-
-//    @Override
-//    public void layout() {
-//        super.layout();
-//        if(!isAttached())
-//            return;
-//        int maxHeight = 0;
-//        for(Widget child : getWidgets()){
-//            int h = child.getOffsetHeight();
-//            if(h > maxHeight)
-//                maxHeight = h;
-//        }
-//        hFiller.setHeight(maxHeight);
-//        hFiller.setWidth(0);
-//    }
 }

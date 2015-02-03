@@ -31,17 +31,22 @@ public class LayoutDecor {
 
     public static interface Resources extends ClientBundle{
 
-        @Source("layout.css")
+        @Source({"ru/fly/client/ui/common.css", "layout.css"})
         public Styles css();
 
     }
 
-    public static interface Styles extends CssResource {
+    public static interface Styles extends CommonDecor.Styles {
 
         String split();
 
         String dragLine();
 
+        String contentPanel();
+
+        String header();
+
+        String inner();
     }
 
     public final Resources res = GWT.create(Resources.class);

@@ -16,6 +16,7 @@
 
 package ru.fly.client.ui.panel;
 
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
@@ -58,6 +59,13 @@ public class Viewport extends SingleLayout {
     protected void onAfterFirstAttach() {
         super.onAfterFirstAttach();
         setPixelSize(Window.getClientWidth(), Window.getClientHeight());
+        // wait complete loading all resources and recalculate layout
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                layout(true);
+            }
+        });
     }
 
     @Override
