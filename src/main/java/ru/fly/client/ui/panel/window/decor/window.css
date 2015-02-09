@@ -12,6 +12,7 @@
     color: pColorDarkBlue;
     font-weight: bold;
     padding: 4px;
+    cursor: move;
 }
 .inner{
     background-color: #fff;

@@ -34,20 +34,26 @@ public class Dragger {
     private int oy;
     private int ax;
     private int ay;
-    private int ex;
-    private int ey;
+    private int cx;
+    private int cy;
 
     private boolean lockX = false;
     private boolean lockY = false;
     private Rect boundingRect;
 
+    /**
+     * DnD tool, finally call [cback] with offset result by X and Y
+     * @param dragEl - movable element
+     * @param event - event initiator
+     * @param cback - result delegate
+     */
     public Dragger(final FElement dragEl, Event event, final EndCallback<Point> cback){
         ox = dragEl.getOffsetLeft();
         oy = dragEl.getOffsetTop();
         ax = dragEl.getAbsoluteLeft();
         ay = dragEl.getAbsoluteTop();
-        ex = event.getClientX();
-        ey = event.getClientY();
+        cx = event.getClientX();
+        cy = event.getClientY();
 
         F.setEnableTextSelection(RootPanel.getBodyElement(), false);
 
@@ -57,7 +63,7 @@ public class Dragger {
                 switch(event.getTypeInt()){
                     case Event.ONMOUSEMOVE:
                         if(!lockX) {
-                            int dx = event.getNativeEvent().getClientX() - ex;
+                            int dx = event.getNativeEvent().getClientX() - cx;
                             if(boundingRect != null){
                                 int lx = (ax + dx) - boundingRect.p1.x;
                                 if(lx < 0){
@@ -71,7 +77,17 @@ public class Dragger {
                             dragEl.setLeft(ox + dx);
                         }
                         if(!lockY) {
-                            int dy = event.getNativeEvent().getClientY() - ey;
+                            int dy = event.getNativeEvent().getClientY() - cy;
+                            if(boundingRect != null){
+                                int ly = (ay + dy) - boundingRect.p1.y;
+                                if(ly < 0){
+                                    dy -= ly;
+                                }
+                                int ry = boundingRect.p2.y - (ay + dy + dragEl.getHeight());
+                                if(ry < 0){
+                                    dy += ry;
+                                }
+                            }
                             dragEl.setTop(oy + dy);
                         }
                         break;
@@ -87,16 +103,31 @@ public class Dragger {
         });
     }
 
+    /**
+     * Fix position or not on X axis
+     * @param val - TRUE if you want
+     * @return - self
+     */
     public Dragger setLockX(boolean val){
         lockX = val;
         return this;
     }
 
+    /**
+     * Fix position or not on Y axis
+     * @param val - TRUE if you want
+     * @return - self
+     */
     public Dragger setLockY(boolean val){
         lockY = val;
         return this;
     }
 
+    /**
+     * Bounding rect in absolute coordinates
+     * @param rect - rect
+     * @return - self
+     */
     public Dragger setBoundingRect(Rect rect){
         boundingRect = rect;
         return this;

@@ -26,7 +26,11 @@ import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import ru.fly.client.EndCallback;
 import ru.fly.client.F;
+import ru.fly.client.dnd.Dragger;
+import ru.fly.client.dnd.Point;
+import ru.fly.client.dnd.Rect;
 import ru.fly.client.event.KeyEnterEvent;
 import ru.fly.client.event.KeyEnterHandler;
 import ru.fly.client.ui.Container;
@@ -213,6 +217,26 @@ public class FWindow extends SingleLayout {
             }
         });
         DOM.sinkEvents(getElement(), Event.ONKEYDOWN);
+        final EventListener oldHdrLnr = DOM.getEventListener(headerEl);
+        DOM.setEventListener(headerEl, new EventListener() {
+            @Override
+            public void onBrowserEvent(Event event) {
+                if(event.getTypeInt() == Event.ONMOUSEDOWN){
+                    FElement body = RootPanel.getBodyElement().cast();
+                    new Dragger(getElement(), event, new EndCallback<Point>() {
+                        @Override
+                        public void onEnd(Point result) {
+                        }
+                    }).setBoundingRect(new Rect(body.getAbsoluteLeft(), body.getAbsoluteTop(),
+                            body.getAbsoluteRight(), body.getAbsoluteBottom()));
+                    event.stopPropagation();
+                }
+                if (oldHdrLnr != null) {
+                    oldHdrLnr.onBrowserEvent(event);
+                }
+            }
+        });
+        DOM.sinkEvents(headerEl, Event.ONMOUSEDOWN);
     }
 
     @Override
