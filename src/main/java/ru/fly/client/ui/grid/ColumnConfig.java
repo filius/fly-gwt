@@ -16,6 +16,8 @@
 
 package ru.fly.client.ui.grid;
 
+import ru.fly.shared.Getter;
+
 /**
  * User: fil
  * Date: 31.08.13

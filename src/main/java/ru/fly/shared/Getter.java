@@ -14,7 +14,7 @@
  * the License.
  */
 
-package ru.fly.client.ui.grid;
+package ru.fly.shared;
 
 /**
  * User: fil

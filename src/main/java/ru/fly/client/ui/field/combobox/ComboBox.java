@@ -31,7 +31,7 @@ import ru.fly.client.ListStore;
 import ru.fly.client.ui.listview.ListView;
 import ru.fly.client.Loader;
 import ru.fly.client.ui.field.TriggerField;
-import ru.fly.client.ui.grid.Getter;
+import ru.fly.shared.Getter;
 import ru.fly.client.event.SelectHandler;
 import ru.fly.client.util.LastPassExecutor;
 

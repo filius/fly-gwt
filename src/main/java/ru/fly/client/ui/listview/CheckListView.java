@@ -21,7 +21,7 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
 import ru.fly.client.ui.FElement;
-import ru.fly.client.ui.grid.Getter;
+import ru.fly.shared.Getter;
 
 /**
  * User: fil

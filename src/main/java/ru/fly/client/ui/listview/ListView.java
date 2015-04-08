@@ -28,7 +28,7 @@ import ru.fly.client.ui.Component;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.event.SelectEvent;
 import ru.fly.client.event.SelectHandler;
-import ru.fly.client.ui.grid.Getter;
+import ru.fly.shared.Getter;
 
 import java.util.List;
 

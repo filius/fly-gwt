@@ -32,7 +32,7 @@ import ru.fly.client.event.SelectEvent;
 import ru.fly.client.event.SelectHandler;
 import ru.fly.client.log.Log;
 import ru.fly.client.ui.field.combobox.ComboBoxDecor;
-import ru.fly.client.ui.grid.Getter;
+import ru.fly.shared.Getter;
 import ru.fly.client.ui.listview.ListView;
 import ru.fly.client.util.LastPassExecutor;
 
