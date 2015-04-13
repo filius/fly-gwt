@@ -50,7 +50,9 @@ public class LogRecord implements IsSerializable {
 
     public Throwable getThrowable(){
         Throwable ret = (cause == null) ? new Throwable(detailMsg) : new Throwable(detailMsg, cause.getThrowable());
-        ret.setStackTrace(stack);
+        if(stack != null) {
+            ret.setStackTrace(stack);
+        }
         return ret;
     }
 }

@@ -45,11 +45,11 @@ public class Field<T> extends Component implements LeafValueEditor<T>, HasEditor
     private final FieldDecor decor = GWT.create(FieldDecor.class);
 
     protected T value;
-    private FElement errorIcon;
     private String errorMsg;
     private Tooltip errorToolTip;
     private List<Validator<T>> validators = new ArrayList<Validator<T>>();
     private boolean focused = false;
+    private boolean alwaysDisabled = false;
 
     public Field(){
         super(DOM.createDiv());
@@ -60,7 +60,7 @@ public class Field<T> extends Component implements LeafValueEditor<T>, HasEditor
     @Override
     public void onAfterFirstAttach() {
         super.onAfterFirstAttach();
-        errorIcon = DOM.createDiv().cast();
+        FElement errorIcon = DOM.createDiv().cast();
         errorIcon.setClassName(decor.css().fieldErrorIcon());
         getElement().appendChild(errorIcon);
         DOM.setEventListener(errorIcon, new EventListener() {
@@ -113,6 +113,15 @@ public class Field<T> extends Component implements LeafValueEditor<T>, HasEditor
             return super.getWidth(client)+18;
         else
             return super.getWidth(client);
+    }
+
+    /**
+     * mark field as permanently disabled
+     * @param val - TRUE always disabled (default FALSE)
+     */
+    public void setAlwaysDisabled(boolean val){
+        alwaysDisabled = val;
+        setEnabled(isEnabled());
     }
 
     public void setError(String msg){
@@ -201,4 +210,14 @@ public class Field<T> extends Component implements LeafValueEditor<T>, HasEditor
     }
 
     public void focus(){}
+
+    @Override
+    public void setEnabled(boolean val) {
+        super.setEnabled(!alwaysDisabled && val);
+    }
+
+    @Override
+    public void enable() {
+        super.enable();
+    }
 }

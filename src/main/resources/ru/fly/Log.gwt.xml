@@ -20,10 +20,9 @@
 
     <!--включение логера GWT и вывод только в консоль-->
     <inherits name='com.google.gwt.logging.Logging'/>
-    <set-property name='gwt.logging.logLevel' value='SEVERE'/>
     <set-property name='gwt.logging.enabled' value='TRUE'/>
+    <set-property name='gwt.logging.logLevel' value='SEVERE'/>
     <set-property name='gwt.logging.consoleHandler' value='ENABLED' />
-    <set-property name='gwt.logging.popupHandler' value='DISABLED' />
 
     <replace-with class="ru.fly.client.log.LogBaseImpl">
         <when-type-is class="ru.fly.client.log.ILog" />

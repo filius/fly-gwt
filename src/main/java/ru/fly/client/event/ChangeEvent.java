@@ -16,14 +16,16 @@
 
 package ru.fly.client.event;
 
+import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
  * User: fil
  * Date: 05.08.13
  * Time: 23:52
  */
-public class ChangeEvent<T> extends GwtEvent<ChangeHandler<T>> {
+public class ChangeEvent<T> extends GwtEvent<ChangeEvent.ChangeHandler<T>> {
 
     private static Type TYPE;
 
@@ -36,7 +38,7 @@ public class ChangeEvent<T> extends GwtEvent<ChangeHandler<T>> {
     @SuppressWarnings("unchecked")
     public static <T> Type<ChangeHandler<T>> getType() {
         if (TYPE == null) {
-            TYPE = new Type<ChangeHandler<T>>();
+            TYPE = new Type<>();
         }
         return TYPE;
     }
@@ -49,5 +51,13 @@ public class ChangeEvent<T> extends GwtEvent<ChangeHandler<T>> {
     @Override
     protected void dispatch(ChangeHandler<T> handler) {
         handler.onChange(object);
+    }
+
+    public interface ChangeHandler<T> extends EventHandler {
+        void onChange(T object);
+    }
+
+    public interface HasChangeHandler<T> {
+        HandlerRegistration addChangeHandler(ChangeHandler<T> h);
     }
 }
