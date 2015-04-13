@@ -74,7 +74,7 @@ public class TabPanel extends LayoutContainer {
 
     @Override
     public void setPixelSize(int width, int height) {
-        super.setPixelSize((width < 0)?width:width -2, (height < 0)?height:height-2);
+        super.setPixelSize((width < 0)?width:(width-2), (height < 0)?height:(height-2));
     }
 
     @Override

@@ -1,3 +1,7 @@
+@def pContentPanelBorder 2px;
+@def pContentPanelInnerMargin 2px;
+@def pContentPanelInnerBorder 1px;
+
 .split{
     position: absolute;
     top: 0;
@@ -18,7 +22,7 @@
 .contentPanel{
     font: pFont;
     background-color: #f4f8ff;
-    border: 2px solid #5e93ab;
+    border: pContentPanelBorder solid #5e93ab;
 }
 .header{
     color: pColorDarkBlue;
@@ -27,6 +31,6 @@
 }
 .inner{
     background-color: #fff;
-    border: 1px solid #c1d4e7;
-    margin-left: 2px;
+    border: pContentPanelInnerBorder solid #c1d4e7;
+    margin-left: pContentPanelInnerMargin;
 }

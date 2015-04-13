@@ -38,6 +38,12 @@ public class LayoutDecor {
 
     public static interface Styles extends CommonDecor.Styles {
 
+        int pContentPanelBorder();
+
+        int pContentPanelInnerMargin();
+
+        int pContentPanelInnerBorder();
+
         String split();
 
         String dragLine();

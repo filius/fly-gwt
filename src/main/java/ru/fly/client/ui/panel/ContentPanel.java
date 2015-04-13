@@ -29,6 +29,7 @@ import ru.fly.client.ui.FElement;
 public class ContentPanel extends SingleLayout{
 
     private final LayoutDecor decor = GWT.create(LayoutDecor.class);
+    private final int innerBorderSpace = (decor.css().pContentPanelInnerBorder() + decor.css().pContentPanelInnerMargin()) * 2;
 
     private FElement headerEl;
     private FElement containerEl;
@@ -63,8 +64,8 @@ public class ContentPanel extends SingleLayout{
 
     @Override
     protected void doLayout() {
-        int w = getWidth(true)-6;
-        int h = getHeight(true)-headerEl.getOffsetHeight()-6;
+        int w = getWidth(true)-innerBorderSpace;
+        int h = getHeight(true)-headerEl.getOffsetHeight()-innerBorderSpace;
         containerEl.setWidth(w);
         containerEl.setHeight(h);
         Widget child = getWidget();
@@ -79,4 +80,10 @@ public class ContentPanel extends SingleLayout{
         }
     }
 
+    @Override
+    public void setPixelSize(int width, int height) {
+        super.setPixelSize(
+                (width < 0)?width:(width-decor.css().pContentPanelBorder()*2),
+                (height < 0)?height:(height-decor.css().pContentPanelBorder()*2));
+    }
 }
