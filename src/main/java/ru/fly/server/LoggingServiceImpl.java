@@ -38,7 +38,7 @@ import java.util.List;
  */
 public class LoggingServiceImpl implements LoggingService{
 
-    private final Logger log = LoggerFactory.getLogger(LoggingServiceImpl.class.getName());
+    private final Logger log = LoggerFactory.getLogger(getClass().getName());
 
     private final List<StackTraceDeobfuscator> deobfuscators = new ArrayList<StackTraceDeobfuscator>();
 
@@ -74,6 +74,10 @@ public class LoggingServiceImpl implements LoggingService{
             log.error(rec.getMessage(), t);
         }else if("warn".equals(level)) {
             log.warn(rec.getMessage(), t);
+        }else if("info".equals(level)) {
+            log.info(rec.getMessage(), t);
+        }else if("debug".equals(level)) {
+            log.debug(rec.getMessage(), t);
         }
         return new LogRecord(t);
     }

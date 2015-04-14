@@ -47,35 +47,58 @@ public class LogBaseImpl implements ILog{
         return level;
     }
 
-    public void onError(final String msg, final Throwable e) {
-        if(Log.ERROR >= level) {
-            lSvc.log("error", new LogRecord(msg, e), new AsyncCallback<LogRecord>() {
-                @Override
-                public void onFailure(Throwable caught) {
-                    doLog(Log.ERROR, msg, e);
-                }
+    @Override
+    public void onDebug(String msg) {
+        doLog(Log.DEBUG, msg);
+    }
 
-                @Override
-                public void onSuccess(LogRecord result) {
-                    doLog(Log.ERROR, msg, result.getThrowable());
-                }
-            });
+    @Override
+    public void onDebug(String msg, Throwable e) {
+        if(Log.DEBUG >= level) {
+            lSvc.log("debug", new LogRecord(msg, e), new LogAsyncCallback(Log.DEBUG, msg, e));
         }
     }
 
+    @Override
+    public void onInfo(String msg) {
+        doLog(Log.INFO, msg);
+    }
+
+    @Override
+    public void onInfo(String msg, Throwable e) {
+        if(Log.INFO >= level) {
+            lSvc.log("info", new LogRecord(msg, e), new LogAsyncCallback(Log.INFO, msg, e));
+        }
+    }
+
+    @Override
+    public void onWarn(String msg) {
+        doLog(Log.WARN, msg);
+    }
+
+    @Override
     public void onWarn(final String msg, final Throwable e) {
         if(Log.WARN >= level) {
-            lSvc.log("warn", new LogRecord(msg, e), new AsyncCallback<LogRecord>() {
-                @Override
-                public void onFailure(Throwable caught) {
-                    doLog(Log.WARN, msg, e);
-                }
+            lSvc.log("warn", new LogRecord(msg, e), new LogAsyncCallback(Log.WARN, msg, e));
+        }
+    }
 
-                @Override
-                public void onSuccess(LogRecord result) {
-                    doLog(Log.WARN, msg, result.getThrowable());
-                }
-            });
+    @Override
+    public void onError(String msg) {
+        doLog(Log.ERROR, msg);
+    }
+
+    @Override
+    public void onError(final String msg, final Throwable e) {
+        if(Log.ERROR >= level) {
+            lSvc.log("error", new LogRecord(msg, e), new LogAsyncCallback(Log.ERROR, msg, e));
+        }
+    }
+
+    protected void doLog(int lvl, String msg){
+        if(lvl >= level) {
+            Level l = getNativeLevel(lvl);
+            log.log(l, msg);
         }
     }
 
@@ -91,9 +114,36 @@ public class LogBaseImpl implements ILog{
             case Log.ERROR:
                 return Level.SEVERE;
             case Log.WARN:
-                return Level.SEVERE;
+                return Level.WARNING;
+            case Log.INFO:
+                return Level.INFO;
+            case Log.DEBUG:
+                return Level.FINE;
             default:
                 return Level.OFF;
+        }
+    }
+
+    private class LogAsyncCallback implements AsyncCallback<LogRecord> {
+
+        private int lvl;
+        private String msg;
+        private Throwable e;
+
+        public LogAsyncCallback(int lvl, String msg, Throwable e){
+            this.lvl = lvl;
+            this.msg = msg;
+            this.e = e;
+        }
+
+        @Override
+        public void onFailure(Throwable caught) {
+            doLog(lvl, msg, e);
+        }
+
+        @Override
+        public void onSuccess(LogRecord result) {
+            doLog(lvl, msg, result.getThrowable());
         }
     }
 

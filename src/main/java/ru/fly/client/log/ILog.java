@@ -27,8 +27,20 @@ public interface ILog {
 
     public int getLevel();
 
-    public void onError(final String msg, final Throwable e);
+    public void onDebug(final String msg);
+
+    public void onDebug(final String msg, final Throwable e);
+
+    public void onInfo(final String msg);
+
+    public void onInfo(final String msg, final Throwable e);
+
+    public void onWarn(final String msg);
 
     public void onWarn(final String msg, final Throwable e);
+
+    public void onError(final String msg);
+
+    public void onError(final String msg, final Throwable e);
 
 }

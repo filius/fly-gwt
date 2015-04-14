@@ -25,8 +25,10 @@ import com.google.gwt.core.client.GWT;
  */
 public class Log {
 
-    public static final int ERROR = 1;
-    public static final int WARN = 0;
+    public static final int ERROR = 3;
+    public static final int WARN = 2;
+    public static final int INFO = 1;
+    public static final int DEBUG = 0;
 
     private static final ILog impl = GWT.create(ILog.class);
 
@@ -39,12 +41,36 @@ public class Log {
         });
     }
 
-    public static void error(String msg, Throwable e){
-        impl.onError(msg, e);
+    public static void debug(String msg){
+        impl.onDebug(msg);
+    }
+
+    public static void debug(String msg, Throwable e){
+        impl.onDebug(msg, e);
+    }
+
+    public static void info(String msg){
+        impl.onInfo(msg);
+    }
+
+    public static void info(String msg, Throwable e){
+        impl.onInfo(msg, e);
+    }
+
+    public static void warn(String msg){
+        impl.onWarn(msg);
     }
 
     public static void warn(String msg, Throwable e){
         impl.onWarn(msg, e);
+    }
+
+    public static void error(String msg){
+        impl.onError(msg);
+    }
+
+    public static void error(String msg, Throwable e){
+        impl.onError(msg, e);
     }
 
     public static void setLevel(int level){
