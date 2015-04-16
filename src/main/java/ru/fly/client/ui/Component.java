@@ -125,17 +125,35 @@ public class Component extends Widget{
         getStyle().setOpacity(val);
     }
 
+    public Component withOpacity(double val){
+        setOpacity(val);
+        return this;
+    }
+
     public void setMargin(int val){
         getElement().setMargin(val);
     }
 
-    public Component setMarginLeft(int val){
-        getElement().setMarginLeft(val);
+    public Component withMargin(int val){
+        setMargin(val);
         return this;
     }
 
-    public Component setMarginRight(int val){
+    public void setMarginLeft(int val){
+        getElement().setMarginLeft(val);
+    }
+
+    public Component withMarginLeft(int val){
+        setMarginLeft(val);
+        return this;
+    }
+
+    public void setMarginRight(int val){
         getElement().setMarginRight(val);
+    }
+
+    public Component withMarginRight(int val){
+        setMarginRight(val);
         return this;
     }
 
@@ -143,12 +161,26 @@ public class Component extends Widget{
         getElement().setMarginTop(val);
     }
 
+    public Component withMarginTop(int val){
+        setMarginTop(val);
+        return this;
+    }
+
     public void setMarginBottom(int val){
         getElement().setMarginBottom(val);
     }
 
-    public Component setFloatLeft(){
+    public Component withMarginBottom(int val){
+        setMarginBottom(val);
+        return this;
+    }
+
+    public void setFloatLeft(){
         getStyle().setFloat(Style.Float.LEFT);
+    }
+
+    public Component withFloatLeft(){
+        setFloatLeft();
         return this;
     }
 
