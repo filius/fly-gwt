@@ -3,7 +3,7 @@
 Small set of UI components for GWT applications
 
 ##Current Snapshot
-0.0.3-SNAPSHOT
+0.1.2-SNAPSHOT
 
 ##License
 * Fly-GWT is freely distributable under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html)
