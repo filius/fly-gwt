@@ -43,6 +43,8 @@ public class BtnDecor {
     @CssResource.Shared
     public static interface Styles extends CommonDecor.Styles {
 
+        int pBorderWidth();
+
         String button();
 
         @ClassName("button-menu")

@@ -1,3 +1,5 @@
+@def pBorderWidth 2px;
+
 .button{
     display: inline-block;
     box-sizing: border-box;
@@ -8,7 +10,7 @@
     margin: 1px;
     cursor: pointer;
     color: #003168;
-    border: 2px solid #5e93ab;
+    border: pBorderWidth solid #5e93ab;
     \-webkit-border-radius: 2px;
     \-moz-border-radius: 2px;
     border-radius: 2px;
