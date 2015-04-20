@@ -13,8 +13,8 @@
     \-moz-border-radius: 2px;
     border-radius: 2px;
     white-space: nowrap;
-    background: #c1d4e7; /* Old browsers */
-    background: linear-gradient(to bottom, #E0F0FF 0%,#b3c3d6 64%,#d7e1ef 100%); /* W3C */
+    background: #B8DEFA; /* Old browsers */
+    background: linear-gradient(to bottom, #DCECFA 0, #B8DEFA 64%, #D9E8FD 100%); /* W3C */
     /*filter: literal("progid:DXImageTransform.Microsoft.gradient( startColorstr='#E0F0FF', endColorstr='#d7e1ef',GradientType=0 )"); *//* IE6-9 */
 }
 button.button::-moz-focus-inner {

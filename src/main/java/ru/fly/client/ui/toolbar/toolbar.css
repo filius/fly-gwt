@@ -30,8 +30,8 @@
     position: relative;
     border-top: 1px solid #eee;
     border-bottom: 1px solid #c1ccdc;
-    background: #e2e5e9; /* Old browsers */
-    background: linear-gradient(to bottom, #e2e5e9 0%,#c1ccdc 100%); /* W3C */
+    background: #DCE9FC ; /* Old browsers */
+    background: linear-gradient(to bottom, #E5F0FF 0%,#DCE9FC  100%); /* W3C */
     padding: 1px 2px;
     overflow: hidden;
     box-sizing: border-box;

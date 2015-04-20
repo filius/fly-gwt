@@ -1,8 +1,5 @@
 .fieldset{
-    /*box-sizing: border-box;*/
-    /*-moz-box-sizing: border-box;*/
-    /*-webkit-box-sizing: border-box;*/
-    border: 1px solid #c1d4e7;
+    border: 1px solid #5e93ab;
     padding: 0;
     margin: 0;
     display: block;
@@ -11,16 +8,8 @@
     font: bold 12px arial;
     padding: 4px;
     margin-left: 4px;
-    /*border: 2px solid #5e93ab;*/
     border-radius: 4px;
     color: pColorDarkBlue;
-    /*background: #e2e5e9; *//* Old browsers */
-    /*background: -moz-linear-gradient(top, #EFF6FF 0%, #BED5F7 100%); *//* FF3.6+ */
-    /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#EFF6FF), color-stop(100%,#BED5F7)); *//* Chrome,Safari4+ */
-    /*background: -webkit-linear-gradient(top, #EFF6FF 0%,#BED5F7 100%); *//* Chrome10+,Safari5.1+ */
-    /*background: -o-linear-gradient(top, #EFF6FF 0%,#BED5F7 100%); *//* Opera 11.10+ */
-    /*background: -ms-linear-gradient(top, #EFF6FF 0%,#BED5F7 100%); *//* IE10+ */
-    /*background: linear-gradient(to bottom, #EFF6FF 0%,#BED5F7 100%);  *//*W3C*/
 }
 
 .disabled .fieldset legend{
