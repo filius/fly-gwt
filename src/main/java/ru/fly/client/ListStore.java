@@ -30,8 +30,8 @@ import java.util.List;
  */
 public class ListStore<T> extends EventBase {
 
-    public static interface StoreFilter<T>{
-        public boolean isVisible(T item);
+    public interface StoreFilter<T>{
+        boolean isVisible(T item);
     }
 
     private List<T> list = new ArrayList<T>();
