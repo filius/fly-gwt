@@ -16,9 +16,9 @@
 
 package ru.fly.client.ui;
 
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
 
@@ -26,8 +26,9 @@ import com.google.gwt.user.client.EventListener;
  * User: fil
  * Date: 12.08.13
  * Time: 17:53
+ * TODO Element тут устарелый, но он необходим для совместимости с getElement из UIObject
  */
-public class FElement extends Element {
+public class FElement extends com.google.gwt.user.client.Element {
 
     protected FElement() {
     }
@@ -116,22 +117,38 @@ public class FElement extends Element {
         getStyle().setPadding(padding, Style.Unit.PX);
     }
 
+    public final void setPaddingTop(int padding){
+        getStyle().setPaddingTop(padding, Style.Unit.PX);
+    }
+
+    public final void setPaddingRight(int padding){
+        getStyle().setPaddingRight(padding, Style.Unit.PX);
+    }
+
+    public final void setPaddingBottom(int padding){
+        getStyle().setPaddingBottom(padding, Style.Unit.PX);
+    }
+
+    public final void setPaddingLeft(int padding){
+        getStyle().setPaddingLeft(padding, Style.Unit.PX);
+    }
+
     public final int getRelativeLeft(Element relative){
         int left = getOffsetLeft();
-        Element parent = getOffsetParent().cast();
+        Element parent = getOffsetParent();
         while(parent != null && parent != relative){
             left += parent.getOffsetLeft();
-            parent = parent.getOffsetParent().cast();
+            parent = parent.getOffsetParent();
         }
         return left;
     }
 
     public final int getRelativeTop(Element relative){
         int top = getOffsetTop();
-        Element parent = getOffsetParent().cast();
+        Element parent = getOffsetParent();
         while(parent != null && parent != relative){
             top += parent.getOffsetTop();
-            parent = parent.getOffsetParent().cast();
+            parent = parent.getOffsetParent();
         }
         return top;
     }

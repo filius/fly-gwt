@@ -31,6 +31,7 @@ import ru.fly.client.event.OrderChangeEvent;
 import ru.fly.client.event.OrderChangeHandler;
 import ru.fly.client.ui.Component;
 import ru.fly.client.ui.FElement;
+import ru.fly.client.ui.grid.decor.GridDecor;
 
 import java.util.List;
 

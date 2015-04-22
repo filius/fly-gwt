@@ -19,6 +19,7 @@ package ru.fly.client.ui.tree.decor;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
+import com.google.gwt.resources.client.ImageResource;
 import ru.fly.client.ui.CommonDecor;
 
 /**
@@ -33,11 +34,38 @@ public class TreeDecor {
         @Source({"ru/fly/client/ui/common.css", "tree.css"})
         public Styles css();
 
+        @Source("down-arrow.png")
+        @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+        ImageResource downArrow();
+
+        @Source("right-arrow.png")
+        @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+        ImageResource rightArrow();
+
+        @Source("open-folder.png")
+        @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+        ImageResource folderOpen();
+
+        @Source("closed-folder.png")
+        @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+        ImageResource folderClosed();
+
+        @Source("item.png")
+        @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
+        ImageResource item();
+
     }
 
     @CssResource.Shared
-    public static interface Styles extends CommonDecor.Styles {
+    public interface Styles extends CommonDecor.Styles {
         String tree();
+        String treeRowItem();
+        String treeRowItemHeader();
+        String folder();
+        String arrow();
+        String icon();
+        String expanded();
+        String text();
     }
 
     public final Resources res;

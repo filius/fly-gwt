@@ -24,6 +24,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import ru.fly.client.log.Log;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.PageLoader;
+import ru.fly.client.ui.grid.decor.GridDecor;
 import ru.fly.shared.PagingResult;
 
 import java.util.List;

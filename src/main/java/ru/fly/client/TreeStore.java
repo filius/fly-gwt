@@ -1,5 +1,7 @@
 package ru.fly.client;
 
+import ru.fly.client.event.UpdateEvent;
+import ru.fly.client.event.UpdateHandler;
 import ru.fly.client.ui.EventBase;
 
 import java.util.ArrayList;
@@ -12,49 +14,6 @@ import java.util.Map;
  * Date: 21.04.15
  */
 public class TreeStore<T> extends EventBase {
-
-    private class TreeStoreItem<M>{
-
-        private M model;
-        private List<TreeStoreItem<M>> children = new ArrayList<>();
-        private boolean expanded = false;
-
-        public TreeStoreItem(M model){
-            setModel(model);
-        }
-
-        public M getModel() {
-            return model;
-        }
-
-        public void setModel(M model) {
-            this.model = model;
-        }
-
-        public List<TreeStoreItem<M>> getChildren() {
-            return children;
-        }
-
-        public void setChildren(List<TreeStoreItem<M>> children) {
-            this.children = children;
-        }
-
-        public boolean isExpanded() {
-            return expanded;
-        }
-
-        public void setExpanded(boolean expanded) {
-            this.expanded = expanded;
-        }
-
-        public List<M> getModelChildren(){
-            List<M> ret = new ArrayList<>();
-            for(TreeStoreItem<M> item : children){
-                ret.add(item.getModel());
-            }
-            return ret;
-        }
-    }
 
     private TreeStoreItem<T> root = new TreeStoreItem<>(null);
     private Map<T, TreeStoreItem<T>> links = new HashMap<>();
@@ -70,6 +29,7 @@ public class TreeStore<T> extends EventBase {
         TreeStoreItem<T> item = new TreeStoreItem<>(model);
         findItem(parent).getChildren().add(item);
         links.put(model, item);
+        fireEvent(new UpdateEvent());
     }
 
     public void addAll(T parent, List<T> models){
@@ -82,10 +42,23 @@ public class TreeStore<T> extends EventBase {
             parentItem.getChildren().add(item);
             links.put(model, item);
         }
+        fireEvent(new UpdateEvent());
+    }
+
+    public boolean isExpanded(T model){
+        return findItem(model).isExpanded();
     }
 
     public List<T> getChildren(T parent){
         return findItem(parent).getModelChildren();
+    }
+
+    public List<TreeStoreItem<T>> getItemChildren(T parent){
+        return findItem(parent).getChildren();
+    }
+
+    public void addUpdateHandler(UpdateHandler lnr){
+        addHandler(lnr, UpdateEvent.getType());
     }
 
     // ------------------ privates -------------------

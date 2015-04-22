@@ -14,7 +14,7 @@
  * the License.
  */
 
-package ru.fly.client.ui.grid;
+package ru.fly.client.ui.grid.decor;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;

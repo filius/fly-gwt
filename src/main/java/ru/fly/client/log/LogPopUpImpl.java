@@ -23,7 +23,7 @@ import java.util.logging.Level;
  * Date: 22.05.14
  * Time: 22:29
  */
-public class LogPopUpImpl extends LogBaseImpl {
+public class LogPopUpImpl extends LogRemoteImpl {
 
     @Override
     protected void doLog(int lvl, String msg, Throwable e) {

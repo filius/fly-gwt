@@ -143,7 +143,7 @@ public class MessageBox extends Container {
         else if(w > 600)
             setWidth(600);
         center();
-        if(buttons.size() > 0){
+        if(buttons != null && buttons.size() > 0){
             Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
                 @Override
                 public void execute() {
@@ -199,7 +199,7 @@ public class MessageBox extends Container {
     public static MessageBox waitHidden(String title, String msg){
         String icon = "<div style='overflow: hidden; text-align: center; padding-top: 4px;'><img src='"+decor.res.progress().getSafeUri().asString()
                 +"'></img></div>";
-        return new MessageBox(title, new HTML(msg+icon), null);
+        return new MessageBox(title, new HTML("<center>"+msg+icon+"</center>"), null);
     }
 
     public static MessageBox wait(String title, String msg){

@@ -21,6 +21,7 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
 import ru.fly.client.ui.FElement;
+import ru.fly.client.ui.grid.decor.GridDecor;
 import ru.fly.client.util.LastPassExecutor;
 
 import java.util.*;

@@ -1,3 +1,59 @@
 .tree{
-
+    position: relative;
+    background-color: #fff;
+    border: 1px solid #5e93ab;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    overflow: auto;
+}
+.tree.disabled{
+    opacity: .5;
+}
+.treeRowItem{
+    font: pFont;
+}
+.treeRowItemHeader{
+    padding: 3px 3px;
+    border: 1px solid transparent;
+    cursor: default;
+    white-space: nowrap;
+}
+.treeRowItemHeader.folder{
+    cursor: pointer;
+}
+.treeRowItemHeader.over {
+    border-color: #F2BD54;
+    background: #fbe9c1;
+    background: linear-gradient(to bottom, #fdf5e3 0%,#f5d38a 63%,#fbe9c1 100%); /* W3C */
+}
+@sprite .treeRowItemHeader .icon{
+    gwt-image: 'item';
+    float: left;
+    margin-right: 4px;
+}
+.treeRowItemHeader .arrow{
+    float: left;
+}
+@sprite .treeRowItemHeader.folder .arrow{
+    gwt-image: 'rightArrow';
+    width: 16px;
+    height: 16px;
+    background-position: 5px 5px;
+}
+@sprite .treeRowItemHeader.folder.expanded .arrow{
+    gwt-image: 'downArrow';
+    width: 16px;
+    height: 16px;
+    background-position: 5px 5px;
+}
+@sprite .treeRowItemHeader.folder .icon{
+    gwt-image: 'folderClosed';
+}
+@sprite .treeRowItemHeader.folder.expanded .icon{
+    gwt-image: 'folderOpen';
+}
+.treeRowItemHeader .text{
+    vertical-align: middle;
+    white-space: nowrap;
 }

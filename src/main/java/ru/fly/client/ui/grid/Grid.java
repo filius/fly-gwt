@@ -23,6 +23,7 @@ import ru.fly.client.event.*;
 import ru.fly.client.ui.Component;
 import ru.fly.client.F;
 import ru.fly.client.ListStore;
+import ru.fly.client.ui.grid.decor.GridDecor;
 
 import java.util.List;
 

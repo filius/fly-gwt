@@ -23,6 +23,7 @@ import ru.fly.client.event.ClickHandler;
 import ru.fly.client.log.Log;
 import ru.fly.client.ui.button.Button;
 import ru.fly.client.ui.field.label.Label;
+import ru.fly.client.ui.grid.decor.GridDecor;
 import ru.fly.client.ui.toolbar.ToolBar;
 import ru.fly.shared.PagingResult;
 
