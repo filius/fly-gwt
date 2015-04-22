@@ -52,7 +52,7 @@ public class TreeView<T> extends Component {
 
             @Override
             protected void onCollapse(T model) {
-                getContainerElement().removeAllChildren();
+                getContainerElement().removeAll();
             }
         };
         F.render(parent, item);

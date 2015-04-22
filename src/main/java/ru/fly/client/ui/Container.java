@@ -111,7 +111,7 @@ public class Container extends Component implements HasWidgets {
         super.doDetachChildren();
     }
 
-    public Element getContainerElement(){
+    public FElement getContainerElement(){
         return getElement();
     }
 }

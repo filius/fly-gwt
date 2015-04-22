@@ -28,7 +28,8 @@ public class LogBaseImpl implements ILog{
 
     protected final Logger log = Logger.getLogger(Log.class.getName());
 
-    private int level = 1;
+    /** default log level to DEBUG, out all messages */
+    private int level = Log.DEBUG;
 
     @Override
     public void setLevel(int level) {

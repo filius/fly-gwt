@@ -44,7 +44,7 @@ public class FieldSetPanel extends SingleLayout {
     }
 
     @Override
-    public Element getContainerElement() {
+    public FElement getContainerElement() {
         return container;
     }
 

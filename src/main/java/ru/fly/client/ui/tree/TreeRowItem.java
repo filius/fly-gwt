@@ -64,7 +64,7 @@ public abstract class TreeRowItem<T> extends Container{
     }
 
     @Override
-    public Element getContainerElement() {
+    public FElement getContainerElement() {
         return childrenContainer;
     }
 
