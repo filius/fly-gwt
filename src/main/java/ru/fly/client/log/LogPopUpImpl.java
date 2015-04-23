@@ -16,8 +16,6 @@
 
 package ru.fly.client.log;
 
-import java.util.logging.Level;
-
 /**
  * User: fil
  * Date: 22.05.14
@@ -26,11 +24,18 @@ import java.util.logging.Level;
 public class LogPopUpImpl extends LogRemoteImpl {
 
     @Override
+    protected void doLog(int lvl, String msg) {
+        super.doLog(lvl, msg);
+        if(lvl >= getLevel()) {
+            LogPanel.log(lvl, msg, null);
+        }
+    }
+
+    @Override
     protected void doLog(int lvl, String msg, Throwable e) {
         super.doLog(lvl, msg, e);
         if(lvl >= getLevel()) {
-            Level l = getNativeLevel(lvl);
-            LogPanel.log(l, msg, e);
+            LogPanel.log(lvl, msg, e);
         }
     }
 }

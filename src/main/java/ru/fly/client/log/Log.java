@@ -77,5 +77,15 @@ public class Log {
         impl.setLevel(level);
     }
 
+    public static String getLevelName(int lvl){
+        switch(lvl){
+            case 0: return "DEBUG";
+            case 1: return "INFO ";
+            case 2: return "WARN ";
+            case 3: return "ERROR";
+            default: return "ALL  ";
+        }
+    }
+
     private Log(){}
 }

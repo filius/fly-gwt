@@ -34,6 +34,7 @@ public class LogBaseImpl implements ILog{
     @Override
     public void setLevel(int level) {
         this.level = level;
+        log.setLevel(getNativeLevel(level));
     }
 
     @Override

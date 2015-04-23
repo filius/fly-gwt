@@ -39,19 +39,20 @@ public class LogPanel{
 
     private static LogPanel inst;
 
-    public static void log(Level lvl, String msg, Throwable e){
-        if(inst == null)
+    public static void log(int lvl, String msg, Throwable e){
+        if(inst == null) {
             inst = new LogPanel();
-
+        }
         String prev = inst.area.getValue();
         StringBuilder sb = new StringBuilder((prev == null)?"":prev+"\n")
                 .append(new Date().toString()).append("\n")
-                .append(lvl.getName()).append(" ").append(msg).append("\n")
-                .append(LogUtil.printStackTrace(e));
+                .append(Log.getLevelName(lvl)).append(" ").append(msg)
+                .append(e == null ? "" : ("\n"+LogUtil.printStackTrace(e)));
 
         inst.area.setValue(sb.toString());
-        if(!inst.btn.isAttached())
+        if(!inst.btn.isAttached()) {
             RootPanel.get().add(inst.btn);
+        }
     }
 
     private TextAreaField area;
@@ -68,7 +69,7 @@ public class LogPanel{
         };
         area.setWidth("auto");
         area.setHeight("30%");
-        area.addStyleName(decor.css().errorWnd());
+        area.setStyleName(decor.css().errorWnd());
         btn = new Button(decor.res.error(), new ClickHandler() {
             @Override
             public void onClick() {
