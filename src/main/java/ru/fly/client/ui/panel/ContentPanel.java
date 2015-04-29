@@ -28,13 +28,24 @@ import ru.fly.client.ui.FElement;
  */
 public class ContentPanel extends SingleLayout{
 
-    private final LayoutDecor decor = GWT.create(LayoutDecor.class);
-    private final int innerBorderSpace = (decor.css().pContentPanelInnerBorder() + decor.css().pContentPanelInnerMargin()) * 2;
+    private final LayoutDecor decor;
+    private final int innerBorderSpace;
 
     private FElement headerEl;
     private FElement containerEl;
 
-    public ContentPanel() {
+    public ContentPanel(){
+        this(GWT.<LayoutDecor>create(LayoutDecor.class));
+    }
+
+    public ContentPanel(String headerText){
+        this();
+        setHeaderText(headerText);
+    }
+
+    public ContentPanel(LayoutDecor decor) {
+        this.decor = decor;
+        this.innerBorderSpace = (decor.css().pContentPanelInnerBorder() + decor.css().pContentPanelInnerMargin()) * 2;
         setStyleName(decor.css().contentPanel());
         headerEl = DOM.createDiv().cast();
         headerEl.setInnerHTML("&nbsp;");
