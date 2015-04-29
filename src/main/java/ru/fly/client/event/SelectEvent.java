@@ -16,14 +16,16 @@
 
 package ru.fly.client.event;
 
+import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
  * User: fil
  * Date: 05.08.13
  * Time: 23:52
  */
-public class SelectEvent<T> extends GwtEvent<SelectHandler<T>> {
+public class SelectEvent<T> extends GwtEvent<SelectEvent.SelectHandler<T>> {
 
     private static Type TYPE;
 
@@ -49,5 +51,13 @@ public class SelectEvent<T> extends GwtEvent<SelectHandler<T>> {
     @Override
     protected void dispatch(SelectHandler<T> handler) {
         handler.onSelect(object);
+    }
+
+    public interface SelectHandler<T> extends EventHandler {
+        void onSelect(T object);
+    }
+
+    public interface HasSelectHandler<T> {
+        HandlerRegistration addSelectHandler(SelectHandler<T> h);
     }
 }

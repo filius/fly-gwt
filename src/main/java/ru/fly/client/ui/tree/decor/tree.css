@@ -27,6 +27,10 @@
     background: #fbe9c1;
     background: linear-gradient(to bottom, #fdf5e3 0%,#f5d38a 63%,#fbe9c1 100%); /* W3C */
 }
+.treeRowItemHeader.selected {
+    background: pColorOrange;
+    border-color: #aaa;
+}
 @sprite .treeRowItemHeader .icon{
     gwt-image: 'item';
     float: left;

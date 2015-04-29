@@ -6,8 +6,12 @@ import ru.fly.shared.Getter;
  * User: fil
  * Date: 22.04.15
  */
-public interface TreeGetter<T> extends Getter<T> {
+public abstract class TreeGetter<T> implements Getter<T> {
 
-    boolean isFolder(T model);
+    public abstract boolean isFolder(T model);
+
+    public boolean isSelectable(T model){
+        return true;
+    }
 
 }

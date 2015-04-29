@@ -1,7 +1,6 @@
 package ru.fly.client.ui.tree;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
@@ -13,7 +12,7 @@ import ru.fly.client.ui.tree.decor.TreeDecor;
  * User: fil
  * Date: 22.04.15
  */
-public abstract class TreeRowItem<T> extends Container{
+public abstract class TreeRowItem<T> extends Container {
 
     private final TreeDecor decor = GWT.create(TreeDecor.class);
 
@@ -59,8 +58,18 @@ public abstract class TreeRowItem<T> extends Container{
 
     protected abstract void onCollapse(T model);
 
-    public int getLvl() {
+    protected abstract void onClick(T model);
+
+    protected int getLvl() {
         return lvl;
+    }
+
+    protected void setSelected(boolean val){
+        if(val) {
+            header.addClassName(decor.css().selected());
+        }else{
+            header.removeClassName(decor.css().selected());
+        }
     }
 
     @Override
@@ -90,16 +99,20 @@ public abstract class TreeRowItem<T> extends Container{
                     case Event.ONDBLCLICK:
                         expandCollapse();
                         break;
+                    case Event.ONCLICK:
+                        onClick(model);
+                        break;
                 }
             }
         });
-        DOM.sinkEvents(header, Event.ONMOUSEOVER | Event.ONMOUSEOUT | Event.ONDBLCLICK);
+        DOM.sinkEvents(header, Event.ONMOUSEOVER | Event.ONMOUSEOUT | Event.ONCLICK | Event.ONDBLCLICK);
         DOM.setEventListener(arrowElement, new EventListener() {
             @Override
             public void onBrowserEvent(Event event) {
                 switch (event.getTypeInt()) {
                     case Event.ONCLICK:
                         expandCollapse();
+                        event.stopPropagation();
                         break;
                 }
             }

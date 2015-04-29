@@ -45,6 +45,10 @@ public class TreeStore<T> extends EventBase {
         fireEvent(new UpdateEvent());
     }
 
+    public boolean contains(T model){
+        return links.keySet().contains(model);
+    }
+
     public boolean isExpanded(T model){
         return findItem(model).isExpanded();
     }

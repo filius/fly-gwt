@@ -16,14 +16,16 @@
 
 package ru.fly.client.event;
 
+import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
  * User: fil
  * Date: 05.08.13
  * Time: 23:52
  */
-public class ClickEvent extends GwtEvent<ClickHandler> {
+public class ClickEvent extends GwtEvent<ClickEvent.ClickHandler> {
 
     private static Type<ClickHandler> TYPE;
 
@@ -32,7 +34,7 @@ public class ClickEvent extends GwtEvent<ClickHandler> {
 
     public static Type<ClickHandler> getType() {
         if (TYPE == null) {
-            TYPE = new Type<ClickHandler>();
+            TYPE = new Type<>();
         }
         return TYPE;
     }
@@ -45,5 +47,13 @@ public class ClickEvent extends GwtEvent<ClickHandler> {
     @Override
     protected void dispatch(ClickHandler handler) {
         handler.onClick();
+    }
+
+    public interface ClickHandler extends EventHandler {
+        void onClick();
+    }
+
+    public interface HasClickHandler {
+        HandlerRegistration addClickHandler(ClickHandler h);
     }
 }

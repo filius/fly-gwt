@@ -1,27 +1,38 @@
 package ru.fly.client.ui.tree;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import ru.fly.client.F;
 import ru.fly.client.TreeStore;
+import ru.fly.client.event.SelectEvent;
 import ru.fly.client.event.UpdateHandler;
 import ru.fly.client.ui.Component;
 import ru.fly.client.ui.tree.decor.TreeDecor;
+import ru.fly.shared.FlyException;
 
 /**
  * User: fil
  * Date: 05.03.15
  */
-public class Tree<T> extends Component {
+public class Tree<T> extends Component implements SelectEvent.HasSelectHandler<T> {
 
-    protected final TreeDecor decor = GWT.create(TreeDecor.class);
 
+    private final TreeDecor decor;
     private TreeGetter<T> getter;
     protected TreeStore<T> store;
     private TreeView<T> treeView;
 
     public Tree(TreeGetter<T> getter) {
+        this(GWT.<TreeDecor>create(TreeDecor.class), getter);
+    }
+
+    public Tree(TreeDecor decor, TreeGetter<T> getter) {
         super(DOM.createDiv());
+        if(decor == null){
+            throw new FlyException("Decorator for Tree component cant be NULL!");
+        }
+        this.decor = decor;
         this.getter = getter;
         addStyleName(decor.css().tree());
         store = new TreeStore<>();
@@ -33,6 +44,16 @@ public class Tree<T> extends Component {
         });
         treeView = new TreeView<>();
         treeView.setTree(this);
+        treeView.addSelectHandler(new SelectEvent.SelectHandler<T>() {
+            @Override
+            public void onSelect(T object) {
+                Tree.this.fireEvent(new SelectEvent<>(object));
+            }
+        });
+    }
+
+    public TreeDecor getDecor(){
+        return decor;
     }
 
     public TreeGetter<T> getGetter(){
@@ -65,4 +86,8 @@ public class Tree<T> extends Component {
             getView().redraw();
     }
 
+    @Override
+    public HandlerRegistration addSelectHandler(SelectEvent.SelectHandler<T> h) {
+        return addHandler(h, SelectEvent.<T>getType());
+    }
 }
