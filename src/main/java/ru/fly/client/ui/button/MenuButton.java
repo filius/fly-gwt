@@ -23,7 +23,6 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.RootPanel;
 import ru.fly.client.ui.field.Expander;
 import ru.fly.client.event.ClickEvent;
-import ru.fly.client.event.ClickHandler;
 import ru.fly.client.ui.toolbar.Menu;
 
 /**
@@ -41,14 +40,14 @@ public class MenuButton extends Button{
 
     public MenuButton(String text, final Menu menu) {
         super(text);
-        addClickHandler(new ClickHandler() {
+        addClickHandler(new ClickEvent.ClickHandler() {
             @Override
             public void onClick() {
                 expander.expandCollapse();
             }
         });
         this.menu = menu;
-        menu.addHandler(new ClickHandler() {
+        menu.addHandler(new ClickEvent.ClickHandler() {
             @Override
             public void onClick() {
                 expander.collapse();

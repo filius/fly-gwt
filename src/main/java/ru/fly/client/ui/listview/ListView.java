@@ -27,7 +27,6 @@ import ru.fly.client.event.UpdateHandler;
 import ru.fly.client.ui.Component;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.event.SelectEvent;
-import ru.fly.client.event.SelectHandler;
 import ru.fly.shared.Getter;
 
 import java.util.List;
@@ -96,7 +95,7 @@ public class ListView<T> extends Component {
                 (decor.css().pLlistViewItemHeight()) + decor.css().pLlistViewPadding() * 2 + 2;
     }
 
-    public HandlerRegistration addSelectHandler(SelectHandler<T> handler) {
+    public HandlerRegistration addSelectHandler(SelectEvent.SelectHandler<T> handler) {
         return addHandler(handler, SelectEvent.<T>getType());
     }
 

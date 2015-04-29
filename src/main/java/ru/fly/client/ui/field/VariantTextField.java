@@ -29,7 +29,6 @@ import ru.fly.client.LastRespAsyncCallback;
 import ru.fly.client.ListStore;
 import ru.fly.client.Loader;
 import ru.fly.client.event.SelectEvent;
-import ru.fly.client.event.SelectHandler;
 import ru.fly.client.log.Log;
 import ru.fly.client.ui.field.combobox.ComboBoxDecor;
 import ru.fly.shared.Getter;
@@ -79,7 +78,7 @@ public class VariantTextField<T> extends TextField {
     private ListView<T> getListView(){
         if(listView == null){
             listView = new ListView<T>(expandGetter);
-            listView.addSelectHandler(new SelectHandler<T>() {
+            listView.addSelectHandler(new SelectEvent.SelectHandler<T>() {
                 @Override
                 public void onSelect(T object) {
                     setValue(getter.get(object));
@@ -206,7 +205,7 @@ public class VariantTextField<T> extends TextField {
         getListView().setPosition(left, top);
     }
 
-    public HandlerRegistration addSelectHandler(SelectHandler<T> handler) {
+    public HandlerRegistration addSelectHandler(SelectEvent.SelectHandler<T> handler) {
         return getListView().addSelectHandler(handler);
     }
 }

@@ -32,7 +32,6 @@ import ru.fly.client.ui.listview.ListView;
 import ru.fly.client.Loader;
 import ru.fly.client.ui.field.TriggerField;
 import ru.fly.shared.Getter;
-import ru.fly.client.event.SelectHandler;
 import ru.fly.client.util.LastPassExecutor;
 
 import java.util.List;
@@ -207,7 +206,7 @@ public class ComboBox<T> extends TriggerField<T> {
     private ListView<T> getListView(){
         if(listView == null){
             listView = new ListView<T>(getter);
-            listView.addSelectHandler(new SelectHandler<T>() {
+            listView.addSelectHandler(new SelectEvent.SelectHandler<T>() {
                 @Override
                 public void onSelect(T object) {
                     expander.collapse();
@@ -278,7 +277,7 @@ public class ComboBox<T> extends TriggerField<T> {
         return store;
     }
 
-    public HandlerRegistration addSelectHandler(SelectHandler<T> handler) {
+    public HandlerRegistration addSelectHandler(SelectEvent.SelectHandler<T> handler) {
         return addHandler(handler, SelectEvent.<T>getType());
     }
 

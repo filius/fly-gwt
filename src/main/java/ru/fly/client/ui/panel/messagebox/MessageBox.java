@@ -26,7 +26,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import ru.fly.client.EndCallback;
-import ru.fly.client.event.ClickHandler;
+import ru.fly.client.event.ClickEvent;
 import ru.fly.client.ui.Container;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.ui.button.Button;
@@ -168,7 +168,7 @@ public class MessageBox extends Container {
         String icon = "<img src='"+ico.getSafeUri().asString()
                 +"' style='float: left; margin: 0 10px 10px 0;'></img>";
         final MessageBox box = new MessageBox(title, new HTML(icon + msg), Arrays.asList(ok));
-        ok.addClickHandler(new ClickHandler() {
+        ok.addClickHandler(new ClickEvent.ClickHandler() {
             @Override
             public void onClick() {
                 box.hide();
@@ -212,7 +212,7 @@ public class MessageBox extends Container {
         Button no = new Button("Нет");
         no.setWidth(60);
         final MessageBox box = new MessageBox(title, new HTML(msg), Arrays.asList(yes, no));
-        yes.addClickHandler(new ClickHandler() {
+        yes.addClickHandler(new ClickEvent.ClickHandler() {
             @Override
             public void onClick() {
                 if(cback != null){
@@ -221,7 +221,7 @@ public class MessageBox extends Container {
                 box.hide();
             }
         });
-        no.addClickHandler(new ClickHandler() {
+        no.addClickHandler(new ClickEvent.ClickHandler() {
             @Override
             public void onClick() {
                 if(cback != null){

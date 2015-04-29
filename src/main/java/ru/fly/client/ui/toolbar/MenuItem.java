@@ -22,7 +22,6 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
 import ru.fly.client.ui.Component;
 import ru.fly.client.event.ClickEvent;
-import ru.fly.client.event.ClickHandler;
 
 /**
  * User: fil
@@ -33,7 +32,7 @@ public class MenuItem extends Component {
 
     private final ToolbarDecor decor = GWT.create(ToolbarDecor.class);
 
-    public MenuItem(String text, ClickHandler lnr){
+    public MenuItem(String text, ClickEvent.ClickHandler lnr){
         super(DOM.createDiv());
         setStyleName(decor.css().menuItem());
         getElement().setInnerHTML(text);

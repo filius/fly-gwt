@@ -28,7 +28,6 @@ import ru.fly.client.event.FocusEvent;
 import ru.fly.client.ui.Component;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.event.ClickEvent;
-import ru.fly.client.event.ClickHandler;
 import ru.fly.client.ui.Tooltip;
 
 /**
@@ -66,7 +65,7 @@ public class Button extends Component {
         setText(text);
     }
 
-    public Button(String text, ClickHandler lnr) {
+    public Button(String text, ClickEvent.ClickHandler lnr) {
         this(text);
         if(lnr != null)
             addClickHandler(lnr);
@@ -77,14 +76,14 @@ public class Button extends Component {
         setIcon(ico);
     }
 
-    public Button(ImageResource ico, ClickHandler lnr) {
+    public Button(ImageResource ico, ClickEvent.ClickHandler lnr) {
         this();
         setIcon(ico);
         if(lnr != null)
             addClickHandler(lnr);
     }
 
-    public Button(ImageResource ico, String text, ClickHandler lnr) {
+    public Button(ImageResource ico, String text, ClickEvent.ClickHandler lnr) {
         this(text, lnr);
         setIcon(ico);
     }
@@ -226,7 +225,7 @@ public class Button extends Component {
         DOM.sinkEvents(getElement(), Event.ONCLICK | Event.ONMOUSEOVER | Event.ONMOUSEOUT | Event.ONFOCUS | Event.ONBLUR);
     }
 
-    public void addClickHandler(ClickHandler lnr){
+    public void addClickHandler(ClickEvent.ClickHandler lnr){
         addHandler(lnr, ClickEvent.getType());
     }
 

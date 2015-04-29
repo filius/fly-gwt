@@ -36,7 +36,7 @@ public class GridRowDblClickEvent<T> extends GwtEvent<GridRowDblClickHandler<T>>
     @SuppressWarnings("unchecked")
     public static <T> Type<GridRowDblClickHandler<T>> getType() {
         if (TYPE == null) {
-            TYPE = new Type<SelectHandler<T>>();
+            TYPE = new Type<SelectEvent.SelectHandler<T>>();
         }
         return TYPE;
     }

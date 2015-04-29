@@ -21,7 +21,6 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Widget;
 import ru.fly.client.ui.Container;
 import ru.fly.client.event.ClickEvent;
-import ru.fly.client.event.ClickHandler;
 
 /**
  * User: fil
@@ -40,7 +39,7 @@ public class Menu extends Container {
     @Override
     protected void doAttachChild(Widget w) {
         super.doAttachChild(w);
-        w.addHandler(new ClickHandler() {
+        w.addHandler(new ClickEvent.ClickHandler() {
             @Override
             public void onClick() {
                 Menu.this.fireEvent(new ClickEvent());

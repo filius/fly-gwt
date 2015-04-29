@@ -87,7 +87,7 @@ public class Grid<T> extends Component {
         this.view = view;
         view.setGrid(this);
         hdr.setGridView(view);
-        view.addHandler(new SelectHandler<T>() {
+        view.addHandler(new SelectEvent.SelectHandler<T>() {
             @Override
             public void onSelect(T object) {
                 getLoadConfig().setSelection(object);
@@ -163,7 +163,7 @@ public class Grid<T> extends Component {
         redraw();
     }
 
-    public HandlerRegistration addSelectHandler(SelectHandler<T> h){
+    public HandlerRegistration addSelectHandler(SelectEvent.SelectHandler<T> h){
         return addHandler(h, SelectEvent.<T>getType());
     }
 

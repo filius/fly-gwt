@@ -19,7 +19,7 @@ package ru.fly.client.ui.grid;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import ru.fly.client.PageLoader;
-import ru.fly.client.event.ClickHandler;
+import ru.fly.client.event.ClickEvent;
 import ru.fly.client.log.Log;
 import ru.fly.client.ui.button.Button;
 import ru.fly.client.ui.field.label.Label;
@@ -52,7 +52,7 @@ public class PagingPanel<T> extends ToolBar{
 
     public PagingPanel(Grid<T> grid){
         this.grid = grid;
-        firstBtn = new Button(decor.res.navFirst(), new ClickHandler() {
+        firstBtn = new Button(decor.res.navFirst(), new ClickEvent.ClickHandler() {
             @Override
             public void onClick() {
                 firstPage();
@@ -60,7 +60,7 @@ public class PagingPanel<T> extends ToolBar{
         });
         firstBtn.setWidth(40);
         add(firstBtn);
-        prevBtn = new Button(decor.res.navPrev(), new ClickHandler() {
+        prevBtn = new Button(decor.res.navPrev(), new ClickEvent.ClickHandler() {
             @Override
             public void onClick() {
                 prevPage();
@@ -68,7 +68,7 @@ public class PagingPanel<T> extends ToolBar{
         });
         prevBtn.setWidth(40);
         add(prevBtn);
-        nextBtn = new Button(decor.res.navNext(), new ClickHandler() {
+        nextBtn = new Button(decor.res.navNext(), new ClickEvent.ClickHandler() {
             @Override
             public void onClick() {
                 nextPage();
@@ -76,7 +76,7 @@ public class PagingPanel<T> extends ToolBar{
         });
         nextBtn.setWidth(40);
         add(nextBtn);
-        lastBtn = new Button(decor.res.navLast(), new ClickHandler() {
+        lastBtn = new Button(decor.res.navLast(), new ClickEvent.ClickHandler() {
             @Override
             public void onClick() {
                 lastPage();

@@ -21,7 +21,6 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Widget;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.event.SelectEvent;
-import ru.fly.client.event.SelectHandler;
 import ru.fly.client.ui.panel.LayoutContainer;
 
 import java.util.ArrayList;
@@ -138,7 +137,7 @@ public class TabPanel extends LayoutContainer {
         return current == null ? null : current.getWidget();
     }
 
-    public void addSelectHandler(SelectHandler<Widget> lnr){
+    public void addSelectHandler(SelectEvent.SelectHandler<Widget> lnr){
         addHandler(lnr, SelectEvent.<Widget>getType());
     }
 

@@ -19,14 +19,13 @@ package ru.fly.client.log;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.ui.RootPanel;
-import ru.fly.client.event.ClickHandler;
+import ru.fly.client.event.ClickEvent;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.ui.button.Button;
 import ru.fly.client.ui.field.TextAreaField;
 import ru.fly.shared.log.LogUtil;
 
 import java.util.Date;
-import java.util.logging.Level;
 
 /**
  * User: fil
@@ -70,7 +69,7 @@ public class LogPanel{
         area.setWidth("auto");
         area.setHeight("30%");
         area.setStyleName(decor.css().errorWnd());
-        btn = new Button(decor.res.error(), new ClickHandler() {
+        btn = new Button(decor.res.error(), new ClickEvent.ClickHandler() {
             @Override
             public void onClick() {
                 if(area.isAttached()){

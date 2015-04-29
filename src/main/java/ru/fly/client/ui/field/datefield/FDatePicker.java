@@ -21,7 +21,7 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.datepicker.client.DatePicker;
-import ru.fly.client.event.ClickHandler;
+import ru.fly.client.event.ClickEvent;
 import ru.fly.client.ui.button.Button;
 import ru.fly.client.ui.panel.FlowLayout;
 
@@ -42,13 +42,13 @@ public class FDatePicker extends FlowLayout {
         setStyleName(decor.css().datePicker());
         dp = new DatePicker();
         add(dp);
-        add(new Button("сегодня", new ClickHandler() {
+        add(new Button("сегодня", new ClickEvent.ClickHandler() {
             @Override
             public void onClick() {
                 setValue(new Date(), true);
             }
         }));
-        add(new Button("очистить", new ClickHandler() {
+        add(new Button("очистить", new ClickEvent.ClickHandler() {
             @Override
             public void onClick() {
                 setValue(null, true);
