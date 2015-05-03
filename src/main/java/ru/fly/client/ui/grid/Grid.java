@@ -34,9 +34,9 @@ import java.util.List;
  */
 public class Grid<T> extends Component {
 
-    private LoadConfig<T> loadConfig = new LoadConfig<T>();
+    private LoadConfig<T> loadConfig = new LoadConfig<>();
     private ListStore<T> store;
-    private Header<T> hdr;
+    private Header<T> header;
     private GridView<T> view;
 
     public Grid(List<ColumnConfig<T>> cols) {
@@ -44,21 +44,23 @@ public class Grid<T> extends Component {
     }
 
     public Grid(List<ColumnConfig<T>> cols, GridView<T> view) {
+        this(GWT.<GridDecor>create(GridDecor.class), cols, view);
+    }
+
+    public Grid(GridDecor decor, List<ColumnConfig<T>> cols, GridView<T> view) {
         super(DOM.createDiv());
-        GridDecor res = GWT.create(GridDecor.class);
-        res.css().ensureInjected();
-        setStyleName(res.css().grid());
-        hdr = new Header<T>(cols);
-        hdr.addOrderChangeHandler(new OrderChangeHandler() {
+        setStyleName(decor.css().grid());
+        header = new Header<>(cols);
+        header.addOrderChangeHandler(new OrderChangeHandler() {
             @Override
             public void onChange(String orderField, boolean asc) {
                 getLoadConfig().setOrderBy(orderField);
                 getLoadConfig().setAsc(asc);
-                if(isAttached())
+                if (isAttached())
                     fireEvent(new OrderChangeEvent(orderField, asc));
             }
         });
-        hdr.addGridColumnResizeHandler(new GridColumnResizeEvent.GridColumnResizeHandler() {
+        header.addGridColumnResizeHandler(new GridColumnResizeEvent.GridColumnResizeHandler() {
             @Override
             public void onResize(ColumnConfig config) {
                 redraw();
@@ -86,7 +88,7 @@ public class Grid<T> extends Component {
     public void setGridView(GridView<T> view){
         this.view = view;
         view.setGrid(this);
-        hdr.setGridView(view);
+        header.setGridView(view);
         view.addHandler(new SelectEvent.SelectHandler<T>() {
             @Override
             public void onSelect(T object) {
@@ -111,7 +113,7 @@ public class Grid<T> extends Component {
     }
 
     public Header<T> getHeader(){
-        return hdr;
+        return header;
     }
 
     public GridView<T> getView(){

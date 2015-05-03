@@ -1,3 +1,5 @@
+@def pTreeGridRowHeight 24px;
+
 .tree{
     position: relative;
     background-color: #fff;
@@ -17,6 +19,9 @@
     padding: 3px 3px;
     border: 1px solid transparent;
     cursor: default;
+}
+.treeRowItemHeaderInner{
+    display: inline-block;
     white-space: nowrap;
 }
 .treeRowItemHeader.folder{
@@ -60,4 +65,67 @@
 .treeRowItemHeader .text{
     vertical-align: middle;
     white-space: nowrap;
+}
+
+.gridHdr{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #eee; /* Old browsers */
+    background: -moz-linear-gradient(top, #fff 0%, #c1d4e7 64%, #eee 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(64%,#c1d4e7), color-stop(100%,#eee)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #fff 0%,#c1d4e7 64%,#eee 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #fff 0%,#c1d4e7 64%,#eee 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #fff 0%,#c1d4e7 64%,#eee 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #fff 0%,#c1d4e7 64%,#eee 100%); /* W3C */
+    filter: literal("progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#c1ccdc',GradientType=0 )");/* IE6-9 */
+    border-bottom: 1px solid #ccc;
+    height: 24px;
+    z-index: 2;
+}
+.gridHdrCol{
+    position: absolute;
+    font: pFont;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    border-left: 1px solid #fff;
+    border-right: 1px solid #ccc;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: default;
+}
+.treeGridView{
+    position: absolute;
+    top: 24px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow-y: auto;
+}
+.treeGridRowItemHeader{
+    padding: 0;
+    height: pTreeGridRowHeight;
+    line-height: pTreeGridRowHeight;
+}
+.treeGridRowItemHeader .arrow, .treeGridRowItemHeader .icon{
+    margin-top: 2px;
+}
+.treeGridCol{
+    position: absolute;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    font: pFont;
+    padding: 0 2px;
+    line-height: 22px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: default;
 }

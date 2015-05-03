@@ -61,11 +61,17 @@ public class TreeDecor {
         String tree();
         String treeRowItem();
         String treeRowItemHeader();
+        String treeRowItemHeaderInner();
         String folder();
         String arrow();
         String icon();
         String expanded();
         String text();
+        String gridHdrCol();
+        String gridHdr();
+        String treeGridView();
+        String treeGridCol();
+        String treeGridRowItemHeader();
     }
 
     public final Resources res;

@@ -1,60 +1,76 @@
 package ru.fly.client.ui.tree;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
+import com.google.gwt.user.client.ui.Widget;
+import ru.fly.client.F;
 import ru.fly.client.ui.Container;
 import ru.fly.client.ui.FElement;
+import ru.fly.client.ui.grid.ColumnConfig;
 import ru.fly.client.ui.tree.decor.TreeDecor;
+
+import java.util.List;
 
 /**
  * User: fil
- * Date: 22.04.15
+ * Date: 03.05.15
  */
-public abstract class TreeRowItem<T> extends Container {
+public abstract class TreeGridRowItem<T> extends Container {
 
     private final TreeDecor decor;
     private final T model;
     private final int lvl;
-    private final FElement header;
+    private final FElement row;
     private final FElement childrenContainer;
     private final FElement arrowElement;
     private final boolean folder;
     private boolean expanded;
 
-    public TreeRowItem(T model, TreeDecor decor, TreeGetter<T> getter, int lvl, boolean expanded) {
+    public TreeGridRowItem(TreeGrid<T> treeGrid, T model, int lvl, boolean expanded){
         super(DOM.createDiv());
-        this.decor = decor;
+        decor = treeGrid.getDecor();
         this.model = model;
         this.lvl = lvl;
-        this.folder = getter.isFolder(model);
+        this.folder = treeGrid.getGetter().isFolder(model);
         this.expanded = expanded;
-        setStyleName(decor.css().treeRowItem());
-        header = DOM.createDiv().cast();
-        header.setClassName(decor.css().treeRowItemHeader());
+        row = DOM.createDiv().cast();
+        row.setClassName(decor.css().treeRowItemHeader());
+        row.addClassName(decor.css().treeGridRowItemHeader());
         if(folder){
-            header.addClassName(decor.css().folder());
+            row.addClassName(decor.css().folder());
         }
-        header.setPaddingLeft(lvl * 16);
-
-        FElement headerInner = DOM.createDiv().cast();
-        header.appendChild(headerInner);
-        headerInner.setClassName(decor.css().treeRowItemHeaderInner());
 
         arrowElement = DOM.createDiv().cast();
         arrowElement.setClassName(decor.css().arrow());
-        headerInner.appendChild(arrowElement);
-
         FElement iconElement = DOM.createDiv().cast();
         iconElement.setClassName(decor.css().icon());
-        headerInner.appendChild(iconElement);
 
-        FElement text = DOM.createSpan().cast();
-        text.setInnerText(getter.get(model));
-        text.setClassName(decor.css().text());
-        headerInner.appendChild(text);
-
+        List<ColumnConfig<T>> cols = treeGrid.getHeader().getColumnConfigs();
+        for(int i=0; i<cols.size(); i++){
+            ColumnConfig<T> c = cols.get(i);
+            FElement col = DOM.createDiv().cast();
+            col.setClassName(decor.css().treeGridCol());
+            col.setWidth(c.getWidth() == -1 ? c.getCalculatedWidth() : c.getWidth());
+            col.setLeft(c.getLeft());
+            row.appendChild(col);
+            if (i == 0) {
+                col.setPaddingLeft(lvl * 16);
+                col.appendChild(arrowElement);
+                col.appendChild(iconElement);
+            }
+            if (c.getRenderer() != null) {
+                Widget w = c.getRenderer().render(model);
+                if (w != null) {
+                    col.appendChild(w.getElement());
+                    F.attach(w);
+                }
+            } else {
+                FElement text = DOM.createSpan().cast();
+                text.setInnerText(c.getGetter().get(model));
+                col.appendChild(text);
+            }
+        }
         childrenContainer = DOM.createDiv().cast();
     }
 
@@ -70,9 +86,9 @@ public abstract class TreeRowItem<T> extends Container {
 
     protected void setSelected(boolean val){
         if(val) {
-            header.addClassName(decor.css().selected());
+            row.addClassName(decor.css().selected());
         }else{
-            header.removeClassName(decor.css().selected());
+            row.removeClassName(decor.css().selected());
         }
     }
 
@@ -84,21 +100,21 @@ public abstract class TreeRowItem<T> extends Container {
     @Override
     protected void onAfterFirstAttach() {
         super.onAfterFirstAttach();
-        getElement().appendChild(header);
+        getElement().appendChild(row);
         getElement().appendChild(childrenContainer);
         addEventListeners();
     }
 
     private void addEventListeners(){
-        DOM.setEventListener(header, new EventListener() {
+        DOM.setEventListener(row, new EventListener() {
             @Override
             public void onBrowserEvent(Event event) {
                 switch (event.getTypeInt()) {
                     case Event.ONMOUSEOVER:
-                        header.addClassName(decor.css().over());
+                        row.addClassName(decor.css().over());
                         break;
                     case Event.ONMOUSEOUT:
-                        header.removeClassName(decor.css().over());
+                        row.removeClassName(decor.css().over());
                         break;
                     case Event.ONDBLCLICK:
                         expandCollapse();
@@ -109,7 +125,7 @@ public abstract class TreeRowItem<T> extends Container {
                 }
             }
         });
-        DOM.sinkEvents(header, Event.ONMOUSEOVER | Event.ONMOUSEOUT | Event.ONCLICK | Event.ONDBLCLICK);
+        DOM.sinkEvents(row, Event.ONMOUSEOVER | Event.ONMOUSEOUT | Event.ONCLICK | Event.ONDBLCLICK);
         DOM.setEventListener(arrowElement, new EventListener() {
             @Override
             public void onBrowserEvent(Event event) {
@@ -128,10 +144,10 @@ public abstract class TreeRowItem<T> extends Container {
         if(folder) {
             if (expanded) {
                 onCollapse(model);
-                header.removeClassName(decor.css().expanded());
+                row.removeClassName(decor.css().expanded());
             } else {
                 onExpand(model);
-                header.addClassName(decor.css().expanded());
+                row.addClassName(decor.css().expanded());
             }
             expanded = !expanded;
         }

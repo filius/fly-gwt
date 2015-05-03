@@ -7,6 +7,7 @@ import ru.fly.client.F;
 import ru.fly.client.event.SelectEvent;
 import ru.fly.client.log.Log;
 import ru.fly.client.ui.Component;
+import ru.fly.client.ui.tree.decor.TreeDecor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -85,7 +86,7 @@ public class TreeView<T> extends Component implements SelectEvent.HasSelectHandl
     }
 
     private void renderItem(Widget parent, T model, int lvl){
-        TreeRowItem<T> item = new TreeRowItem<T>(model, tree.getGetter(), lvl, false){
+        TreeRowItem<T> item = new TreeRowItem<T>(model, tree.getDecor(), tree.getGetter(), lvl, false){
             @Override
             protected void onExpand(T model) {
                 for (T child : tree.getStore().getChildren(model)) {

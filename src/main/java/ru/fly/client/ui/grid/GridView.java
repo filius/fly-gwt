@@ -38,15 +38,21 @@ import java.util.List;
  */
 public class GridView<T> extends Component {
 
-    private final GridDecor res = GWT.create(GridDecor.class);
-    protected final int rowHeight = res.css().pGridRowHeight()+res.css().pGridRowBorderBottom();
+    private final GridDecor decor;
+    protected final int rowHeight;
     protected Grid<T> grid;
     protected FElement inner;
     private Element lastSelectedElement;
 
-    public GridView() {
+    public GridView(){
+        this(GWT.<GridDecor>create(GridDecor.class));
+    }
+
+    public GridView(GridDecor decor) {
         super(DOM.createDiv());
-        setStyleName(res.css().gridView());
+        this.decor = decor;
+        this.rowHeight = decor.css().pGridRowHeight() + decor.css().pGridRowBorderBottom();
+        setStyleName(decor.css().gridView());
     }
 
     public void focus(){
@@ -90,12 +96,12 @@ public class GridView<T> extends Component {
 
     protected FElement renderRow(T model, boolean strip){
         final FElement row = DOM.createDiv().cast();
-        row.setClassName(res.css().gridViewRow());
+        row.setClassName(decor.css().gridViewRow());
         inner.appendChild(row);
-        if(strip) row.addClassName(res.css().strip());
+        if(strip) row.addClassName(decor.css().strip());
         for(ColumnConfig<T> c : grid.getHeader().getColumnConfigs()){
             FElement col = DOM.createDiv().cast();
-            col.setClassName(res.css().gridViewCol());
+            col.setClassName(decor.css().gridViewCol());
             if(c.getRenderer() != null){
                 Widget w = c.getRenderer().render(model);
                 if(w != null) {
@@ -114,7 +120,7 @@ public class GridView<T> extends Component {
         T selected = grid.getSelected();
         if(selected != null && selected.equals(model)){
             lastSelectedElement = row;
-            row.addClassName(res.css().selected());
+            row.addClassName(decor.css().selected());
         }
         return row;
     }
@@ -130,14 +136,14 @@ public class GridView<T> extends Component {
 
     private void setSelected(Element rowEl, T model, boolean force){
         if(lastSelectedElement != null)
-            lastSelectedElement.removeClassName(res.css().selected());
+            lastSelectedElement.removeClassName(decor.css().selected());
         T selected = grid.getSelected();
         if(model == null || (model.equals(selected) && !force)){
             selected = null;
         }else{
             lastSelectedElement = rowEl;
             if(lastSelectedElement != null)
-                lastSelectedElement.addClassName(res.css().selected());
+                lastSelectedElement.addClassName(decor.css().selected());
             selected = model;
         }
         fireEvent(new SelectEvent<T>(selected));
@@ -180,11 +186,11 @@ public class GridView<T> extends Component {
                     return;
                 switch (event.getTypeInt()){
                     case Event.ONMOUSEOVER:
-                        el.addClassName(res.css().over());
+                        el.addClassName(decor.css().over());
                         onRowOver(el, model);
                         break;
                     case Event.ONMOUSEOUT:
-                        el.removeClassName(res.css().over());
+                        el.removeClassName(decor.css().over());
                         onRowOut(el, model);
                         break;
                     case Event.ONCLICK:
