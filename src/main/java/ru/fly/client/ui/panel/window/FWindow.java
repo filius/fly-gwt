@@ -64,6 +64,11 @@ public class FWindow extends SingleLayout {
     private boolean listenESC = false;
     private boolean listenEnter = false;
 
+    public FWindow(String headerText){
+        this();
+        setHeaderText(headerText);
+    }
+
     public FWindow(){
         getStyle().setPosition(Style.Position.ABSOLUTE);
         setStyleName(decor.css().window());

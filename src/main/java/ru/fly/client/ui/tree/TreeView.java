@@ -35,6 +35,10 @@ public class TreeView<T> extends Component implements SelectEvent.HasSelectHandl
         this.tree = tree;
     }
 
+    protected T getSelected(){
+        return selected;
+    }
+
     protected void select(T model){
         TreeRowItem<T> row;
         if(selected != null){
@@ -86,7 +90,7 @@ public class TreeView<T> extends Component implements SelectEvent.HasSelectHandl
     }
 
     private void renderItem(Widget parent, T model, int lvl){
-        TreeRowItem<T> item = new TreeRowItem<T>(model, tree.getDecor(), tree.getGetter(), lvl, false){
+        TreeRowItem<T> item = new TreeRowItem<T>(tree, model, lvl, false){
             @Override
             protected void onExpand(T model) {
                 for (T child : tree.getStore().getChildren(model)) {
@@ -101,7 +105,7 @@ public class TreeView<T> extends Component implements SelectEvent.HasSelectHandl
 
             @Override
             protected void onClick(T model) {
-                if(getTree().getGetter().isSelectable(model)) {
+                if(getTree().isEnabled() && getTree().getGetter().isSelectable(model)) {
                     select(model);
                 }
             }

@@ -22,6 +22,12 @@ public class TreeStore<T> extends EventBase {
         return root.getChildren().isEmpty();
     }
 
+    public void clear(){
+        root = new TreeStoreItem<>(null);
+        links.clear();
+        fireEvent(new UpdateEvent());
+    }
+
     public void add(T parent, T model){
         if(model == null){
             throw new IllegalArgumentException("Model cant be NULL!");

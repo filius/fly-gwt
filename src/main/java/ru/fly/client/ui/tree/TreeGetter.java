@@ -14,4 +14,8 @@ public abstract class TreeGetter<T> implements Getter<T> {
         return true;
     }
 
+    public boolean hasChildren(T model){
+        return true;
+    }
+
 }

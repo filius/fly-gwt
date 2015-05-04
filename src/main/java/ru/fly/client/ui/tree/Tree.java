@@ -64,8 +64,16 @@ public class Tree<T> extends Component implements SelectEvent.HasSelectHandler<T
         return store;
     }
 
-    public TreeView getView(){
+    public TreeView<T> getView(){
         return treeView;
+    }
+
+    public T getSelected(){
+        return getView().getSelected();
+    }
+
+    public void select(T model){
+        getView().select(model);
     }
 
     @Override

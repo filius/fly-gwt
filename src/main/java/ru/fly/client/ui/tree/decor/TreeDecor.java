@@ -72,6 +72,7 @@ public class TreeDecor {
         String treeGridView();
         String treeGridCol();
         String treeGridRowItemHeader();
+        String empty();
     }
 
     public final Resources res;

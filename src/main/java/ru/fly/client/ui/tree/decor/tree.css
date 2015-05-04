@@ -43,6 +43,8 @@
 }
 .treeRowItemHeader .arrow{
     float: left;
+    width: 16px;
+    height: 16px;
 }
 @sprite .treeRowItemHeader.folder .arrow{
     gwt-image: 'rightArrow';
@@ -55,6 +57,9 @@
     width: 16px;
     height: 16px;
     background-position: 5px 5px;
+}
+.treeRowItemHeader.folder.empty .arrow{
+    background: transparent none;
 }
 @sprite .treeRowItemHeader.folder .icon{
     gwt-image: 'folderClosed';

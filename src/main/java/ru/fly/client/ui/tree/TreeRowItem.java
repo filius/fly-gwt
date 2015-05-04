@@ -1,6 +1,5 @@
 package ru.fly.client.ui.tree;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
@@ -14,6 +13,7 @@ import ru.fly.client.ui.tree.decor.TreeDecor;
  */
 public abstract class TreeRowItem<T> extends Container {
 
+    private final Tree<T> tree;
     private final TreeDecor decor;
     private final T model;
     private final int lvl;
@@ -21,20 +21,26 @@ public abstract class TreeRowItem<T> extends Container {
     private final FElement childrenContainer;
     private final FElement arrowElement;
     private final boolean folder;
+    private final boolean hasChildren;
     private boolean expanded;
 
-    public TreeRowItem(T model, TreeDecor decor, TreeGetter<T> getter, int lvl, boolean expanded) {
+    public TreeRowItem(Tree<T> tree, T model, int lvl, boolean expanded) {
         super(DOM.createDiv());
-        this.decor = decor;
+        this.tree = tree;
+        this.decor = tree.getDecor();
         this.model = model;
         this.lvl = lvl;
-        this.folder = getter.isFolder(model);
+        this.folder = tree.getGetter().isFolder(model);
+        this.hasChildren = tree.getGetter().hasChildren(model);
         this.expanded = expanded;
-        setStyleName(decor.css().treeRowItem());
+        setStyleName(tree.getDecor().css().treeRowItem());
         header = DOM.createDiv().cast();
         header.setClassName(decor.css().treeRowItemHeader());
         if(folder){
             header.addClassName(decor.css().folder());
+            if(!hasChildren){
+                header.addClassName(decor.css().empty());
+            }
         }
         header.setPaddingLeft(lvl * 16);
 
@@ -51,7 +57,7 @@ public abstract class TreeRowItem<T> extends Container {
         headerInner.appendChild(iconElement);
 
         FElement text = DOM.createSpan().cast();
-        text.setInnerText(getter.get(model));
+        text.setInnerText(tree.getGetter().get(model));
         text.setClassName(decor.css().text());
         headerInner.appendChild(text);
 
@@ -101,7 +107,9 @@ public abstract class TreeRowItem<T> extends Container {
                         header.removeClassName(decor.css().over());
                         break;
                     case Event.ONDBLCLICK:
-                        expandCollapse();
+                        if(hasChildren) {
+                            expandCollapse();
+                        }
                         break;
                     case Event.ONCLICK:
                         onClick(model);
@@ -110,22 +118,24 @@ public abstract class TreeRowItem<T> extends Container {
             }
         });
         DOM.sinkEvents(header, Event.ONMOUSEOVER | Event.ONMOUSEOUT | Event.ONCLICK | Event.ONDBLCLICK);
-        DOM.setEventListener(arrowElement, new EventListener() {
-            @Override
-            public void onBrowserEvent(Event event) {
-                switch (event.getTypeInt()) {
-                    case Event.ONCLICK:
-                        expandCollapse();
-                        event.stopPropagation();
-                        break;
+        if(hasChildren) {
+            DOM.setEventListener(arrowElement, new EventListener() {
+                @Override
+                public void onBrowserEvent(Event event) {
+                    switch (event.getTypeInt()) {
+                        case Event.ONCLICK:
+                            expandCollapse();
+                            event.stopPropagation();
+                            break;
+                    }
                 }
-            }
-        });
-        DOM.sinkEvents(arrowElement,Event.ONCLICK);
+            });
+            DOM.sinkEvents(arrowElement, Event.ONCLICK);
+        }
     }
 
     private void expandCollapse(){
-        if(folder) {
+        if(tree.isEnabled() && folder) {
             if (expanded) {
                 onCollapse(model);
                 header.removeClassName(decor.css().expanded());
