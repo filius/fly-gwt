@@ -1,26 +1,26 @@
-@def pLlistViewItemHeight 20px;
-@def pLlistViewPadding 4px;
+@def pListViewItemHeight 20px;
+@def pListViewPadding 4px;
 
-.listview{
+.listView {
     font: pFont;
     overflow-x: hidden;
     overflow-y: auto;
     border: 1px solid #ababab;
     background-color: #fff;
     text-align: center;
-    padding: pLlistViewPadding;
+    padding: pListViewPadding;
     box-sizing: border-box;
     \-moz-box-sizing: border-box;
     \-webkit-box-sizing: border-box;
 }
-.listview.disabled{
+.listView.disabled{
     opacity: .5;
 }
 
-.listview-item{
+.listViewItem {
     font: pFont;
-    height: pLlistViewItemHeight;
-    line-height: pLlistViewItemHeight;
+    height: pListViewItemHeight;
+    line-height: pListViewItemHeight;
     border: 1px solid transparent;
     border-radius: 2px;
     padding: 0 4px;
@@ -32,7 +32,7 @@
     \-moz-box-sizing: border-box;
     \-webkit-box-sizing: border-box;
 }
-.listview-item.over{
+.listViewItem.over{
     border-color: #F2BD54;
     background: #fbe9c1;
     /*background: -moz-linear-gradient(top, #fdf5e3 0%, #f5d38a 63%, #fbe9c1 100%); *//* FF3.6+ */
@@ -43,7 +43,7 @@
     background: linear-gradient(to bottom, #fdf5e3 0%,#f5d38a 63%,#fbe9c1 100%); /* W3C */
     /*filter: literal("progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdf5e3', endColorstr='#fbe9c1',GradientType=0 )");*//* IE6-9 */
 }
-.listview-item.selected{
+.listViewItem.selected{
     background: pColorOrange;
     border-color: #aaa;
 }

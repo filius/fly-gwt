@@ -37,7 +37,7 @@ public class CheckListView<T> extends ListView<T>{
     @Override
     protected void renderItem(final T model) {
         FElement el = DOM.createDiv().cast();
-        el.setClassName(decor.css().listviewItem());
+        el.setClassName(decor.css().listViewItem());
 //        if(selected != null && selected.equals(model)){
 //            el.addClassName(decor.css().selected());
 //        }

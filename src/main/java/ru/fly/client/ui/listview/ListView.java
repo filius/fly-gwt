@@ -38,7 +38,7 @@ import java.util.List;
  */
 public class ListView<T> extends Component {
 
-    protected final ListViewDecor decor = GWT.create(ListViewDecor.class);
+    protected final ListViewDecor decor;
 
     private final String LOAD_PROCESS = "Загрузка...";
     private final String EMPTY = "Список пуст";
@@ -49,10 +49,15 @@ public class ListView<T> extends Component {
     protected ListStore<T> store = new ListStore<T>();
     private T selected;
 
-    public ListView(Getter<T> getter){
+    public ListView(ListViewDecor decor, Getter<T> getter){
         super(DOM.createDiv());
+        this.decor = decor;
         this.getter = getter;
-        addStyleName(decor.css().listview());
+        addStyleName(decor.css().listView());
+    }
+
+    public ListView(Getter<T> getter){
+        this(GWT.<ListViewDecor>create(ListViewDecor.class), getter);
     }
 
     public Getter<T> getGetter(){
@@ -92,7 +97,7 @@ public class ListView<T> extends Component {
         if(store.isEmpty())
             return 40;
         return ((hasEmpty)?store.getList().size()+1:store.getList().size()) *
-                (decor.css().pLlistViewItemHeight()) + decor.css().pLlistViewPadding() * 2 + 2;
+                (decor.css().pListViewItemHeight()) + decor.css().pListViewPadding() * 2 + 2;
     }
 
     public HandlerRegistration addSelectHandler(SelectEvent.SelectHandler<T> handler) {
@@ -160,7 +165,7 @@ public class ListView<T> extends Component {
 
     protected void renderItem(final T model){
         FElement el = DOM.createDiv().cast();
-        el.setClassName(decor.css().listviewItem());
+        el.setClassName(decor.css().listViewItem());
         if(selected != null && selected.equals(model)){
             el.addClassName(decor.css().selected());
         }

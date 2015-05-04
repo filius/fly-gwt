@@ -28,24 +28,23 @@ import ru.fly.client.ui.CommonDecor;
  */
 public class ListViewDecor {
 
-    public static interface Resources extends ClientBundle{
+    public interface Resources extends ClientBundle{
 
         @Source({"ru/fly/client/ui/common.css", "listview.css"})
-        public Styles css();
+        Styles css();
 
     }
 
     @CssResource.Shared
     public static interface Styles extends CommonDecor.Styles {
 
-        int pLlistViewItemHeight();
+        int pListViewItemHeight();
 
-        int pLlistViewPadding();
+        int pListViewPadding();
 
-        String listview();
+        String listView();
 
-        @ClassName("listview-item")
-        String listviewItem();
+        String listViewItem();
 
     }
 
