@@ -16,7 +16,7 @@
 
 package ru.fly.server;
 
-import com.google.gwt.logging.server.StackTraceDeobfuscator;
+import com.google.gwt.core.server.StackTraceDeobfuscator;
 import com.google.gwt.user.client.rpc.RpcRequestBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +26,10 @@ import ru.fly.shared.rpc.LoggingService;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import java.net.URL;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +43,7 @@ public class LoggingServiceImpl implements LoggingService{
 
     private final Logger log = LoggerFactory.getLogger(getClass().getName());
 
-    private final List<StackTraceDeobfuscator> deobfuscators = new ArrayList<StackTraceDeobfuscator>();
+    private final List<StackTraceDeobfuscator> deobfuscators = new ArrayList<>();
 
     @Inject
     private HttpServletRequest req;
@@ -50,16 +53,22 @@ public class LoggingServiceImpl implements LoggingService{
      *      <bean id="loggingService" class="ru.fly.server.LoggingServiceImpl" >
                 <constructor-arg index="0">
                     <list>
-                        <value type="java.lang.String">../deploy/com.pack.Module/symbolMaps/</value>
+                        <value type="java.lang.String">com.pack.Module</value>
                     </list>
                 </constructor-arg>
             </bean>
-     * @param symbolMaps - пути к sumbolMaps
+     * @param moduleNames - модули используемые в приложении
      */
-    public LoggingServiceImpl(List<String> symbolMaps){
-        URL url = getClass().getResource("/");
-        for(String sm : symbolMaps){
-            deobfuscators.add(new StackTraceDeobfuscator(url.getPath()+sm));
+    public LoggingServiceImpl(List<String> moduleNames){
+        for(final String moduleName : moduleNames){
+            deobfuscators.add(new StackTraceDeobfuscator() {
+                @Override
+                protected InputStream openInputStream(String fileName) throws IOException {
+                    String path = getSymbolNameForModule(moduleName)+fileName;
+                    log.info("loading symbolMaps from "+path);
+                    return new FileInputStream(path);
+                }
+            });
         }
     }
 
@@ -68,7 +77,7 @@ public class LoggingServiceImpl implements LoggingService{
         String strongName = req.getHeader(RpcRequestBuilder.STRONG_NAME_HEADER);
         Throwable t = rec.getThrowable();
         for(StackTraceDeobfuscator d : deobfuscators){
-            t = d.deobfuscateThrowable(t, strongName);
+            d.deobfuscateStackTrace(t, strongName);
         }
         if("error".equals(level)) {
             log.error(rec.getMessage(), t);
@@ -80,5 +89,13 @@ public class LoggingServiceImpl implements LoggingService{
             log.debug(rec.getMessage(), t);
         }
         return new LogRecord(t);
+    }
+
+    // -------------------- privates --------------------
+
+    private String getSymbolNameForModule(String moduleName)
+            throws FileNotFoundException {
+        String rootHome = req.getServletContext().getRealPath("/");
+        return rootHome + "/WEB-INF/deploy/" + moduleName + "/symbolMaps/";
     }
 }
