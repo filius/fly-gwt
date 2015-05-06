@@ -134,6 +134,25 @@ public class GridView<T> extends Component {
         setSelected(getRowElement(idx), model, true);
     }
 
+    /**
+     * Scroll view to selected Row
+     */
+    public void checkView(){
+        T selected = grid.getSelected();
+        if(selected == null)
+            return;
+        int idx = grid.getStore().getList().indexOf(selected);
+        int top = idx * rowHeight;
+        int bottom = top + rowHeight;
+        int h = getHeight(true);
+        int scroolTop = getElement().getScrollTop();
+        if(bottom > h+scroolTop){
+            getElement().setScrollTop(bottom - h);
+        }else if(top < scroolTop){
+            getElement().setScrollTop(top);
+        }
+    }
+
     private void setSelected(Element rowEl, T model, boolean force){
         if(lastSelectedElement != null)
             lastSelectedElement.removeClassName(decor.css().selected());
@@ -234,22 +253,6 @@ public class GridView<T> extends Component {
             return;
         setSelected(getRowElement(idx), now, true);
         checkView();
-    }
-
-    private void checkView(){
-        T selected = grid.getSelected();
-        if(selected == null)
-            return;
-        int idx = grid.getStore().getList().indexOf(selected);
-        int top = idx * rowHeight;
-        int bottom = top + rowHeight;
-        int h = getHeight(true);
-        int scroolTop = getElement().getScrollTop();
-        if(bottom > h+scroolTop){
-            getElement().setScrollTop(bottom - h);
-        }else if(top < scroolTop){
-            getElement().setScrollTop(top);
-        }
     }
 
 }

@@ -65,7 +65,6 @@ public class LoggingServiceImpl implements LoggingService{
                 @Override
                 protected InputStream openInputStream(String fileName) throws IOException {
                     String path = getSymbolNameForModule(moduleName)+fileName;
-                    log.info("loading symbolMaps from "+path);
                     return new FileInputStream(path);
                 }
             });
