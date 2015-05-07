@@ -16,14 +16,16 @@
 
 package ru.fly.client.event;
 
+import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
  * User: fil
  * Date: 05.08.13
  * Time: 23:52
  */
-public class UpdateEvent extends GwtEvent<UpdateHandler> {
+public class UpdateEvent extends GwtEvent<UpdateEvent.UpdateHandler> {
 
     private static Type<UpdateHandler> TYPE;
 
@@ -32,7 +34,7 @@ public class UpdateEvent extends GwtEvent<UpdateHandler> {
 
     public static Type<UpdateHandler> getType() {
         if (TYPE == null) {
-            TYPE = new Type<UpdateHandler>();
+            TYPE = new Type<>();
         }
         return TYPE;
     }
@@ -45,5 +47,13 @@ public class UpdateEvent extends GwtEvent<UpdateHandler> {
     @Override
     protected void dispatch(UpdateHandler handler) {
         handler.onUpdate();
+    }
+
+    public interface UpdateHandler extends EventHandler {
+        void onUpdate();
+    }
+
+    public interface HasUpdateHandler {
+        HandlerRegistration addUpdateHandler(UpdateHandler h);
     }
 }

@@ -110,6 +110,9 @@ public class TreeView<T> extends Component implements SelectEvent.HasSelectHandl
                 }
             }
         };
+        if(selected != null && model.equals(selected)){
+            item.setSelected(true);
+        }
         F.render(parent, item);
         renderedItems.put(model, item);
         if(tree.getStore().isEmpty()) {

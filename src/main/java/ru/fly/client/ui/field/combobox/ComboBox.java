@@ -24,7 +24,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import ru.fly.client.F;
 import ru.fly.client.LastRespAsyncCallback;
 import ru.fly.client.event.SelectEvent;
-import ru.fly.client.event.UpdateHandler;
+import ru.fly.client.event.UpdateEvent;
 import ru.fly.client.log.Log;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.ListStore;
@@ -78,7 +78,7 @@ public class ComboBox<T> extends TriggerField<T> {
         this.decor = decor;
         addStyleName(decor.css().comboBox());
         setGetter(getter);
-        store.addUpdateHandler(new UpdateHandler() {
+        store.addUpdateHandler(new UpdateEvent.UpdateHandler() {
             @Override
             public void onUpdate() {
                 needRedraw = true;

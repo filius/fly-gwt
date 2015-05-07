@@ -23,7 +23,7 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
 import ru.fly.client.F;
 import ru.fly.client.ListStore;
-import ru.fly.client.event.UpdateHandler;
+import ru.fly.client.event.UpdateEvent;
 import ru.fly.client.ui.Component;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.event.SelectEvent;
@@ -65,7 +65,7 @@ public class ListView<T> extends Component {
     }
 
     public void listenStoreUpdate(){
-        store.addUpdateHandler(new UpdateHandler() {
+        store.addUpdateHandler(new UpdateEvent.UpdateHandler() {
             @Override
             public void onUpdate() {
                 redraw(true);

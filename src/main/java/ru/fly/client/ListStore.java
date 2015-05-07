@@ -17,7 +17,6 @@
 package ru.fly.client;
 
 import ru.fly.client.event.UpdateEvent;
-import ru.fly.client.event.UpdateHandler;
 import ru.fly.client.ui.EventBase;
 
 import java.util.ArrayList;
@@ -129,7 +128,7 @@ public class ListStore<T> extends EventBase {
         filters.add(filter);
     }
 
-    public void addUpdateHandler(UpdateHandler lnr){
+    public void addUpdateHandler(UpdateEvent.UpdateHandler lnr){
         addHandler(lnr, UpdateEvent.getType());
     }
 

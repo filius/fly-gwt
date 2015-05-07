@@ -1,10 +1,8 @@
 package ru.fly.client;
 
 import ru.fly.client.event.UpdateEvent;
-import ru.fly.client.event.UpdateHandler;
 import ru.fly.client.ui.EventBase;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,7 +65,7 @@ public class TreeStore<T> extends EventBase {
         return findItem(parent).getChildren();
     }
 
-    public void addUpdateHandler(UpdateHandler lnr){
+    public void addUpdateHandler(UpdateEvent.UpdateHandler lnr){
         addHandler(lnr, UpdateEvent.getType());
     }
 

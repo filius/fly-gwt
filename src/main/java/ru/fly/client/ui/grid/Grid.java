@@ -67,7 +67,7 @@ public class Grid<T> extends Component {
             }
         });
         store = new ListStore<T>();
-        store.addUpdateHandler(new UpdateHandler() {
+        store.addUpdateHandler(new UpdateEvent.UpdateHandler() {
             @Override
             public void onUpdate() {
                 redraw();

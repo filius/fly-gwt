@@ -6,7 +6,7 @@ import com.google.gwt.user.client.DOM;
 import ru.fly.client.F;
 import ru.fly.client.TreeStore;
 import ru.fly.client.event.SelectEvent;
-import ru.fly.client.event.UpdateHandler;
+import ru.fly.client.event.UpdateEvent;
 import ru.fly.client.ui.Component;
 import ru.fly.client.ui.tree.decor.TreeDecor;
 import ru.fly.shared.FlyException;
@@ -36,7 +36,7 @@ public class Tree<T> extends Component implements SelectEvent.HasSelectHandler<T
         this.getter = getter;
         addStyleName(decor.css().tree());
         store = new TreeStore<>();
-        store.addUpdateHandler(new UpdateHandler() {
+        store.addUpdateHandler(new UpdateEvent.UpdateHandler() {
             @Override
             public void onUpdate() {
                 redraw();
