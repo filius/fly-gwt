@@ -14,11 +14,11 @@
  * the License.
  */
 
-package ru.fly.client.ui.toolbar;
+package ru.fly.client.ui.toolbar.decor;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
-import ru.fly.client.ui.button.BtnDecor;
+import ru.fly.client.ui.button.decor.BtnDecor;
 
 /**
  * User: fil
@@ -27,23 +27,21 @@ import ru.fly.client.ui.button.BtnDecor;
  */
 public class ToolbarDecor {
 
-    public static interface Resources extends ClientBundle{
+    public interface Resources extends ClientBundle{
 
-        @Source({"ru/fly/client/ui/common.css", "ru/fly/client/ui/button/button.css", "toolbar.css"})
-        public Styles css();
+        @Source({"ru/fly/client/ui/common.css", "ru/fly/client/ui/button/decor/button.css", "toolbar.css"})
+        Styles css();
 
     }
 
-    public static interface Styles extends BtnDecor.Styles{
+    public interface Styles extends BtnDecor.Styles{
 
         String toolbar();
 
-        @ClassName("toolbar-splitter")
         String toolbarSplitter();
 
         String menu();
 
-        @ClassName("menu-item")
         String menuItem();
     }
 

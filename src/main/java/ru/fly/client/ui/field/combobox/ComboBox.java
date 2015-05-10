@@ -28,6 +28,7 @@ import ru.fly.client.event.UpdateEvent;
 import ru.fly.client.log.Log;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.ListStore;
+import ru.fly.client.ui.field.combobox.decor.ComboBoxDecor;
 import ru.fly.client.ui.listview.ListView;
 import ru.fly.client.Loader;
 import ru.fly.client.ui.field.TriggerField;
@@ -169,8 +170,9 @@ public class ComboBox<T> extends TriggerField<T> {
         getListView().select(value, false);
     }
 
-    public void setHasEmpty(boolean val){
-        hasEmpty = val;
+    public void setHasEmpty(boolean hasEmpty){
+        this.hasEmpty = hasEmpty;
+        getListView().setHasEmpty(hasEmpty);
     }
 
     public void setLoader(Loader<String, List<T>> loader){
@@ -205,7 +207,7 @@ public class ComboBox<T> extends TriggerField<T> {
 
     private ListView<T> getListView(){
         if(listView == null){
-            listView = new ListView<T>(getter);
+            listView = new ListView<>(store, getter);
             listView.addSelectHandler(new SelectEvent.SelectHandler<T>() {
                 @Override
                 public void onSelect(T object) {
@@ -214,7 +216,9 @@ public class ComboBox<T> extends TriggerField<T> {
                     fireEvent(new SelectEvent<T>(object));
                 }
             });
+            listView.setHasEmpty(hasEmpty);
             listView.addStyleName(decor.css().listView());
+            listView.removeStoreListener();
         }
         return listView;
     }
@@ -266,7 +270,7 @@ public class ComboBox<T> extends TriggerField<T> {
 
     public void redrawListView(){
         if(isAttached()){
-            getListView().fillData(store.getList(), hasEmpty);
+            getListView().forceRedraw();
             getListView().getStyle().clearWidth();
         }
         updatePositionAndSize();

@@ -21,6 +21,7 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Widget;
+import ru.fly.client.F;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -173,6 +174,11 @@ public class Component extends Widget{
     public Component withMarginBottom(int val){
         setMarginBottom(val);
         return this;
+    }
+
+    public int getMarginLeft(){
+        Integer ret = F.asInteger(getStyle().getMarginLeft());
+        return ret == null ? 0 : ret;
     }
 
     public void setFloatLeft(){

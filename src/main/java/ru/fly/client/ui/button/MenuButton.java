@@ -21,6 +21,7 @@ import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.RootPanel;
+import ru.fly.client.ui.button.decor.BtnDecor;
 import ru.fly.client.ui.field.Expander;
 import ru.fly.client.event.ClickEvent;
 import ru.fly.client.ui.toolbar.Menu;
@@ -58,6 +59,7 @@ public class MenuButton extends Button{
             public void onExpand() {
                 menu.getStyle().setPosition(Style.Position.ABSOLUTE);
                 menu.setPosition(-10000, -10000);
+                menu.getStyle().clearWidth();
                 RootPanel.get().add(menu);
                 updatePositionAndSize();
             }
@@ -82,9 +84,12 @@ public class MenuButton extends Button{
     private void updatePositionAndSize(){
         if(!expander.isExpanded())
             return;
-        int top = getElement().getAbsoluteTop() + getHeight();
-        int left = getElement().getAbsoluteLeft();
+        int top = getAbsoluteTop() + getHeight();
+        int left = getAbsoluteLeft();
         menu.setPosition(left, top);
+        if(menu.getWidth(false) < getWidth()) {
+            menu.getStyle().setWidth(getWidth(), Style.Unit.PX);
+        }
     }
 
     @Override

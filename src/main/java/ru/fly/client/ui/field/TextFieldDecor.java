@@ -25,18 +25,13 @@ import com.google.gwt.core.client.GWT;
  */
 public class TextFieldDecor {
 
-    public static interface Resources extends FieldDecor.Resources {
-
+    public interface Resources extends FieldDecor.Resources {
         @Source({"ru/fly/client/ui/common.css", "field.css", "textfield.css"})
-        public CssTF css();
-
+        Styles css();
     }
 
-    public static interface CssTF extends FieldDecor.Styles {
-
-        @ClassName("text-field")
+    public interface Styles extends FieldDecor.Styles {
         String textField();
-
     }
 
     private final Resources res = GWT.create(Resources.class);
@@ -45,7 +40,7 @@ public class TextFieldDecor {
         res.css().ensureInjected();
     }
 
-    public CssTF css(){
+    public Styles css(){
         return res.css();
     }
 

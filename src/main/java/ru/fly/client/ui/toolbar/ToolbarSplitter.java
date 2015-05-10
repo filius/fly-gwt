@@ -19,6 +19,7 @@ package ru.fly.client.ui.toolbar;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import ru.fly.client.ui.Component;
+import ru.fly.client.ui.toolbar.decor.ToolbarDecor;
 
 /**
  * User: fil

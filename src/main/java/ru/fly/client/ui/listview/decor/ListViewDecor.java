@@ -14,7 +14,7 @@
  * the License.
  */
 
-package ru.fly.client.ui.listview;
+package ru.fly.client.ui.listview.decor;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;

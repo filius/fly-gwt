@@ -20,7 +20,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.EventListener;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.event.*;
 
@@ -31,8 +30,10 @@ import ru.fly.client.event.*;
  */
 public class TextField extends InputElementField<String> {
 
+    private final TextFieldDecor decor;
+
     public TextField() {
-        TextFieldDecor decor = GWT.create(TextFieldDecor.class);
+        decor = GWT.create(TextFieldDecor.class);
         addStyleName(decor.css().textField());
         setHeight(24);
     }
@@ -45,25 +46,7 @@ public class TextField extends InputElementField<String> {
     @Override
     public void onAfterFirstAttach() {
         super.onAfterFirstAttach();
-
         getElement().appendChild(getInputElement());
-
-//        DOM.setEventListener(getElement(), new EventListener() {
-//            @Override
-//            public void onBrowserEvent(Event event) {
-//                switch(event.getTypeInt()){
-//                    case Event.ONKEYPRESS:
-//                        if(isEnabled())
-//                            fireEvent(new KeyPressEvent(event));
-//                        break;
-//                    case Event.ONKEYUP:
-//                        if(isEnabled())
-//                            fireEvent(new KeyUpEvent(event));
-//                        break;
-//                }
-//            }
-//        });
-//        DOM.sinkEvents(getElement(), Event.ONKEYPRESS | Event.ONKEYUP);
     }
 
     @Override
@@ -116,5 +99,17 @@ public class TextField extends InputElementField<String> {
     @Override
     public void setPixelSize(int width, int height) {
         super.setPixelSize((width < 0)?width:(width-2), (height < 0)?height:(height-2));
+    }
+
+    @Override
+    protected void onFocus() {
+        super.onFocus();
+        addStyleName(decor.css().focus());
+    }
+
+    @Override
+    protected void onBlur() {
+        super.onBlur();
+        removeStyleName(decor.css().focus());
     }
 }

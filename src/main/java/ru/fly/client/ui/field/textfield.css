@@ -1,11 +1,10 @@
-.text-field{
+.textField {
     border: 1px solid #5e93ab;
     background-color: #fff;
-    /*box-shadow: inset 1px 1px 2px #ddd;*/
     height: 22px;
 }
 
-.text-field input, .text-field textarea{
+.textField input, .textField textarea{
     font: pFont;
     position: absolute;
     top: 0;
@@ -22,16 +21,20 @@
     \-webkit-box-sizing: border-box;
     width: 100%;
     height: 100%;
+    outline: none;
 }
-.text-field textarea{
+.textField textarea{
     padding: 4px;
 }
 @if user.agent ie6 ie8 {
-    .text-field input{
+    .textField input{
         line-height: 22px;
     }
 }
-.text-field.disabled input, .text-field.disabled textarea{
+.textField.disabled input, .textField.disabled textarea{
     background-color: #eee;
     color: #444;
+}
+.textField.focus input, .textField.focus textarea{
+    background-color: #F5FCFF;
 }

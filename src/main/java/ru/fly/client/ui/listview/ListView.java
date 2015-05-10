@@ -27,6 +27,7 @@ import ru.fly.client.event.UpdateEvent;
 import ru.fly.client.ui.Component;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.event.SelectEvent;
+import ru.fly.client.ui.listview.decor.ListViewDecor;
 import ru.fly.shared.Getter;
 
 import java.util.List;
@@ -42,35 +43,37 @@ public class ListView<T> extends Component {
 
     private final String LOAD_PROCESS = "Загрузка...";
     private final String EMPTY = "Список пуст";
+    private ListStore<T> store;
+    private Getter<T> getter;
     private boolean hasEmpty;
     private boolean rendered = false;
-
-    private Getter<T> getter;
-    protected ListStore<T> store = new ListStore<T>();
     private T selected;
+    private HandlerRegistration storeListener;
 
-    public ListView(ListViewDecor decor, Getter<T> getter){
+    public ListView(ListViewDecor decor, ListStore<T> listStore, Getter<T> getter){
         super(DOM.createDiv());
         this.decor = decor;
+        this.store = listStore;
         this.getter = getter;
         addStyleName(decor.css().listView());
-    }
-
-    public ListView(Getter<T> getter){
-        this(GWT.<ListViewDecor>create(ListViewDecor.class), getter);
-    }
-
-    public Getter<T> getGetter(){
-        return getter;
-    }
-
-    public void listenStoreUpdate(){
-        store.addUpdateHandler(new UpdateEvent.UpdateHandler() {
+        storeListener = getStore().addUpdateHandler(new UpdateEvent.UpdateHandler() {
             @Override
             public void onUpdate() {
                 redraw(true);
             }
         });
+    }
+
+    public ListView(ListStore<T> listStore, Getter<T> getter){
+        this(GWT.<ListViewDecor>create(ListViewDecor.class), listStore, getter);
+    }
+
+    public ListView(Getter<T> getter){
+        this(new ListStore<T>(), getter);
+    }
+
+    public Getter<T> getGetter(){
+        return getter;
     }
 
     public T getSelected(){
@@ -79,6 +82,10 @@ public class ListView<T> extends Component {
 
     public ListStore<T> getStore(){
         return store;
+    }
+
+    public void removeStoreListener(){
+        storeListener.removeHandler();
     }
 
     public void setLoading(){
@@ -130,6 +137,14 @@ public class ListView<T> extends Component {
 
     public void forceRedraw(){
         redraw(true);
+    }
+
+    public void setHasEmpty(boolean hasEmpty){
+        boolean needRedraw = this.hasEmpty != hasEmpty;
+        this.hasEmpty = hasEmpty;
+        if(needRedraw){
+            redraw(true);
+        }
     }
 
     @Override

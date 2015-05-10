@@ -22,6 +22,7 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
 import ru.fly.client.ui.Component;
 import ru.fly.client.event.ClickEvent;
+import ru.fly.client.ui.toolbar.decor.ToolbarDecor;
 
 /**
  * User: fil

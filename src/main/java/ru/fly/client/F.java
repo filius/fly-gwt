@@ -141,4 +141,13 @@ public class F {
         }
     }
 
+    public static native Integer asInteger(final String value)/*-{
+        var number = parseInt(value, 10);
+        if (isNaN(number)) {
+            return null;
+        } else {
+            return @java.lang.Integer::valueOf(I)(number);
+        }
+    }-*/;
+
 }

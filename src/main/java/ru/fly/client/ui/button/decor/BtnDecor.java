@@ -14,56 +14,54 @@
  * the License.
  */
 
-package ru.fly.client.ui.field.combobox;
+package ru.fly.client.ui.button.decor;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
-import ru.fly.client.ui.field.FieldDecor;
+import ru.fly.client.ui.CommonDecor;
 
 /**
  * User: fil
- * Date: 10.09.13
- * Time: 17:51
+ * Date: 01.09.13
+ * Time: 21:38
  */
-public class ComboBoxDecor {
+public class BtnDecor {
 
-    public static interface Resources extends FieldDecor.Resources {
+    public interface Resources extends ClientBundle{
 
-        @Source({"ru/fly/client/ui/common.css", "ru/fly/client/ui/field/field.css", "combobox.css"})
-        public Styles css();
+        @Source({"ru/fly/client/ui/common.css", "button.css"})
+        Styles css();
 
-        @Source("trigger.png")
+        @Source("drop-arrow.png")
         @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
-        ImageResource trigger();
-
+        ImageResource dropArrow();
 
     }
 
-    public static interface Styles extends FieldDecor.Styles {
+    @CssResource.Shared
+    public interface Styles extends CommonDecor.Styles {
 
-        @ClassName("combobox")
-        String comboBox();
+        int pBorderWidth();
 
-        @ClassName("combobox-view")
-        String comboBoxView();
+        String button();
 
-        String comboBoxTrigger();
+        @ClassName("button-menu")
+        String buttonMenu();
 
-        String comboBoxTriggerIcon();
+        @ClassName("button-icon")
+        String buttonIcon();
 
-        String untriggered();
-
-        @ClassName("list-view")
-        String listView();
     }
 
-    private final Resources res;
+    public final Resources res;
 
-    public ComboBoxDecor(){
+    public BtnDecor(){
         this(GWT.<Resources>create(Resources.class));
     }
 
-    public ComboBoxDecor(Resources res){
+    public BtnDecor(Resources res){
         this.res = res;
         res.css().ensureInjected();
     }

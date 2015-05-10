@@ -28,10 +28,10 @@ import ru.fly.client.ui.CommonDecor;
  */
 public class FieldDecor {
 
-    public static interface Resources extends ClientBundle {
+    public interface Resources extends ClientBundle {
 
         @Source({"ru/fly/client/ui/common.css", "field.css"})
-        public Styles css();
+        Styles css();
 
         @ClientBundle.Source("error.png")
         @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
@@ -39,15 +39,15 @@ public class FieldDecor {
 
     }
 
-    public static interface Styles extends CommonDecor.Styles {
+    public interface Styles extends CommonDecor.Styles {
 
         String error();
 
         String field();
 
-        @ClassName("field-error-icon")
         String fieldErrorIcon();
 
+        String focus();
     }
 
     private final Resources res = GWT.create(Resources.class);

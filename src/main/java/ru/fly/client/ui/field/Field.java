@@ -201,7 +201,7 @@ public class Field<T> extends Component implements LeafValueEditor<T>, HasEditor
         focused = true;
     }
 
-    public void onBlur(){
+    protected void onBlur(){
         focused = false;
     }
       

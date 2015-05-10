@@ -29,6 +29,7 @@ import ru.fly.client.ui.Component;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.event.ClickEvent;
 import ru.fly.client.ui.Tooltip;
+import ru.fly.client.ui.button.decor.BtnDecor;
 
 /**
  * User: fil

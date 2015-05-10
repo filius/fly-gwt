@@ -16,6 +16,7 @@
 
 package ru.fly.client;
 
+import com.google.gwt.event.shared.HandlerRegistration;
 import ru.fly.client.event.UpdateEvent;
 import ru.fly.client.ui.EventBase;
 
@@ -128,8 +129,8 @@ public class ListStore<T> extends EventBase {
         filters.add(filter);
     }
 
-    public void addUpdateHandler(UpdateEvent.UpdateHandler lnr){
-        addHandler(lnr, UpdateEvent.getType());
+    public HandlerRegistration addUpdateHandler(UpdateEvent.UpdateHandler lnr){
+        return addHandler(lnr, UpdateEvent.getType());
     }
 
 }

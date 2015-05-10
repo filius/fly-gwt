@@ -3,7 +3,7 @@
     border-color: red !important;
 }
 
-@sprite .field-error-icon{
+@sprite .fieldErrorIcon {
     gwt-image: 'error16';
     position: absolute;
     right: -18px;
@@ -11,13 +11,15 @@
     display: none;
 }
 
-.error .field-error-icon{
+.error .fieldErrorIcon {
     display: block;
 }
 
 .field{
     position: relative;
 }
+
+.focus{}
 
 .tooltip.error{
     border: 2px solid #ff2222;
