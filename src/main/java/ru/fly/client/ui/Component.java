@@ -135,6 +135,10 @@ public class Component extends Widget{
         getElement().setMargin(val);
     }
 
+    public void setPadding(int val){
+        getElement().setPadding(val);
+    }
+
     public Component withMargin(int val){
         setMargin(val);
         return this;
