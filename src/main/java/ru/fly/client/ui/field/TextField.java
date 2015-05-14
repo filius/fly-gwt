@@ -73,7 +73,7 @@ public class TextField extends InputElementField<String> {
 
     @Override
     public String getValue() {
-        if(getInputElement() != null){
+        if(isAttached() && getInputElement() != null){
             String inputValue = ((InputElement)getInputElement().cast()).getValue();
             value = inputValue == null || inputValue.isEmpty() ? null : inputValue;
         }
