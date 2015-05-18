@@ -17,6 +17,7 @@
 package ru.fly.client.ui.panel;
 
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * User: fil
@@ -31,4 +32,9 @@ public class FlowLayout extends LayoutContainer{
 
     @Override
     protected void doLayout() {}
+
+    public void add(Widget w, Margin m){
+        m.fillMargins(w);
+        add(w);
+    }
 }
