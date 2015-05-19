@@ -8,6 +8,7 @@ import ru.fly.client.event.SelectEvent;
 import ru.fly.client.log.Log;
 import ru.fly.client.ui.Component;
 import ru.fly.client.ui.tree.decor.TreeDecor;
+import ru.fly.shared.FlyException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +43,7 @@ public class TreeView<T> extends Component implements SelectEvent.HasSelectHandl
     protected void select(T model){
         TreeRowItem<T> row;
         if(selected != null){
-            row = renderedItems.get(selected);
+            row = getRowItem(selected);
             if(row == null){
                 Log.warn("Cant found TreeRowItem: "+model);
             }else{
@@ -57,7 +58,7 @@ public class TreeView<T> extends Component implements SelectEvent.HasSelectHandl
                 }
             } else {
                 selected = model;
-                row = renderedItems.get(selected);
+                row = getRowItem(selected);
                 if(row == null){
                     Log.warn("Cant found TreeRowItem: "+selected);
                 }else{
@@ -86,6 +87,19 @@ public class TreeView<T> extends Component implements SelectEvent.HasSelectHandl
         renderedItems.clear();
         for(T model : tree.getStore().getChildren(null)){
             renderItem(this, model, 0);
+        }
+    }
+
+    /** expand all children recursive */
+    public void expandAll(T model){
+        TreeRowItem<T> item = getRowItem(model);
+        if(item == null){
+            throw new FlyException("Cant found row item!");
+        }else{
+            item.expand();
+            for (T child : tree.getStore().getChildren(model)) {
+                expandAll(child);
+            }
         }
     }
 
@@ -125,5 +139,14 @@ public class TreeView<T> extends Component implements SelectEvent.HasSelectHandl
     @Override
     public HandlerRegistration addSelectHandler(SelectEvent.SelectHandler<T> h) {
         return addHandler(h, SelectEvent.<T>getType());
+    }
+
+    private TreeRowItem<T> getRowItem(T model){
+        for(T m : renderedItems.keySet()){
+            if(m.equals(model)){
+                return renderedItems.get(m);
+            }
+        }
+        return null;
     }
 }

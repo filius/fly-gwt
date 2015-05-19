@@ -17,7 +17,7 @@ public abstract class TreeRowItem<T> extends Container {
     private final TreeDecor decor;
     private final T model;
     private final int lvl;
-    private final FElement header;
+    private final FElement row;
     private final FElement childrenContainer;
     private final FElement arrowElement;
     private final boolean folder;
@@ -34,18 +34,18 @@ public abstract class TreeRowItem<T> extends Container {
         this.hasChildren = tree.getGetter().hasChildren(model);
         this.expanded = expanded;
         setStyleName(tree.getDecor().css().treeRowItem());
-        header = DOM.createDiv().cast();
-        header.setClassName(decor.css().treeRowItemHeader());
+        row = DOM.createDiv().cast();
+        row.setClassName(decor.css().treeRowItemHeader());
         if(folder){
-            header.addClassName(decor.css().folder());
+            row.addClassName(decor.css().folder());
             if(!hasChildren){
-                header.addClassName(decor.css().empty());
+                row.addClassName(decor.css().empty());
             }
         }
-        header.setPaddingLeft(lvl * 16);
+        row.setPaddingLeft(lvl * 16);
 
         FElement headerInner = DOM.createDiv().cast();
-        header.appendChild(headerInner);
+        row.appendChild(headerInner);
         headerInner.setClassName(decor.css().treeRowItemHeaderInner());
 
         arrowElement = DOM.createDiv().cast();
@@ -64,6 +64,24 @@ public abstract class TreeRowItem<T> extends Container {
         childrenContainer = DOM.createDiv().cast();
     }
 
+    protected void expand(){
+        if(expanded){
+            return;
+        }
+        row.addClassName(decor.css().expanded());
+        onExpand(model);
+        expanded = true;
+    }
+
+    protected void collapse(){
+        if(!expanded){
+            return;
+        }
+        expanded = false;
+        onCollapse(model);
+        row.removeClassName(decor.css().expanded());
+    }
+
     protected abstract void onExpand(T model);
 
     protected abstract void onCollapse(T model);
@@ -76,9 +94,9 @@ public abstract class TreeRowItem<T> extends Container {
 
     protected void setSelected(boolean val){
         if(val) {
-            header.addClassName(decor.css().selected());
+            row.addClassName(decor.css().selected());
         }else{
-            header.removeClassName(decor.css().selected());
+            row.removeClassName(decor.css().selected());
         }
     }
 
@@ -90,21 +108,21 @@ public abstract class TreeRowItem<T> extends Container {
     @Override
     protected void onAfterFirstAttach() {
         super.onAfterFirstAttach();
-        getElement().appendChild(header);
+        getElement().appendChild(row);
         getElement().appendChild(childrenContainer);
         addEventListeners();
     }
 
     private void addEventListeners(){
-        DOM.setEventListener(header, new EventListener() {
+        DOM.setEventListener(row, new EventListener() {
             @Override
             public void onBrowserEvent(Event event) {
                 switch (event.getTypeInt()) {
                     case Event.ONMOUSEOVER:
-                        header.addClassName(decor.css().over());
+                        row.addClassName(decor.css().over());
                         break;
                     case Event.ONMOUSEOUT:
-                        header.removeClassName(decor.css().over());
+                        row.removeClassName(decor.css().over());
                         break;
                     case Event.ONDBLCLICK:
                         if(hasChildren) {
@@ -117,7 +135,7 @@ public abstract class TreeRowItem<T> extends Container {
                 }
             }
         });
-        DOM.sinkEvents(header, Event.ONMOUSEOVER | Event.ONMOUSEOUT | Event.ONCLICK | Event.ONDBLCLICK);
+        DOM.sinkEvents(row, Event.ONMOUSEOVER | Event.ONMOUSEOUT | Event.ONCLICK | Event.ONDBLCLICK);
         if(hasChildren) {
             DOM.setEventListener(arrowElement, new EventListener() {
                 @Override
@@ -135,15 +153,12 @@ public abstract class TreeRowItem<T> extends Container {
     }
 
     private void expandCollapse(){
-        if(tree.isEnabled() && folder) {
+        if(folder) {
             if (expanded) {
-                onCollapse(model);
-                header.removeClassName(decor.css().expanded());
+                collapse();
             } else {
-                onExpand(model);
-                header.addClassName(decor.css().expanded());
+                expand();
             }
-            expanded = !expanded;
         }
     }
 

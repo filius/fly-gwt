@@ -13,6 +13,7 @@ import ru.fly.client.ui.FElement;
 import ru.fly.shared.FlyException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -68,10 +69,12 @@ public class TreeGridView<T> extends Component implements SelectEvent.HasSelectH
     private void renderItem(Widget parent, T model, int lvl){
         TreeGridRowItem<T> item = new TreeGridRowItem<T>(tree, model, lvl, false){
             @Override
-            protected void onExpand(T model) {
-                for (T child : tree.getStore().getChildren(model)) {
+            protected List<T> onExpand(T model) {
+                List<T> children = tree.getStore().getChildren(model);
+                for (T child : children) {
                     renderItem(this, child, getLvl() + 1);
                 }
+                return children;
             }
 
             @Override
@@ -95,10 +98,33 @@ public class TreeGridView<T> extends Component implements SelectEvent.HasSelectH
         }
     }
 
+    /** expand children from one row */
+    public void expandRow(T model){
+        TreeGridRowItem<T> item = getRowItem(model);
+        if(item == null){
+            throw new FlyException("Cant found row item!");
+        }else{
+            item.expand();
+        }
+    }
+
+    /** expand all children recursive */
+    public void expandAll(T model){
+        TreeGridRowItem<T> item = getRowItem(model);
+        if(item == null){
+            throw new FlyException("Cant found row item!");
+        }else{
+            item.expand();
+            for (T child : tree.getStore().getChildren(model)) {
+                expandAll(child);
+            }
+        }
+    }
+
     protected void select(T model){
         TreeGridRowItem<T> row;
         if(selected != null){
-            row = renderedItems.get(selected);
+            row = getRowItem(selected);
             if(row == null){
                 Log.warn("Cant found TreeRowItem: " + model);
             }else{
@@ -113,7 +139,7 @@ public class TreeGridView<T> extends Component implements SelectEvent.HasSelectH
                 }
             } else {
                 selected = model;
-                row = renderedItems.get(selected);
+                row = getRowItem(selected);
                 if(row == null){
                     Log.warn("Cant found TreeRowItem: "+selected);
                 }else{
@@ -160,6 +186,15 @@ public class TreeGridView<T> extends Component implements SelectEvent.HasSelectH
 
     @Override
     public HandlerRegistration addSelectHandler(SelectEvent.SelectHandler<T> h) {
+        return null;
+    }
+
+    private TreeGridRowItem<T> getRowItem(T model){
+        for(T m : renderedItems.keySet()){
+            if(m.equals(model)){
+                return renderedItems.get(m);
+            }
+        }
         return null;
     }
 }

@@ -8,6 +8,7 @@ import ru.fly.client.event.GridRowDblClickEvent;
 import ru.fly.client.event.GridRowDblClickHandler;
 import ru.fly.client.event.SelectEvent;
 import ru.fly.client.event.UpdateEvent;
+import ru.fly.client.log.Log;
 import ru.fly.client.ui.Component;
 import ru.fly.client.ui.grid.ColumnConfig;
 import ru.fly.client.ui.tree.decor.TreeDecor;
@@ -114,5 +115,17 @@ public class TreeGrid<T> extends Component {
         if(getView() != null)
             getView().redraw();
     }
+
+    public void expandAll(){
+        for(T child : getStore().getChildren(null)){
+            getView().expandAll(child);
+        }
+    }
+
+    public void select(T model){
+        getView().select(model);
+    }
+
+    // -------------- privates ----------------
 
 }

@@ -50,7 +50,12 @@ public class TreeStore<T> extends EventBase {
     }
 
     public boolean contains(T model){
-        return links.keySet().contains(model);
+        for(T m : links.keySet()){
+            if(m.equals(model)){
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean isExpanded(T model){
@@ -71,11 +76,16 @@ public class TreeStore<T> extends EventBase {
 
     // ------------------ privates -------------------
 
-    private TreeStoreItem<T> findItem(T model){
+    protected TreeStoreItem<T> findItem(T model){
         if(model == null){
             return root;
         }else{
-            return links.get(model);
+            for(T m : links.keySet()){
+                if(m.equals(model)){
+                    return links.get(m);
+                }
+            }
+            return null;
         }
     }
 

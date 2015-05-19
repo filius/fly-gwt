@@ -76,6 +76,12 @@ public class Tree<T> extends Component implements SelectEvent.HasSelectHandler<T
         getView().select(model);
     }
 
+    public void expandAll(){
+        for(T child : getStore().getChildren(null)){
+            getView().expandAll(child);
+        }
+    }
+
     @Override
     protected void onAfterFirstAttach() {
         super.onAfterFirstAttach();

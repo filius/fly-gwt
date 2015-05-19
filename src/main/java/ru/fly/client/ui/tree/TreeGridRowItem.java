@@ -74,7 +74,7 @@ public abstract class TreeGridRowItem<T> extends Container {
         childrenContainer = DOM.createDiv().cast();
     }
 
-    protected abstract void onExpand(T model);
+    protected abstract List<T> onExpand(T model);
 
     protected abstract void onCollapse(T model);
 
@@ -82,6 +82,24 @@ public abstract class TreeGridRowItem<T> extends Container {
 
     protected int getLvl() {
         return lvl;
+    }
+
+    protected void expand(){
+        if(expanded){
+            return;
+        }
+        row.addClassName(decor.css().expanded());
+        onExpand(model);
+        expanded = true;
+    }
+
+    protected void collapse(){
+        if(!expanded){
+            return;
+        }
+        expanded = false;
+        onCollapse(model);
+        row.removeClassName(decor.css().expanded());
     }
 
     protected void setSelected(boolean val){
@@ -143,13 +161,10 @@ public abstract class TreeGridRowItem<T> extends Container {
     private void expandCollapse(){
         if(folder) {
             if (expanded) {
-                onCollapse(model);
-                row.removeClassName(decor.css().expanded());
+                collapse();
             } else {
-                onExpand(model);
-                row.addClassName(decor.css().expanded());
+                expand();
             }
-            expanded = !expanded;
         }
     }
 
