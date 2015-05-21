@@ -17,10 +17,9 @@
 package ru.fly.client.util;
 
 import com.google.gwt.editor.client.LeafValueEditor;
-import com.google.gwt.user.client.ui.ComplexPanel;
+import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import ru.fly.client.ui.Component;
-import ru.fly.client.ui.Container;
 import ru.fly.client.ui.field.Field;
 import ru.fly.client.ui.field.label.FieldLabel;
 
@@ -40,24 +39,19 @@ public class EditorUtil {
         List<LeafValueEditor<?>> ret = new ArrayList<LeafValueEditor<?>>();
         if(widget instanceof LeafValueEditor){
             ret.add((LeafValueEditor) widget);
-        }else if(widget instanceof Container){
-            for(Widget w : ((Container) widget).getWidgets()){
+        }else if(widget instanceof HasWidgets){
+            for (Widget w : ((HasWidgets) widget)) {
                 List<LeafValueEditor<?>> f = getEditors(w);
-                if(f != null)
+                if (f != null) {
                     ret.addAll(f);
-            }
-        }else if(widget instanceof ComplexPanel){
-            ComplexPanel panel = (ComplexPanel)widget;
-            for(int i=0; i<panel.getWidgetCount(); i++){
-                List<LeafValueEditor<?>> f = getEditors(panel.getWidget(i));
-                if(f != null)
-                    ret.addAll(f);
+                }
             }
         }else if(widget instanceof FieldLabel){
             Widget w = ((FieldLabel)widget).getField();
             List<LeafValueEditor<?>> f = getEditors(w);
-            if(f != null)
+            if(f != null) {
                 ret.addAll(f);
+            }
         }
         return ret;
     }
