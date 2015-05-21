@@ -121,6 +121,14 @@ public class TreeGridView<T> extends Component implements SelectEvent.HasSelectH
         }
     }
 
+    protected T getSelected(){
+        if(selected != null && tree.getStore().contains(selected)) {
+            return selected;
+        }else{
+            return null;
+        }
+    }
+
     protected void select(T model){
         TreeGridRowItem<T> row;
         if(selected != null){

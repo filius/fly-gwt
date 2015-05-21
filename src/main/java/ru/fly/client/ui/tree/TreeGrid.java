@@ -126,6 +126,10 @@ public class TreeGrid<T> extends Component {
         getView().select(model);
     }
 
+    public T getSelected(){
+        return getView().getSelected();
+    }
+
     // -------------- privates ----------------
 
 }

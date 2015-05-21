@@ -37,7 +37,11 @@ public class TreeView<T> extends Component implements SelectEvent.HasSelectHandl
     }
 
     protected T getSelected(){
-        return selected;
+        if(selected != null && tree.getStore().contains(selected)) {
+            return selected;
+        }else{
+            return null;
+        }
     }
 
     protected void select(T model){
