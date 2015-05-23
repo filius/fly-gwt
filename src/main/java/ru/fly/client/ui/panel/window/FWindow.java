@@ -109,6 +109,10 @@ public class FWindow extends SingleLayout {
         return this;
     }
 
+    protected void onCloseClick(){
+        hide();
+    }
+
     public void hide(){
         if(modal){
             RootPanel.getBodyElement().removeChild(getModal());
@@ -134,7 +138,7 @@ public class FWindow extends SingleLayout {
             DOM.setEventListener(closeEl, new EventListener() {
                 @Override
                 public void onBrowserEvent(Event event) {
-                    hide();
+                    onCloseClick();
                 }
             });
             DOM.sinkEvents(closeEl, Event.ONCLICK);
