@@ -57,7 +57,7 @@ public class Container extends Component implements HasWidgets {
             F.render(this, w, idx);
     }
 
-    public void addAll(List<Widget> childs) {
+    public void addAll(List<? extends Widget> childs) {
         for(Widget w : childs){
             add(w);
         }

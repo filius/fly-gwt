@@ -90,7 +90,7 @@ public class MessageBox extends Container {
     }
 
     @Override
-    public void addAll(List<Widget> childs) {
+    public void addAll(List<? extends Widget> childs) {
         throw new IllegalStateException("Unsupported operation");
     }
 
@@ -103,8 +103,13 @@ public class MessageBox extends Container {
     }
 
     public MessageBox center(){
-        setLeft((Window.getClientWidth() - getWidth(false)) / 2);
-        setTop((Window.getClientHeight() - getHeight(false)) / 2);
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                setLeft((Window.getClientWidth() - getWidth(false)) / 2);
+                setTop((Window.getClientHeight() - getHeight(false)) / 2);
+            }
+        });
         return this;
     }
 
