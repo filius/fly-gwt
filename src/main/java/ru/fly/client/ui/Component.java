@@ -189,8 +189,17 @@ public class Component extends Widget{
         getStyle().setFloat(Style.Float.LEFT);
     }
 
+    public void setFloatRight(){
+        getStyle().setFloat(Style.Float.RIGHT);
+    }
+
     public Component withFloatLeft(){
         setFloatLeft();
+        return this;
+    }
+
+    public Component withFloatRight(){
+        setFloatRight();
         return this;
     }
 
