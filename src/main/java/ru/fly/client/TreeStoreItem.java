@@ -10,12 +10,22 @@ import java.util.List;
 public class TreeStoreItem<T>{
 
     private T model;
+    private T parent;
     private List<TreeStoreItem<T>> children = new ArrayList<>();
     private boolean expanded = false;
 
     /** hide constructor for TreeStore */
-    protected TreeStoreItem(T model){
+    protected TreeStoreItem(T parent, T model){
+        setParent(parent);
         setModel(model);
+    }
+
+    public T getParent() {
+        return parent;
+    }
+
+    public void setParent(T parent) {
+        this.parent = parent;
     }
 
     protected T getModel() {

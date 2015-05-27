@@ -3,6 +3,7 @@ package ru.fly.client;
 import ru.fly.client.event.UpdateEvent;
 import ru.fly.client.ui.EventBase;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,7 @@ import java.util.Map;
  */
 public class TreeStore<T> extends EventBase {
 
-    private TreeStoreItem<T> root = new TreeStoreItem<>(null);
+    private TreeStoreItem<T> root = new TreeStoreItem<>(null,null);
     private Map<T, TreeStoreItem<T>> links = new HashMap<>();
 
     public boolean isEmpty(){
@@ -21,7 +22,7 @@ public class TreeStore<T> extends EventBase {
     }
 
     public void clear(){
-        root = new TreeStoreItem<>(null);
+        root = new TreeStoreItem<>(null, null);
         links.clear();
         fireEvent(new UpdateEvent());
     }
@@ -30,19 +31,19 @@ public class TreeStore<T> extends EventBase {
         if(model == null){
             throw new IllegalArgumentException("Model cant be NULL!");
         }
-        TreeStoreItem<T> item = new TreeStoreItem<>(model);
-        findItem(parent).getChildren().add(item);
+        TreeStoreItem<T> item = new TreeStoreItem<>(parent, model);
+        getItem(parent).getChildren().add(item);
         links.put(model, item);
         fireEvent(new UpdateEvent());
     }
 
-    public void addAll(T parent, List<T> models){
-        TreeStoreItem<T> parentItem = findItem(parent);
+    public void addAll(T parent, Collection<? extends T> models){
+        TreeStoreItem<T> parentItem = getItem(parent);
         for(T model : models){
             if(model == null){
                 throw new IllegalArgumentException("Model cant be NULL!");
             }
-            TreeStoreItem<T> item = new TreeStoreItem<>(model);
+            TreeStoreItem<T> item = new TreeStoreItem<>(parent, model);
             parentItem.getChildren().add(item);
             links.put(model, item);
         }
@@ -59,24 +60,10 @@ public class TreeStore<T> extends EventBase {
     }
 
     public boolean isExpanded(T model){
-        return findItem(model).isExpanded();
+        return getItem(model).isExpanded();
     }
 
-    public List<T> getChildren(T parent){
-        return findItem(parent).getModelChildren();
-    }
-
-    public List<TreeStoreItem<T>> getItemChildren(T parent){
-        return findItem(parent).getChildren();
-    }
-
-    public void addUpdateHandler(UpdateEvent.UpdateHandler lnr){
-        addHandler(lnr, UpdateEvent.getType());
-    }
-
-    // ------------------ privates -------------------
-
-    protected TreeStoreItem<T> findItem(T model){
+    public TreeStoreItem<T> getItem(T model){
         if(model == null){
             return root;
         }else{
@@ -88,5 +75,19 @@ public class TreeStore<T> extends EventBase {
             return null;
         }
     }
+
+    public List<TreeStoreItem<T>> getItemChildren(T parent){
+        return getItem(parent).getChildren();
+    }
+
+    public List<T> getChildren(T parent){
+        return getItem(parent).getModelChildren();
+    }
+
+    public void addUpdateHandler(UpdateEvent.UpdateHandler lnr){
+        addHandler(lnr, UpdateEvent.getType());
+    }
+
+    // ------------------ privates -------------------
 
 }

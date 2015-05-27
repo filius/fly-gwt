@@ -73,7 +73,12 @@ public class Tree<T> extends Component implements SelectEvent.HasSelectHandler<T
     }
 
     public void select(T model){
-        getView().select(model);
+        getView().select(model, true);
+    }
+
+    public void clear(){
+        getStore().clear();
+        getView().select(null, false);
     }
 
     public void expandAll(){

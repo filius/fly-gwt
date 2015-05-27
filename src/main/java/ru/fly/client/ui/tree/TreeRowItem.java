@@ -64,6 +64,10 @@ public abstract class TreeRowItem<T> extends Container {
         childrenContainer = DOM.createDiv().cast();
     }
 
+    protected boolean isExpanded(){
+        return expanded;
+    }
+
     protected void expand(){
         if(expanded){
             return;
