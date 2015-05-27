@@ -17,6 +17,7 @@
 package ru.fly.client.ui.panel;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.Widget;
@@ -43,16 +44,21 @@ public class LayoutContainer extends Container implements Layout {
         getContainerElement().getStyle().setBackgroundColor(decor.css().pColorBackground());
     }
 
-    public void layout(boolean force){
+    public void layout(final boolean force){
         if(!isAttached() || (!sizeChanged && !force))
             return;
-        doLayout();
-        for(Widget child : getWidgets()){
-            if(child != null && child instanceof Layout){
-                ((Layout) child).layout(force);
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                doLayout();
+                for(Widget child : getWidgets()){
+                    if(child != null && child instanceof Layout){
+                        ((Layout) child).layout(force);
+                    }
+                }
+                sizeChanged = false;
             }
-        }
-        sizeChanged = false;
+        });
     }
 
     protected void doLayout(){}
