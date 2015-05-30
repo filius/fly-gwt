@@ -97,4 +97,9 @@ public class MenuButton extends Button{
         super.setEnabled(val);
         expander.setEnabled(val);
     }
+
+    public Menu getMenu(){
+        return menu;
+    }
+
 }

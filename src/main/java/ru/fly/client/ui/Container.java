@@ -44,6 +44,10 @@ public class Container extends Component implements HasWidgets {
         return widgets;
     }
 
+    public int getWidgetsCount(){
+        return widgets.size();
+    }
+
     @Override
     public void add(Widget w) {
         widgets.add(w);

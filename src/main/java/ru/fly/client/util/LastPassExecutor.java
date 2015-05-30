@@ -19,26 +19,26 @@ package ru.fly.client.util;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public abstract class LastPassExecutor {
+public abstract class LastPassExecutor<T> {
     
     private boolean isBusy = false;
     private boolean isNeedExec = false;
     private double waitSec = 1; // ждем 1 секунду по умолчанию
-    private Object param;
+    private T param;
     private Timer timer = new Timer() {
         @Override
         public void run() {
             doIt();
         }
     };
-    private AsyncCallback<Void> endCallback;
+    private AsyncCallback<T> endCallback;
     
     public LastPassExecutor(){}
     public LastPassExecutor(double sec){
         waitSec = sec;
     }
 	
-	protected abstract void exec(Object param);
+	protected abstract void exec(T param);
 	
 	public void cancel(){
 	    isNeedExec = false;
@@ -49,20 +49,20 @@ public abstract class LastPassExecutor {
 	    pass(null);
 	}
 	
-	public void pass(Object param){
+	public void pass(T param){
 		pass(param, null);
 	}
 	
-	public void pass(AsyncCallback<Void> cback){
+	public void passAndWait(AsyncCallback<T> cback){
 	    pass(null, cback);
     }
     
-    public void pass(Object param, AsyncCallback<Void> cback){
+    public void pass(T param, AsyncCallback<T> cback){
         this.param = param;
         this.endCallback = cback;
         isNeedExec = true;
         timer.cancel();
-        timer.schedule((int)(waitSec * (double)1000));
+        timer.schedule((int)(waitSec * 1000D));
     }
 	
 	private boolean hold(){
