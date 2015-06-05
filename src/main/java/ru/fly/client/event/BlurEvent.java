@@ -25,35 +25,35 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * Date: 09.12.13
  * Time: 11:04
  */
-public class FocusEvent extends GwtEvent<FocusEvent.FocusHandler> {
+public class BlurEvent extends GwtEvent<BlurEvent.BlurHandler> {
 
-    private static Type<FocusHandler> TYPE;
+    private static Type<BlurHandler> TYPE;
 
-    public FocusEvent(){
+    public BlurEvent(){
     }
 
-    public static Type<FocusHandler> getType() {
+    public static Type<BlurHandler> getType() {
         if (TYPE == null) {
-            TYPE = new Type<FocusHandler>();
+            TYPE = new Type<BlurHandler>();
         }
         return TYPE;
     }
 
     @Override
-    public Type<FocusHandler> getAssociatedType() {
+    public Type<BlurHandler> getAssociatedType() {
         return getType();
     }
 
     @Override
-    protected void dispatch(FocusHandler handler) {
-        handler.onFocus();
+    protected void dispatch(BlurHandler handler) {
+        handler.onBlur();
     }
 
-    public interface FocusHandler extends EventHandler {
-        void onFocus();
+    public interface BlurHandler extends EventHandler {
+        void onBlur();
     }
 
-    public interface HasFocusHandler extends EventHandler {
-        HandlerRegistration addFocusHandler(FocusHandler h);
+    public interface HasBlurHandler extends EventHandler {
+        HandlerRegistration addBlurHandler(BlurHandler h);
     }
 }

@@ -21,8 +21,8 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
+import ru.fly.client.event.BlurEvent;
 import ru.fly.client.event.FocusEvent;
-import ru.fly.client.event.FocusHandler;
 import ru.fly.client.ui.FElement;
 
 /**
@@ -30,7 +30,8 @@ import ru.fly.client.ui.FElement;
  * Date: 10.09.13
  * Time: 0:29
  */
-public abstract class InputElementField<T> extends Field<T>{
+public abstract class InputElementField<T> extends Field<T>
+        implements FocusEvent.HasFocusHandler, BlurEvent.HasBlurHandler{
 
     private FElement inp;
 
@@ -48,7 +49,7 @@ public abstract class InputElementField<T> extends Field<T>{
                     }
                     if(event.getTypeInt() == Event.ONBLUR){
                         onBlur();
-//                        fireEvent(new FocusEvent());
+                        fireEvent(new BlurEvent());
                     }
                     if(oldLnr != null){
                         oldLnr.onBrowserEvent(event);
@@ -83,8 +84,14 @@ public abstract class InputElementField<T> extends Field<T>{
             getInputElement().setAttribute("disabled", "disabled");
     }
 
-    public HandlerRegistration addFocusHandlser(FocusHandler h){
+    @Override
+    public HandlerRegistration addFocusHandler(FocusEvent.FocusHandler h){
         return addHandler(h, FocusEvent.getType());
+    }
+
+    @Override
+    public HandlerRegistration addBlurHandler(BlurEvent.BlurHandler h){
+        return addHandler(h, BlurEvent.getType());
     }
 
     @Override

@@ -53,15 +53,12 @@ public class VariantTextField<T> extends TextField {
     private Getter<T> getter;
     private Getter<T> expandGetter;
     private String query = null;
-    private LastPassExecutor queryExec = new LastPassExecutor() {
+    private LastPassExecutor<String> queryExec = new LastPassExecutor<String>() {
         @Override
-        protected void exec(Object param) {
-            if(param != null && ((String)param).isEmpty()) param = null;
-            if(query != param && beforeQuery((param == null)?null:param.toString())){
-                if(param == null)
-                    query = null;
-                else
-                    query = param.toString();
+        protected void exec(String param) {
+            if(param != null && param.isEmpty()) param = null;
+            if(!query.equals(param) && beforeQuery(param)){
+                query = param;
                 store.clear();
                 expander.expand(true);
             }
@@ -134,7 +131,7 @@ public class VariantTextField<T> extends TextField {
                 @Override
                 public void onSuccessLast(List<T> result) {
                     store.clear();
-                    if(result == null || result.size() < 1){
+                    if(result == null || result.size() < 1 || !isFocused()){
                         expander.collapse();
                     }else{
                         store.addAll(result);
