@@ -35,4 +35,12 @@ public class StringUtils {
         return ret.toString();
     }
 
+    public static boolean equalsTrim(String s1, String s2){
+        if(s1 == null){
+            return s2 == null;
+        }else{
+            return s2 != null && s1.trim().equals(s2.trim());
+        }
+    }
+
 }

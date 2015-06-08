@@ -34,6 +34,7 @@ import ru.fly.client.Loader;
 import ru.fly.client.ui.field.TriggerField;
 import ru.fly.shared.Getter;
 import ru.fly.client.util.LastPassExecutor;
+import ru.fly.shared.util.StringUtils;
 
 import java.util.List;
 
@@ -52,15 +53,12 @@ public class ComboBox<T> extends TriggerField<T> {
     private Getter<T> getter;
     private boolean hasEmpty;
     private String query = null;
-    private LastPassExecutor queryExec = new LastPassExecutor() {
+    private LastPassExecutor<String> queryExec = new LastPassExecutor<String>() {
         @Override
-        protected void exec(Object param) {
-            if(param != null && ((String)param).isEmpty()) param = null;
-            if(query != param){
-                if(param == null)
-                    query = null;
-                else
-                    query = param.toString();
+        protected void exec(String param) {
+            if(param != null && param.trim().isEmpty()) param = null;
+            if(!StringUtils.equalsTrim(query, param)){
+                query = param;
                 store.clear();
                 expander.expand(true);
             }
@@ -255,6 +253,7 @@ public class ComboBox<T> extends TriggerField<T> {
 
                 @Override
                 public void onFailureLast(Throwable caught) {
+                    Log.error(caught.getMessage(), caught);
                     store.clear();
                     redrawListView();
                 }

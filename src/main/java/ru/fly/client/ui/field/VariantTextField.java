@@ -34,6 +34,7 @@ import ru.fly.client.ui.field.combobox.decor.ComboBoxDecor;
 import ru.fly.shared.Getter;
 import ru.fly.client.ui.listview.ListView;
 import ru.fly.client.util.LastPassExecutor;
+import ru.fly.shared.util.StringUtils;
 
 import java.util.List;
 
@@ -56,8 +57,8 @@ public class VariantTextField<T> extends TextField {
     private LastPassExecutor<String> queryExec = new LastPassExecutor<String>() {
         @Override
         protected void exec(String param) {
-            if(param != null && param.isEmpty()) param = null;
-            if(!query.equals(param) && beforeQuery(param)){
+            if(param != null && param.trim().isEmpty()) param = null;
+            if(!StringUtils.equalsTrim(query, param)){
                 query = param;
                 store.clear();
                 expander.expand(true);
