@@ -98,7 +98,7 @@ public class Button extends Component {
         super.setEnabled(val);
         ((ButtonElement)getElement().cast()).setDisabled(!val);
         if(!val){
-            getElement().removeClassName(decor.css().over());
+            removeStyleName(decor.css().over());
         }
     }
 
@@ -183,6 +183,8 @@ public class Button extends Component {
     protected void onDetach() {
         DOM.setEventListener(getElement(), null);
         DOM.sinkEvents(getElement(), 0);
+        removeStyleName(decor.css().over());
+        removeStyleName(decor.css().focused());
         super.onDetach();
     }
 
@@ -201,12 +203,12 @@ public class Button extends Component {
                         break;
                     case Event.ONMOUSEOVER:
                         if(isEnabled()){
-                            getElement().addClassName(decor.css().over());
+                            addStyleName(decor.css().over());
                             showTooltip(event);
                         }
                         break;
                     case Event.ONMOUSEOUT:
-                        getElement().removeClassName(decor.css().over());
+                        removeStyleName(decor.css().over());
                         showTooltip(null);
                         break;
 

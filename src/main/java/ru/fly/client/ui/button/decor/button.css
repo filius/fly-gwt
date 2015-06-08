@@ -25,6 +25,7 @@ button.button::-moz-focus-inner {
 }
 .button-icon img{
     vertical-align: middle;
+    float: left;
 }
 .button-icon span{
     margin-left: 6px;
