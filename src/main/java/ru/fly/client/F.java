@@ -117,6 +117,21 @@ public class F {
         }
     }-*/;
 
+    /** enable/disable page text selection by double click */
+    public native static void setEnableDblClickSelection(boolean enabled)/*-{
+        if(enabled) {
+            $doc.ondblclick = null;
+        }else{
+            $doc.ondblclick = function () {
+                if ($wnd.getSelection) {
+                    $wnd.getSelection().removeAllRanges();
+                } else if ($doc.selection) {
+                    $doc.selection.empty();
+                }
+            }
+        }
+    }-*/;
+
     /**
      * опредилит наследует ли один класс, другой
      * @param to - потомок

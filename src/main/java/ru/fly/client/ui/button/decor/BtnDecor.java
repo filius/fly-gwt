@@ -47,12 +47,11 @@ public class BtnDecor {
 
         String button();
 
-        @ClassName("button-menu")
         String buttonMenu();
 
-        @ClassName("button-icon")
         String buttonIcon();
 
+        String icon();
     }
 
     public final Resources res;

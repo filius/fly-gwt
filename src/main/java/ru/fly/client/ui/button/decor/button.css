@@ -23,15 +23,17 @@ button.button::-moz-focus-inner {
     padding: 0;
     border: 0
 }
-.button-icon img{
+.buttonIcon img{
     vertical-align: middle;
-    float: left;
 }
-.button-icon span{
+.buttonIcon span{
     margin-left: 6px;
 }
-.button-menu span{
+.buttonMenu span{
     margin-right: 6px;
+}
+.button .icon{
+    float: left;
 }
 .button.over{
     color: #444;

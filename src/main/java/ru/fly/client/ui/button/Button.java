@@ -167,6 +167,7 @@ public class Button extends Component {
         if(iconEl == null){
             iconEl = DOM.createImg().cast();
             iconEl.setHeight(BUTTON_SIZE_16);
+            iconEl.setClassName(decor.css().icon());
         }
         return iconEl;
     }
