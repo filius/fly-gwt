@@ -14,7 +14,7 @@
  * the License.
  */
 
-package ru.fly.client.ui.field.datefield;
+package ru.fly.client.ui.field.datefield.decor;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ImageResource;

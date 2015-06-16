@@ -25,6 +25,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import ru.fly.client.event.ChangeEvent;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.ui.field.TriggerField;
+import ru.fly.client.ui.field.datefield.decor.DateFieldDecor;
 
 import java.util.Date;
 

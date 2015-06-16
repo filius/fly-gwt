@@ -98,16 +98,32 @@ public class Component extends Widget{
         getElement().setLeft(left);
     }
 
+    public void clearLeft(){
+        getElement().clearLeft();
+    }
+
     public void setRight(int right){
         getElement().setRight(right);
+    }
+
+    public void clearRight(){
+        getElement().clearRight();
     }
 
     public void setTop(int top){
         getElement().setTop(top);
     }
 
+    public void clearTop(){
+        getElement().clearTop();
+    }
+
     public void setBottom(int bottom){
         getElement().setBottom(bottom);
+    }
+
+    public void clearBottom(){
+        getElement().clearBottom();
     }
 
     public void setPosition(int left, int top){

@@ -144,7 +144,10 @@ public class DateField extends InputElementField<Date> {
                 }
             }
         }else if(e.getTypeInt() == Event.ONKEYUP){
-            if(isEnabled()){
+            if(isEnabled() &&
+                    e.getKeyCode() != KeyCodes.KEY_HOME &&
+                    e.getKeyCode() != KeyCodes.KEY_LEFT &&
+                    e.getKeyCode() != KeyCodes.KEY_RIGHT){
                 fireEvent(new KeyUpEvent(e));
                 if(ctrlvFixed){//CTRL+v
                     ctrlvFixed = false;

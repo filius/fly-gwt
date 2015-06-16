@@ -19,6 +19,9 @@ package ru.fly.client.ui.panel.window;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
+import com.google.gwt.event.logical.shared.HasCloseHandlers;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
@@ -48,7 +51,7 @@ import java.util.List;
  * Date: 09.01.14
  * Time: 19:40
  */
-public class FWindow extends SingleLayout {
+public class FWindow extends SingleLayout implements HasCloseHandlers<FWindow> {
 
     private final WindowDecor decor = GWT.create(WindowDecor.class);
 
@@ -118,6 +121,7 @@ public class FWindow extends SingleLayout {
             RootPanel.getBodyElement().removeChild(getModal());
         }
         removeFromParent();
+        CloseEvent.fire(this, this);
     }
 
     public void setModal(boolean val){
@@ -275,5 +279,10 @@ public class FWindow extends SingleLayout {
             modalEl.setClassName(decor.css().modal());
         }
         return modalEl;
+    }
+
+    @Override
+    public HandlerRegistration addCloseHandler(CloseHandler<FWindow> handler) {
+        return addHandler(handler, CloseEvent.<FWindow>getType());
     }
 }

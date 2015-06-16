@@ -96,16 +96,32 @@ public class FElement extends com.google.gwt.user.client.Element {
         getStyle().setTop(top, Style.Unit.PX);
     }
 
+    public final void clearTop(){
+        getStyle().clearTop();
+    }
+
     public final void setBottom(int bottom){
         getStyle().setBottom(bottom, Style.Unit.PX);
+    }
+
+    public final void clearBottom(){
+        getStyle().clearBottom();
     }
 
     public final void setLeft(int left){
         getStyle().setLeft(left, Style.Unit.PX);
     }
 
-    public final void setRight(int left){
-        getStyle().setRight(left, Style.Unit.PX);
+    public final void clearLeft(){
+        getStyle().clearLeft();
+    }
+
+    public final void setRight(int right){
+        getStyle().setRight(right, Style.Unit.PX);
+    }
+
+    public final void clearRight(){
+        getStyle().clearRight();
     }
 
     public final void setPosition(int left, int top){

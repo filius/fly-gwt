@@ -23,6 +23,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.datepicker.client.DatePicker;
 import ru.fly.client.event.ClickEvent;
 import ru.fly.client.ui.button.Button;
+import ru.fly.client.ui.field.datefield.decor.DateFieldDecor;
 import ru.fly.client.ui.panel.FlowLayout;
 
 import java.util.Date;
