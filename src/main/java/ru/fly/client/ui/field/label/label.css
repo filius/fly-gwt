@@ -11,14 +11,13 @@
     display: inline-block;
     line-height: 12px;
 }
-.field-label{
-    /*margin: 4px;*/
-    padding: 4px 4px 0 4px;
+.fieldLabel {
+    margin: 4px 4px 0 4px;
     overflow: hidden;
     box-sizing: border-box;
     \-moz-box-sizing: border-box;
     \-webkit-box-sizing: border-box;
 }
-.field-label .label{
+.fieldLabel .label{
     margin-left: pLabelMargin;
 }

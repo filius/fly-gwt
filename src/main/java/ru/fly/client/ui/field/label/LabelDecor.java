@@ -27,18 +27,17 @@ import ru.fly.client.ui.CommonDecor;
  */
 public class LabelDecor {
 
-    public static interface Resources extends ClientBundle{
+    public interface Resources extends ClientBundle{
 
         @Source({"ru/fly/client/ui/common.css", "label.css"})
-        public CssFieldLabel css();
+        CssFieldLabel css();
 
     }
 
-    public static interface CssFieldLabel extends CommonDecor.Styles {
+    public interface CssFieldLabel extends CommonDecor.Styles {
 
         int pLabelMargin();
 
-        @ClassName("field-label")
         String fieldLabel();
 
         String label();

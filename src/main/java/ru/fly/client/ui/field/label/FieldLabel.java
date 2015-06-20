@@ -41,7 +41,6 @@ public class FieldLabel extends Component implements Layout {
 
         public FieldLabelR(Widget fld, String label){
             this(fld, label, DEFAULT_WIDTH);
-
         }
 
         public FieldLabelR(Widget fld, String label, int labelWidth){
@@ -79,6 +78,7 @@ public class FieldLabel extends Component implements Layout {
     private int labelWidth;
     private boolean labelRight = false;
     private boolean top = false;
+    private boolean autoFill = false;
 
     public FieldLabel(Widget fld, String label){
         this(fld, label, DEFAULT_WIDTH);
@@ -138,6 +138,13 @@ public class FieldLabel extends Component implements Layout {
         if(lblEl != null){
             lblEl.setWidth(labelWidth-labelMargin);
         }
+        if(autoFill && fld != null){
+            if(fld instanceof Component){
+                ((Component)fld).setWidth(width - labelWidth);
+            }else{
+                fld.setWidth((width - labelWidth)+"px");
+            }
+        }
     }
 
     public void setLabelRight(boolean right){
@@ -169,4 +176,15 @@ public class FieldLabel extends Component implements Layout {
             lblEl.setInnerHTML("<span>"+label+"&nbsp;:</span>");
     }
 
+    public FieldLabel withAutoFill(){
+        autoFill = true;
+        setLabelWidth(labelWidth);
+        return this;
+    }
+
+    @Override
+    public void setPixelSize(int width, int height) {
+        super.setPixelSize(width, height);
+        setLabelWidth(labelWidth);
+    }
 }
