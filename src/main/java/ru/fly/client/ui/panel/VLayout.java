@@ -16,6 +16,7 @@
 
 package ru.fly.client.ui.panel;
 
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -52,6 +53,7 @@ public class VLayout extends LayoutContainer {
         }
         for(Widget child : getWidgets()){
             Object ld = child.getLayoutData();
+            boolean hasLdMargin = false;
             if(ld != null && ld instanceof VHLayoutData){
                 VHLayoutData vld = (VHLayoutData) ld;
                 if(vld.getH() >= 0 && vld.getH() <= 1){
@@ -59,8 +61,13 @@ public class VLayout extends LayoutContainer {
                     int ch = vld.getChildHeight(freeH);
                     child.setPixelSize(cw, ch);
                 }
-                if(vld.getMargin() != null)
+                if(vld.getMargin() != null) {
                     vld.getMargin().fillMargins(child);
+                    hasLdMargin = true;
+                }
+            }
+            if(!hasLdMargin) {
+                child.getElement().getStyle().setMargin(0, Style.Unit.PX);
             }
         }
     }
