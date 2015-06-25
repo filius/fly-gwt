@@ -85,6 +85,10 @@ public class ComboBox<T> extends TriggerField<T> {
         });
     }
 
+    public ComboBoxDecor getDecor(){
+        return decor;
+    }
+
     @Override
     protected FElement buildTriggerElement() {
         FElement ret = DOM.createDiv().cast();
