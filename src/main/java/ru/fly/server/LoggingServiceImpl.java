@@ -39,6 +39,7 @@ import java.util.List;
  * Date: 12.07.13
  * Time: 18:22
  */
+@SuppressWarnings("GwtServiceNotRegistered")
 public class LoggingServiceImpl implements LoggingService{
 
     private final Logger log = LoggerFactory.getLogger(getClass().getName());
@@ -79,15 +80,19 @@ public class LoggingServiceImpl implements LoggingService{
             d.deobfuscateStackTrace(t, strongName);
         }
         if("error".equals(level)) {
-            log.error(rec.getMessage(), t);
+            log.error(extendLogMessage(rec.getMessage()), t);
         }else if("warn".equals(level)) {
-            log.warn(rec.getMessage(), t);
+            log.warn(extendLogMessage(rec.getMessage()), t);
         }else if("info".equals(level)) {
-            log.info(rec.getMessage(), t);
+            log.info(extendLogMessage(rec.getMessage()), t);
         }else if("debug".equals(level)) {
-            log.debug(rec.getMessage(), t);
+            log.debug(extendLogMessage(rec.getMessage()), t);
         }
         return new LogRecord(t);
+    }
+
+    protected String extendLogMessage(String msg){
+        return msg;
     }
 
     // -------------------- privates --------------------
