@@ -27,7 +27,7 @@ public class EmptyValidator<T> implements Validator<T> {
 
     @Override
     public String validate(T value) {
-        if(value == null || (value instanceof String && ((String)value).isEmpty()))
+        if(value == null || (value instanceof String && ((String)value).trim().isEmpty()))
             return EMPTY_ERROR_MSG;
         else
             return null;
