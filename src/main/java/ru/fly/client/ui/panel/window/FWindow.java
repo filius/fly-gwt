@@ -118,10 +118,12 @@ public class FWindow extends SingleLayout implements HasCloseHandlers<FWindow> {
 
     public void hide(){
         if(modal){
-            RootPanel.getBodyElement().removeChild(getModal());
+            getModal().removeFromParent();
         }
-        removeFromParent();
-        CloseEvent.fire(this, this);
+        if(isAttached()) {
+            removeFromParent();
+            CloseEvent.fire(this, this);
+        }
     }
 
     public void setModal(boolean val){
