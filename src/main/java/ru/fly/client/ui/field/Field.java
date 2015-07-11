@@ -26,7 +26,6 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
 import ru.fly.client.F;
 import ru.fly.client.event.ValueChangeEvent;
-import ru.fly.client.event.ValueChangeHandler;
 import ru.fly.client.ui.Component;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.ui.Tooltip;
@@ -193,7 +192,7 @@ public class Field<T> extends Component implements LeafValueEditor<T>, HasEditor
         return true;
     }
 
-    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<T> handler) {
+    public HandlerRegistration addValueChangeHandler(ValueChangeEvent.ValueChangeHandler<T> handler) {
         return addHandler(handler, ValueChangeEvent.<T>getType());
     }
 
