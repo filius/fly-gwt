@@ -21,6 +21,7 @@ import ru.fly.client.event.UpdateEvent;
 import ru.fly.client.ui.EventBase;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -48,7 +49,7 @@ public class ListStore<T> extends EventBase {
         fireEvent(new UpdateEvent());
     }
 
-    public void addAll(List<T> list){
+    public void addAll(Collection<T> list){
         this.list.addAll(list);
         fireEvent(new UpdateEvent());
     }
@@ -91,7 +92,7 @@ public class ListStore<T> extends EventBase {
         return list.get(list.indexOf(model));
     }
 
-    public void fill(List<T> list){
+    public void fill(Collection<T> list){
         this.list.clear();
         if(list != null)
             this.list.addAll(list);
