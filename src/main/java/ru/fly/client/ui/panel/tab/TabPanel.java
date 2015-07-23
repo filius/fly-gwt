@@ -156,7 +156,9 @@ public class TabPanel extends LayoutContainer {
         if(current != null){
             current.hide();
         }
-        item.show();
+        if(isAttached()) {
+            item.show();
+        }
         current = item;
         fireEvent(new SelectEvent<Widget>(current.getWidget()));
     }
