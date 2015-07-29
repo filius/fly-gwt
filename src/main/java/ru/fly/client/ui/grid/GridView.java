@@ -17,6 +17,7 @@
 package ru.fly.client.ui.grid;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.Event;
@@ -216,7 +217,15 @@ public class GridView<T> extends Component {
                         setSelected(el, model, false);
                         break;
                     case Event.ONDBLCLICK:
+                        F.setEnableTextSelection(getElement(), false);
                         fireEvent(new GridRowDblClickEvent<T>(model));
+                        Scheduler.get().scheduleFixedDelay(new Scheduler.RepeatingCommand() {
+                            @Override
+                            public boolean execute() {
+                                F.setEnableTextSelection(getElement(), true);
+                                return false;
+                            }
+                        }, 50);
                         break;
                 }
             }
