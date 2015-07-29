@@ -287,4 +287,10 @@ public class FWindow extends SingleLayout implements HasCloseHandlers<FWindow> {
     public HandlerRegistration addCloseHandler(CloseHandler<FWindow> handler) {
         return addHandler(handler, CloseEvent.<FWindow>getType());
     }
+
+    @Override
+    public void setPixelSize(int width, int height) {
+        super.setPixelSize(width, height);
+        layout(false);
+    }
 }
