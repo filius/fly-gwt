@@ -132,6 +132,15 @@ public class F {
         }
     }-*/;
 
+    /** clear selection of text */
+    public native static void clearSelection()/*-{
+        if ($wnd.getSelection) {
+            $wnd.getSelection().removeAllRanges();
+        } else if ($doc.selection) {
+            $doc.selection.empty();
+        }
+    }-*/;
+
     /**
      * опредилит наследует ли один класс, другой
      * @param to - потомок

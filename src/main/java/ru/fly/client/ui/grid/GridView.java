@@ -217,15 +217,8 @@ public class GridView<T> extends Component {
                         setSelected(el, model, false);
                         break;
                     case Event.ONDBLCLICK:
-                        F.setEnableTextSelection(getElement(), false);
                         fireEvent(new GridRowDblClickEvent<T>(model));
-                        Scheduler.get().scheduleFixedDelay(new Scheduler.RepeatingCommand() {
-                            @Override
-                            public boolean execute() {
-                                F.setEnableTextSelection(getElement(), true);
-                                return false;
-                            }
-                        }, 50);
+                        F.clearSelection();
                         break;
                 }
             }
