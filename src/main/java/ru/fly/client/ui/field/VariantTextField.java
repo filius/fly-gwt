@@ -43,7 +43,7 @@ import java.util.List;
  * Date: 24.09.13
  * Time: 21:53
  */
-public class VariantTextField<T> extends TextField {
+public class VariantTextField<T> extends TextField implements SelectEvent.HasSelectHandler<T> {
 
     private final ComboBoxDecor cbDecor = GWT.create(ComboBoxDecor.class);
 
