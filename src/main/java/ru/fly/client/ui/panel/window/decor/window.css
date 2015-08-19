@@ -19,9 +19,6 @@
     border: 1px solid #c1d4e7;
     margin-left: 2px;
 }
-.buttonPanel{
-    text-align: center;
-}
 @sprite .close{
     gwt-image: 'cross';
     position: absolute;

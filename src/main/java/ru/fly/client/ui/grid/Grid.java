@@ -32,7 +32,8 @@ import java.util.List;
  * Date: 31.08.13
  * Time: 14:16
  */
-public class Grid<T> extends Component {
+public class Grid<T> extends Component implements GridRowDblClickEvent.HasGridRowDblClickHandler<T>,
+        OrderChangeEvent.HasOrderChangeHandler {
 
     private LoadConfig<T> loadConfig = new LoadConfig<>();
     private ListStore<T> store;
@@ -51,7 +52,7 @@ public class Grid<T> extends Component {
         super(DOM.createDiv());
         setStyleName(decor.css().grid());
         header = new Header<>(cols);
-        header.addOrderChangeHandler(new OrderChangeHandler() {
+        header.addOrderChangeHandler(new OrderChangeEvent.OrderChangeHandler() {
             @Override
             public void onChange(String orderField, boolean asc) {
                 getLoadConfig().setOrderBy(orderField);
@@ -96,7 +97,7 @@ public class Grid<T> extends Component {
                 fireEvent(new SelectEvent<T>(getSelected()));
             }
         }, SelectEvent.<T>getType());
-        view.addHandler(new GridRowDblClickHandler<T>() {
+        view.addHandler(new GridRowDblClickEvent.GridRowDblClickHandler<T>() {
             @Override
             public void onClick(T object) {
                 fireEvent(new GridRowDblClickEvent<T>(object));
@@ -169,11 +170,13 @@ public class Grid<T> extends Component {
         return addHandler(h, SelectEvent.<T>getType());
     }
 
-    public HandlerRegistration addRowDblClickHandler(GridRowDblClickHandler<T> h){
-        return addHandler(h, GridRowDblClickEvent.<T>getType());
+    @Override
+    public HandlerRegistration addOrderChangeHandler(OrderChangeEvent.OrderChangeHandler h){
+        return addHandler(h, OrderChangeEvent.getType());
     }
 
-    public HandlerRegistration addOrderChangeHandler(OrderChangeHandler h){
-        return addHandler(h, OrderChangeEvent.getType());
+    @Override
+    public HandlerRegistration addGridRowDblClickHandler(GridRowDblClickEvent.GridRowDblClickHandler<T> h) {
+        return addHandler(h, GridRowDblClickEvent.<T>getType());
     }
 }

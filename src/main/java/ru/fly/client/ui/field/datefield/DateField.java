@@ -25,7 +25,6 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.impl.TextBoxImpl;
 import ru.fly.client.event.KeyUpEvent;
-import ru.fly.client.event.KeyUpHandler;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.ui.field.InputElementField;
 import ru.fly.client.ui.field.TextFieldDecor;
@@ -39,7 +38,7 @@ import java.util.List;
  * Date: 08.01.14
  * Time: 15:43
  */
-public class DateField extends InputElementField<Date> {
+public class DateField extends InputElementField<Date> implements KeyUpEvent.HasKeyUpHandler {
 
     private static final String EMPTY_MASK = "__.__.____";
     private static final String DATE_FORMAT_ERROR_MSG = "Формат даты должен быть ДД.ММ.УУУУ";
@@ -282,7 +281,7 @@ public class DateField extends InputElementField<Date> {
         return pos;
     }
 
-    public HandlerRegistration addKeyUpHandler(KeyUpHandler h){
+    public HandlerRegistration addKeyUpHandler(KeyUpEvent.KeyUpHandler h){
         return addHandler(h, KeyUpEvent.getType());
     }
 

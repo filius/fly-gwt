@@ -5,10 +5,8 @@ import com.google.gwt.user.client.DOM;
 import ru.fly.client.F;
 import ru.fly.client.TreeStore;
 import ru.fly.client.event.GridRowDblClickEvent;
-import ru.fly.client.event.GridRowDblClickHandler;
 import ru.fly.client.event.SelectEvent;
 import ru.fly.client.event.UpdateEvent;
-import ru.fly.client.log.Log;
 import ru.fly.client.ui.Component;
 import ru.fly.client.ui.grid.ColumnConfig;
 import ru.fly.client.ui.tree.decor.TreeDecor;
@@ -63,12 +61,12 @@ public class TreeGrid<T> extends Component {
 //                fireEvent(new SelectEvent<T>(getSelected()));
             }
         }, SelectEvent.<T>getType());
-        view.addHandler(new GridRowDblClickHandler<T>() {
+        view.addGridRowDblClickHandler(new GridRowDblClickEvent.GridRowDblClickHandler<T>() {
             @Override
             public void onClick(T object) {
                 fireEvent(new GridRowDblClickEvent<T>(object));
             }
-        }, GridRowDblClickEvent.<T>getType());
+        });
     }
 
     public TreeDecor getDecor(){

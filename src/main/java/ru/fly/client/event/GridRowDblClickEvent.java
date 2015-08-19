@@ -16,14 +16,16 @@
 
 package ru.fly.client.event;
 
+import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
  * User: fil
  * Date: 05.08.13
  * Time: 23:52
  */
-public class GridRowDblClickEvent<T> extends GwtEvent<GridRowDblClickHandler<T>> {
+public class GridRowDblClickEvent<T> extends GwtEvent<GridRowDblClickEvent.GridRowDblClickHandler<T>> {
 
     private static Type TYPE;
 
@@ -49,5 +51,13 @@ public class GridRowDblClickEvent<T> extends GwtEvent<GridRowDblClickHandler<T>>
     @Override
     protected void dispatch(GridRowDblClickHandler<T> handler) {
         handler.onClick(object);
+    }
+
+    public interface HasGridRowDblClickHandler<T>{
+        HandlerRegistration addGridRowDblClickHandler(GridRowDblClickHandler<T> h);
+    }
+
+    public interface GridRowDblClickHandler<T> extends EventHandler{
+        void onClick(T object);
     }
 }

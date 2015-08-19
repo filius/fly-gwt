@@ -35,7 +35,6 @@ import ru.fly.client.dnd.Dragger;
 import ru.fly.client.dnd.Point;
 import ru.fly.client.dnd.Rect;
 import ru.fly.client.event.KeyEnterEvent;
-import ru.fly.client.event.KeyEnterHandler;
 import ru.fly.client.ui.Container;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.ui.button.Button;
@@ -51,7 +50,7 @@ import java.util.List;
  * Date: 09.01.14
  * Time: 19:40
  */
-public class FWindow extends SingleLayout implements HasCloseHandlers<FWindow> {
+public class FWindow extends SingleLayout implements HasCloseHandlers<FWindow>, KeyEnterEvent.HasKeyEnterHandler {
 
     private final WindowDecor decor = GWT.create(WindowDecor.class);
 
@@ -79,8 +78,12 @@ public class FWindow extends SingleLayout implements HasCloseHandlers<FWindow> {
         headerEl.setInnerHTML("&nbsp;");
         headerEl.setClassName(decor.css().header());
         buttonPanel = new Container(DOM.createDiv());
-        buttonPanel.setStyleName(decor.css().buttonPanel());
         buttonPanel.getStyle().setPaddingTop(4, Style.Unit.PX);
+        setButtonAlign(Style.TextAlign.CENTER);
+    }
+
+    public void setButtonAlign(Style.TextAlign align){
+        buttonPanel.getStyle().setTextAlign(align);
     }
 
     public void setHeaderText(String text){
@@ -176,10 +179,6 @@ public class FWindow extends SingleLayout implements HasCloseHandlers<FWindow> {
     @Override
     public void setTop(int top) {
         super.setTop(top < 0 ? 0 : top);
-    }
-
-    public HandlerRegistration addKeyEnterHandler(KeyEnterHandler h){
-        return addHandler(h, KeyEnterEvent.getType());
     }
 
     @Override
@@ -292,5 +291,10 @@ public class FWindow extends SingleLayout implements HasCloseHandlers<FWindow> {
     public void setPixelSize(int width, int height) {
         super.setPixelSize(width, height);
         layout(false);
+    }
+
+    @Override
+    public HandlerRegistration addKeyEnterHandler(KeyEnterEvent.KeyEnterHandler h) {
+        return addHandler(h, KeyEnterEvent.getType());
     }
 }

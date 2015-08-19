@@ -6,6 +6,7 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.ui.Widget;
 import ru.fly.client.F;
+import ru.fly.client.event.GridRowDblClickEvent;
 import ru.fly.client.event.SelectEvent;
 import ru.fly.client.log.Log;
 import ru.fly.client.ui.Component;
@@ -20,7 +21,8 @@ import java.util.Map;
  * User: fil
  * Date: 03.05.15
  */
-public class TreeGridView<T> extends Component implements SelectEvent.HasSelectHandler<T> {
+public class TreeGridView<T> extends Component implements SelectEvent.HasSelectHandler<T>,
+        GridRowDblClickEvent.HasGridRowDblClickHandler<T> {
 
     private TreeGrid<T> tree;
     private Map<T, TreeGridRowItem<T>> renderedItems = new HashMap<>();
@@ -204,5 +206,10 @@ public class TreeGridView<T> extends Component implements SelectEvent.HasSelectH
             }
         }
         return null;
+    }
+
+    @Override
+    public HandlerRegistration addGridRowDblClickHandler(GridRowDblClickEvent.GridRowDblClickHandler<T> h) {
+        return addHandler(h, GridRowDblClickEvent.<T>getType());
     }
 }

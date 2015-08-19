@@ -18,6 +18,7 @@ package ru.fly.client.ui.field;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.InputElement;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import ru.fly.client.ui.FElement;
@@ -28,7 +29,8 @@ import ru.fly.client.event.*;
  * Date: 05.08.13
  * Time: 21:06
  */
-public class TextField extends InputElementField<String> {
+public class TextField extends InputElementField<String>
+        implements KeyPressEvent.HasKeyPressHandler, KeyUpEvent.HasKeyUpHandler {
 
     private final TextFieldDecor decor;
 
@@ -88,12 +90,12 @@ public class TextField extends InputElementField<String> {
         }
     }
 
-    public void addKeyPressHandler(KeyPressHandler lnr){
-        addHandler(lnr, KeyPressEvent.getType());
+    public HandlerRegistration addKeyPressHandler(KeyPressEvent.KeyPressHandler lnr){
+        return addHandler(lnr, KeyPressEvent.getType());
     }
 
-    public void addKeyUpHandler(KeyUpHandler lnr){
-        addHandler(lnr, KeyUpEvent.getType());
+    public HandlerRegistration addKeyUpHandler(KeyUpEvent.KeyUpHandler lnr){
+        return addHandler(lnr, KeyUpEvent.getType());
     }
 
     @Override

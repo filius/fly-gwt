@@ -17,13 +17,12 @@
 package ru.fly.client.ui.field;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import ru.fly.client.event.KeyUpEvent;
-import ru.fly.client.event.KeyUpHandler;
 import ru.fly.client.ui.FElement;
 
 import java.util.Arrays;
@@ -34,7 +33,7 @@ import java.util.List;
  * Date: 06.08.13
  * Time: 21:41
  */
-public class NumberField<T extends Number> extends InputElementField<T> {
+public class NumberField<T extends Number> extends InputElementField<T> implements KeyUpEvent.HasKeyUpHandler {
 
     private final List<Character> allows = Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
     private final List<Character> decimals = Arrays.asList('.', ',');
@@ -179,8 +178,9 @@ public class NumberField<T extends Number> extends InputElementField<T> {
         super.setPixelSize((width < 0)?width:width-2, (height < 0)?height:height-2);
     }
 
-    public void addKeyUpHandler(KeyUpHandler lnr){
-        addHandler(lnr, KeyUpEvent.getType());
+    @Override
+    public HandlerRegistration addKeyUpHandler(KeyUpEvent.KeyUpHandler lnr){
+        return addHandler(lnr, KeyUpEvent.getType());
     }
 
 }

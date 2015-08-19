@@ -16,14 +16,16 @@
 
 package ru.fly.client.event;
 
+import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
  * User: fil
  * Date: 05.08.13
  * Time: 23:52
  */
-public class OrderChangeEvent extends GwtEvent<OrderChangeHandler> {
+public class OrderChangeEvent extends GwtEvent<OrderChangeEvent.OrderChangeHandler> {
 
     private static Type<OrderChangeHandler> TYPE;
 
@@ -50,5 +52,13 @@ public class OrderChangeEvent extends GwtEvent<OrderChangeHandler> {
     @Override
     protected void dispatch(OrderChangeHandler handler) {
         handler.onChange(orderField, asc);
+    }
+
+    public interface HasOrderChangeHandler{
+        HandlerRegistration addOrderChangeHandler(OrderChangeHandler h);
+    }
+
+    public interface OrderChangeHandler extends EventHandler {
+        void onChange(String orderField, boolean asc);
     }
 }

@@ -13,10 +13,10 @@ import ru.fly.client.ui.CommonDecor;
  */
 public class WindowDecor {
 
-    public static interface Resources extends ClientBundle {
+    public interface Resources extends ClientBundle {
 
         @Source({"ru/fly/client/ui/common.css", "window.css"})
-        public Styles css();
+        Styles css();
 
         @Source("cross.png")
         @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
@@ -25,15 +25,13 @@ public class WindowDecor {
     }
 
     @CssResource.Shared
-    public static interface Styles extends CommonDecor.Styles {
+    public interface Styles extends CommonDecor.Styles {
 
         String window();
 
         String header();
 
         String inner();
-
-        String buttonPanel();
 
         String modal();
 

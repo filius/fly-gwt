@@ -16,7 +16,9 @@
 
 package ru.fly.client.event;
 
+import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Event;
 
 /**
@@ -24,7 +26,7 @@ import com.google.gwt.user.client.Event;
  * Date: 05.08.13
  * Time: 23:52
  */
-public class KeyEnterEvent extends GwtEvent<KeyEnterHandler> {
+public class KeyEnterEvent extends GwtEvent<KeyEnterEvent.KeyEnterHandler> {
 
     private static Type<KeyEnterHandler> TYPE;
 
@@ -49,5 +51,13 @@ public class KeyEnterEvent extends GwtEvent<KeyEnterHandler> {
     @Override
     protected void dispatch(KeyEnterHandler handler) {
         handler.onKeyEnter(nativeEvent);
+    }
+
+    public interface HasKeyEnterHandler{
+        HandlerRegistration addKeyEnterHandler(KeyEnterHandler h);
+    }
+
+    public interface KeyEnterHandler extends EventHandler {
+        void onKeyEnter(Event e);
     }
 }

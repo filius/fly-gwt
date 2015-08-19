@@ -28,7 +28,6 @@ import ru.fly.client.dnd.Point;
 import ru.fly.client.dnd.Rect;
 import ru.fly.client.event.GridColumnResizeEvent;
 import ru.fly.client.event.OrderChangeEvent;
-import ru.fly.client.event.OrderChangeHandler;
 import ru.fly.client.ui.Component;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.ui.grid.decor.GridDecor;
@@ -40,7 +39,8 @@ import java.util.List;
  * Date: 31.08.13
  * Time: 14:43
  */
-public class Header<T> extends Component implements GridColumnResizeEvent.HasGridColumnResizeHandler{
+public class Header<T> extends Component implements GridColumnResizeEvent.HasGridColumnResizeHandler,
+        OrderChangeEvent.HasOrderChangeHandler{
 
     private class OrderColumn{
         private FElement orderEl;
@@ -218,7 +218,8 @@ public class Header<T> extends Component implements GridColumnResizeEvent.HasGri
         return ret;
     }
 
-    public HandlerRegistration addOrderChangeHandler(OrderChangeHandler h){
+    @Override
+    public HandlerRegistration addOrderChangeHandler(OrderChangeEvent.OrderChangeHandler h){
         return addHandler(h, OrderChangeEvent.getType());
     }
 
