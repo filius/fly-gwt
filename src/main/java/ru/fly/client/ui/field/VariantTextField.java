@@ -162,6 +162,17 @@ public class VariantTextField<T> extends TextField implements SelectEvent.HasSel
                 }
                 if (event.getTypeInt() == Event.ONKEYUP) {
                     queryExec.pass(((InputElement) getInputElement().cast()).getValue());
+                    switch (event.getKeyCode()) {
+                        case KeyCodes.KEY_DOWN:
+                            getListView().selectNext();
+                            break;
+                        case KeyCodes.KEY_UP:
+                            getListView().selectPrev();
+                            break;
+                        case KeyCodes.KEY_ENTER:
+                            getListView().select(getListView().getSelected());
+                            break;
+                    }
                 }
             }
         });
@@ -180,7 +191,6 @@ public class VariantTextField<T> extends TextField implements SelectEvent.HasSel
             getListView().fillData(store.getList(), false);
         }
         updatePositionAndSize();
-        getListView().focus();
     }
 
     private void updatePositionAndSize(){

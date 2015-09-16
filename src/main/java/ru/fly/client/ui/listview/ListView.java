@@ -180,7 +180,7 @@ public class ListView<T> extends Component {
         }
     }
 
-    private void selectNext(){
+    public void selectNext(){
         List<T> l = getStore().getList();
         T selected = getSelected();
         int idx = selected == null ? 0 : (l.indexOf(selected) + 1);
@@ -192,7 +192,7 @@ public class ListView<T> extends Component {
         select(now, false);
     }
 
-    private void selectPrev(){
+    public void selectPrev(){
         List<T> l = getStore().getList();
         T selected = getSelected();
         int idx = selected == null ? (l.size()-1) : (l.indexOf(selected) - 1);
