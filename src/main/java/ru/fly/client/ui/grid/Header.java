@@ -127,7 +127,9 @@ public class Header<T> extends Component implements GridColumnResizeEvent.HasGri
                 if(orderInfo.orderColumn == null || orderInfo.orderColumn != c){
                     orderInfo.orderEl = col;
                     orderInfo.orderColumn = c;
-                    c.asc();
+                    if(c.getSortDirection() == null) {
+                        c.asc();
+                    }
                 }else{
                     if(c.getSortDirection() == SortDirection.ASC){
                         c.desc();
@@ -146,7 +148,6 @@ public class Header<T> extends Component implements GridColumnResizeEvent.HasGri
         if(orderInfo.orderColumn == null && c.getSortDirection() != null){
             orderInfo.orderEl = col;
             orderInfo.orderColumn = c;
-            c.asc();
             fireEvent(new OrderChangeEvent(c.getOrderBy(), c.getSortDirection() == SortDirection.ASC));
         }else if(orderInfo.orderColumn == c){
             orderInfo.orderEl = col;
