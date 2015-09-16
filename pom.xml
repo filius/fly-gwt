@@ -6,7 +6,7 @@
 
     <groupId>ru.fly</groupId>
     <artifactId>fly-gwt</artifactId>
-    <version>0.1.18-SNAPSHOT</version>
+    <version>0.1.19-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>

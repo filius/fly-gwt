@@ -205,6 +205,7 @@ public class ComboBox<T> extends TriggerField<T> {
             getListView().setWidth(getWidth());
         getListView().setHeight(height);
         getListView().setPosition(left, top);
+        getListView().focus();
     }
 
     private ListView<T> getListView(){

@@ -18,6 +18,7 @@ package ru.fly.client.ui.field;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.InputElement;
+import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
@@ -99,7 +100,6 @@ public class VariantTextField<T> extends TextField implements SelectEvent.HasSel
         expander = new Expander(getElement(), null) {
             @Override
             public void onExpand() {
-                getListView().setWidth(getWidth());
                 getListView().setPosition(-10000, -10000);
                 RootPanel.get().add(getListView());
 
@@ -157,10 +157,12 @@ public class VariantTextField<T> extends TextField implements SelectEvent.HasSel
         DOM.setEventListener(getInputElement(), new EventListener() {
             @Override
             public void onBrowserEvent(Event event) {
-                if(oldLnr != null)
+                if(oldLnr != null) {
                     oldLnr.onBrowserEvent(event);
-                if (event.getTypeInt() == Event.ONKEYUP)
+                }
+                if (event.getTypeInt() == Event.ONKEYUP) {
                     queryExec.pass(((InputElement) getInputElement().cast()).getValue());
+                }
             }
         });
         DOM.sinkEvents(getInputElement(), DOM.getEventsSunk(getInputElement()) | Event.ONKEYUP);
@@ -174,9 +176,11 @@ public class VariantTextField<T> extends TextField implements SelectEvent.HasSel
     }
 
     public void rebuildListView(){
-        if(isAttached())
+        if(isAttached()) {
             getListView().fillData(store.getList(), false);
+        }
         updatePositionAndSize();
+        getListView().focus();
     }
 
     private void updatePositionAndSize(){
@@ -201,6 +205,11 @@ public class VariantTextField<T> extends TextField implements SelectEvent.HasSel
         }
         getListView().setHeight(height);
         getListView().setPosition(left, top);
+
+        int right = getListView().getElement().getAbsoluteRight();
+        if(right > Window.getClientWidth()){
+            getListView().setWidth(getListView().getWidth(false) - right + Window.getClientWidth() - 20);
+        }
     }
 
     public HandlerRegistration addSelectHandler(SelectEvent.SelectHandler<T> handler) {

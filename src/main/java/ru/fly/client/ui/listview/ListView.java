@@ -17,6 +17,7 @@
 package ru.fly.client.ui.listview;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
@@ -70,6 +71,53 @@ public class ListView<T> extends Component {
 
     public ListView(Getter<T> getter){
         this(new ListStore<T>(), getter);
+    }
+
+    @Override
+    protected void onAttach() {
+        super.onAttach();
+        F.setEnableTextSelection(getElement(), false);
+        if(!rendered){
+            redraw();
+        }
+        addEventListeners();
+    }
+
+    @Override
+    protected void onAfterFirstAttach() {
+        super.onAfterFirstAttach();
+        getElement().setTabIndex(F.getNextTabIdx());
+    }
+
+    private void addEventListeners(){
+        final EventListener oldLnr = DOM.getEventListener(getElement());
+        DOM.setEventListener(getElement(), new EventListener() {
+            @Override
+            public void onBrowserEvent(Event event) {
+                if (oldLnr != null) {
+                    oldLnr.onBrowserEvent(event);
+                }
+                if(event.getTypeInt() == Event.ONKEYDOWN) {
+                    switch(event.getKeyCode()) {
+                        case KeyCodes.KEY_UP:
+                            selectPrev();
+                            event.preventDefault();
+                            break;
+                        case KeyCodes.KEY_DOWN:
+                            selectNext();
+                            event.preventDefault();
+                            break;
+                        case KeyCodes.KEY_ENTER:
+                            select(getSelected(), true);
+                    }
+                }
+            }
+        });
+        DOM.sinkEvents(getElement(), DOM.getEventsSunk(getElement()) | Event.ONKEYDOWN);
+    }
+
+    public void focus(){
+        getElement().focus();
     }
 
     public Getter<T> getGetter(){
@@ -127,8 +175,33 @@ public class ListView<T> extends Component {
         if(item != null){
             item.addClassName(decor.css().selected());
         }
-        if(fireEvent)
+        if(fireEvent) {
             fireEvent(new SelectEvent<T>(model));
+        }
+    }
+
+    private void selectNext(){
+        List<T> l = getStore().getList();
+        T selected = getSelected();
+        int idx = selected == null ? 0 : (l.indexOf(selected) + 1);
+        if(idx >= l.size()) idx = l.size()-1;
+        T now = l.get(idx);
+        if(now.equals(selected)) {
+            return;
+        }
+        select(now, false);
+    }
+
+    private void selectPrev(){
+        List<T> l = getStore().getList();
+        T selected = getSelected();
+        int idx = selected == null ? (l.size()-1) : (l.indexOf(selected) - 1);
+        if(idx < 0) idx = 0;
+        T now = l.get(idx);
+        if(now.equals(selected)) {
+            return;
+        }
+        select(now, false);
     }
 
     public void clearSelection(){
@@ -144,15 +217,6 @@ public class ListView<T> extends Component {
         this.hasEmpty = hasEmpty;
         if(needRedraw){
             redraw(true);
-        }
-    }
-
-    @Override
-    protected void onAttach() {
-        super.onAttach();
-        F.setEnableTextSelection(getElement(), false);
-        if(!rendered){
-            redraw();
         }
     }
 
