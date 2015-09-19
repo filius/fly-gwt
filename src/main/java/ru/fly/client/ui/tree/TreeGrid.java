@@ -1,6 +1,7 @@
 package ru.fly.client.ui.tree;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import ru.fly.client.F;
 import ru.fly.client.TreeStore;
@@ -17,7 +18,7 @@ import java.util.List;
  * User: fil
  * Date: 03.05.15
  */
-public class TreeGrid<T> extends Component {
+public class TreeGrid<T> extends Component implements SelectEvent.HasSelectHandler<T> {
 
     private final TreeDecor decor;
     private final TreeGetter<T> getter;
@@ -58,7 +59,7 @@ public class TreeGrid<T> extends Component {
             @Override
             public void onSelect(T object) {
 //                getLoadConfig().setSelection(object);
-//                fireEvent(new SelectEvent<T>(getSelected()));
+                fireEvent(new SelectEvent<T>(getSelected()));
             }
         }, SelectEvent.<T>getType());
         view.addGridRowDblClickHandler(new GridRowDblClickEvent.GridRowDblClickHandler<T>() {
@@ -126,6 +127,11 @@ public class TreeGrid<T> extends Component {
 
     public T getSelected(){
         return getView().getSelected();
+    }
+
+    @Override
+    public HandlerRegistration addSelectHandler(SelectEvent.SelectHandler<T> h) {
+        return addHandler(h, SelectEvent.<T>getType());
     }
 
     // -------------- privates ----------------

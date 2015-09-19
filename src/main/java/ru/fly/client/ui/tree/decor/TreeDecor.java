@@ -29,10 +29,10 @@ import ru.fly.client.ui.CommonDecor;
  */
 public class TreeDecor {
 
-    public static interface Resources extends ClientBundle{
+    public interface Resources extends ClientBundle{
 
         @Source({"ru/fly/client/ui/common.css", "tree.css"})
-        public Styles css();
+        Styles css();
 
         @Source("down-arrow.png")
         @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
