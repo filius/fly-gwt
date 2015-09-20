@@ -28,10 +28,14 @@ public class TreeStore<T> extends EventBase {
     }
 
     public void add(T parent, T model){
+        add(parent, model, false);
+    }
+
+    public void add(T parent, T model, boolean expanded){
         if(model == null){
             throw new IllegalArgumentException("Model cant be NULL!");
         }
-        TreeStoreItem<T> item = new TreeStoreItem<>(parent, model);
+        TreeStoreItem<T> item = new TreeStoreItem<>(parent, model, expanded);
         getItem(parent).getChildren().add(item);
         links.put(model, item);
         fireEvent(new UpdateEvent());

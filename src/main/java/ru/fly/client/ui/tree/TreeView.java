@@ -124,10 +124,8 @@ public class TreeView<T> extends Component implements SelectEvent.HasSelectHandl
         }
         F.render(parent, item);
         renderedItems.put(model, item);
-        if(tree.getStore().isEmpty()) {
-            for (T child : tree.getStore().getChildren(model)) {
-                renderItem(item, child, lvl + 1);
-            }
+        if(tree.getStore().isExpanded(model)) {
+            item.expand();
         }
     }
 

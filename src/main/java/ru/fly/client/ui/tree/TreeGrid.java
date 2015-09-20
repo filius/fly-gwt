@@ -5,6 +5,8 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import ru.fly.client.F;
 import ru.fly.client.TreeStore;
+import ru.fly.client.event.CollapseEvent;
+import ru.fly.client.event.ExpandEvent;
 import ru.fly.client.event.GridRowDblClickEvent;
 import ru.fly.client.event.SelectEvent;
 import ru.fly.client.event.UpdateEvent;
@@ -18,7 +20,8 @@ import java.util.List;
  * User: fil
  * Date: 03.05.15
  */
-public class TreeGrid<T> extends Component implements SelectEvent.HasSelectHandler<T> {
+public class TreeGrid<T> extends Component implements SelectEvent.HasSelectHandler<T>, ExpandEvent.HasExpandHandler<T>,
+        CollapseEvent.HasCollapseHandler<T> {
 
     private final TreeDecor decor;
     private final TreeGetter<T> getter;
@@ -53,12 +56,9 @@ public class TreeGrid<T> extends Component implements SelectEvent.HasSelectHandl
 
     public void setGridView(TreeGridView<T> view){
         this.view = view;
-//        view.setGrid(this);
-//        header.setGridView(view);
         view.addHandler(new SelectEvent.SelectHandler<T>() {
             @Override
             public void onSelect(T object) {
-//                getLoadConfig().setSelection(object);
                 fireEvent(new SelectEvent<T>(getSelected()));
             }
         }, SelectEvent.<T>getType());
@@ -66,6 +66,18 @@ public class TreeGrid<T> extends Component implements SelectEvent.HasSelectHandl
             @Override
             public void onClick(T object) {
                 fireEvent(new GridRowDblClickEvent<T>(object));
+            }
+        });
+        view.addExpandHandler(new ExpandEvent.ExpandHandler<T>() {
+            @Override
+            public void onExpand(T object) {
+                TreeGrid.this.fireEvent(new ExpandEvent<T>(object));
+            }
+        });
+        view.addCollapseHandler(new CollapseEvent.CollapseHandler<T>() {
+            @Override
+            public void onCollapse(T object) {
+                TreeGrid.this.fireEvent(new CollapseEvent<T>(object));
             }
         });
     }
@@ -132,6 +144,16 @@ public class TreeGrid<T> extends Component implements SelectEvent.HasSelectHandl
     @Override
     public HandlerRegistration addSelectHandler(SelectEvent.SelectHandler<T> h) {
         return addHandler(h, SelectEvent.<T>getType());
+    }
+
+    @Override
+    public HandlerRegistration addCollapseHandler(CollapseEvent.CollapseHandler<T> h) {
+        return addHandler(h, CollapseEvent.<T>getType());
+    }
+
+    @Override
+    public HandlerRegistration addExpandHandler(ExpandEvent.ExpandHandler<T> h) {
+        return addHandler(h, ExpandEvent.<T>getType());
     }
 
     // -------------- privates ----------------

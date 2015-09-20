@@ -6,6 +6,8 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.ui.Widget;
 import ru.fly.client.F;
+import ru.fly.client.event.CollapseEvent;
+import ru.fly.client.event.ExpandEvent;
 import ru.fly.client.event.GridRowDblClickEvent;
 import ru.fly.client.event.SelectEvent;
 import ru.fly.client.log.Log;
@@ -22,7 +24,8 @@ import java.util.Map;
  * Date: 03.05.15
  */
 public class TreeGridView<T> extends Component implements SelectEvent.HasSelectHandler<T>,
-        GridRowDblClickEvent.HasGridRowDblClickHandler<T> {
+        GridRowDblClickEvent.HasGridRowDblClickHandler<T>, ExpandEvent.HasExpandHandler<T>,
+        CollapseEvent.HasCollapseHandler<T> {
 
     private TreeGrid<T> tree;
     private Map<T, TreeGridRowItem<T>> renderedItems = new HashMap<>();
@@ -76,12 +79,14 @@ public class TreeGridView<T> extends Component implements SelectEvent.HasSelectH
                 for (T child : children) {
                     renderItem(this, child, getLvl() + 1);
                 }
+                TreeGridView.this.fireEvent(new ExpandEvent<T>(model));
                 return children;
             }
 
             @Override
             protected void onCollapse(T model) {
                 getContainerElement().removeAll();
+                TreeGridView.this.fireEvent(new CollapseEvent<T>(model));
             }
 
             @Override
@@ -93,10 +98,8 @@ public class TreeGridView<T> extends Component implements SelectEvent.HasSelectH
         };
         F.render(parent, item);
         renderedItems.put(model, item);
-        if(tree.getStore().isEmpty()) {
-            for (T child : tree.getStore().getChildren(model)) {
-                renderItem(item, child, lvl + 1);
-            }
+        if(tree.getStore().isExpanded(model)) {
+            item.expand();
         }
     }
 
@@ -211,5 +214,15 @@ public class TreeGridView<T> extends Component implements SelectEvent.HasSelectH
     @Override
     public HandlerRegistration addGridRowDblClickHandler(GridRowDblClickEvent.GridRowDblClickHandler<T> h) {
         return addHandler(h, GridRowDblClickEvent.<T>getType());
+    }
+
+    @Override
+    public HandlerRegistration addCollapseHandler(CollapseEvent.CollapseHandler<T> h) {
+        return addHandler(h, CollapseEvent.<T>getType());
+    }
+
+    @Override
+    public HandlerRegistration addExpandHandler(ExpandEvent.ExpandHandler<T> h) {
+        return addHandler(h, ExpandEvent.<T>getType());
     }
 }

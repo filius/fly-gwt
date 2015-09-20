@@ -20,6 +20,11 @@ public class TreeStoreItem<T>{
         setModel(model);
     }
 
+    protected TreeStoreItem(T parent, T model, boolean expanded){
+        this(parent, model);
+        setExpanded(expanded);
+    }
+
     public T getParent() {
         return parent;
     }
