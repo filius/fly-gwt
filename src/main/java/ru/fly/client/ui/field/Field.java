@@ -86,12 +86,20 @@ public class Field<T> extends Component implements LeafValueEditor<T>, HasEditor
         setValue(value, true);
     }
 
-    public void setValue(T value, boolean fire){
+    /**
+     * set value to the field
+     * @param value -
+     * @param fire - TRUE if need fire ValueChangeEvent
+     * @return - TRUE if value is really new
+     */
+    public boolean setValue(T value, boolean fire){
         T old = getValue();
         this.value = value;
-        if(fire && ((old != null && !old.equals(value)) || (value != null && !value.equals(old)))){
+        boolean isNew = (old != null && !old.equals(value)) || (value != null && !value.equals(old));
+        if(fire && isNew){
             fireEvent(new ValueChangeEvent<T>(value));
         }
+        return isNew;
     }
 
     public void clear(){

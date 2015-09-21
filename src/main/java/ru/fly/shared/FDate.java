@@ -148,6 +148,27 @@ public class FDate {
         return new FDate(time);
     }
 
+    public FDate setDay(int day){
+        Date d = new Date(time);
+        d.setDate(day);
+        time = d.getTime();
+        return this;
+    }
+
+    public FDate setMonth(int month){
+        Date d = new Date(time);
+        d.setMonth(month);
+        time = d.getTime();
+        return this;
+    }
+
+    public FDate setYear(int year){
+        Date d = new Date(time);
+        d.setYear(year);
+        time = d.getTime();
+        return this;
+    }
+
     public FDate addMinute(long minute){
         time += (MINUTE * minute);
         return this;

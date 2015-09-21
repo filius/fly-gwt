@@ -25,6 +25,7 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.impl.TextBoxImpl;
 import ru.fly.client.event.KeyUpEvent;
+import ru.fly.client.event.ValueChangeEvent;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.ui.field.InputElementField;
 import ru.fly.client.ui.field.TextFieldDecor;
@@ -159,16 +160,19 @@ public class DateField extends InputElementField<Date> implements KeyUpEvent.Has
 
     @Override
     public void setPixelSize(int width, int height) {
-        super.setPixelSize((width < 0)?width:(width-2), (height < 0)?height:(height-2));
+        super.setPixelSize((width < 0) ? width : (width - 2), (height < 0) ? height : (height - 2));
     }
 
     @Override
     public void setValue(Date value) {
+        boolean isNew = super.setValue(value, false);
         if(isAttached()){
-            out = (value == null)?EMPTY_MASK:fmt.format(value);
+            out = (value == null) ? EMPTY_MASK : fmt.format(value);
             printMask(out);
         }
-        super.setValue(value);
+        if(isNew){
+            fireEvent(new ValueChangeEvent<Date>(value));
+        }
     }
 
     @Override

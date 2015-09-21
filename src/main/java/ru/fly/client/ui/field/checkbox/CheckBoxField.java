@@ -63,10 +63,10 @@ public class CheckBoxField extends InputElementField<Boolean> {
     }
 
     @Override
-    public void setValue(Boolean value, boolean fire) {
+    public boolean setValue(Boolean value, boolean fire) {
         if(isAttached())
             ((InputElement)getInputElement().cast()).setChecked((value == null)?false:value);
-        super.setValue(value, fire);
+        return super.setValue(value, fire);
     }
 
     @Override
