@@ -27,6 +27,10 @@ public class TreeStore<T> extends EventBase {
         fireEvent(new UpdateEvent());
     }
 
+    public int size(T parent){
+        return getItem(parent).getChildren().size();
+    }
+
     public void add(T parent, T model){
         add(parent, model, false);
     }
