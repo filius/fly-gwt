@@ -23,6 +23,7 @@ import com.google.gwt.user.client.ui.Widget;
 import ru.fly.client.ui.Component;
 import ru.fly.client.F;
 import ru.fly.client.ui.FElement;
+import ru.fly.client.ui.field.combobox.ComboBox;
 import ru.fly.client.ui.panel.Layout;
 
 /**
@@ -66,8 +67,9 @@ public class FieldLabel extends Component implements Layout {
         public FieldLabelT(Widget fld, String label, int labelWidth, boolean floatLeft){
             super(fld, label, labelWidth);
             setTop(true);
-            if(floatLeft)
+            if(floatLeft) {
                 setFloatLeft();
+            }
         }
 
     }
@@ -90,18 +92,19 @@ public class FieldLabel extends Component implements Layout {
         this.fld = fld;
         this.label = label;
         this.labelWidth = labelWidth;
-        setLabelWidth(labelWidth);
     }
 
     @Override
     public void layout(boolean force) {
-        if(fld != null && fld instanceof Layout)
+        if(fld != null && fld instanceof Layout) {
             ((Layout) fld).layout(force);
+        }
     }
 
     @Override
     protected void onAttach() {
         super.onAttach();
+        setLabelWidth(labelWidth);
         layout(true);
     }
 
@@ -139,18 +142,27 @@ public class FieldLabel extends Component implements Layout {
             lblEl.setWidth(labelWidth-labelMargin);
         }
         if(autoFill && fld != null){
-            if(fld instanceof Component){
-                ((Component)fld).setWidth(width - labelWidth);
+            int afWidth = width;
+            if(top){
+                if(afWidth < labelWidth){
+                    afWidth = labelWidth;
+                }
             }else{
-                fld.setWidth((width - labelWidth)+"px");
+                afWidth -= labelWidth;
+            }
+            if(fld instanceof Component){
+                ((Component)fld).setWidth(afWidth);
+            }else{
+                fld.setWidth(afWidth+"px");
             }
         }
     }
 
     public void setLabelRight(boolean right){
         this.labelRight = right;
-        if(lblEl != null && right)
+        if(lblEl != null && right) {
             lblEl.getStyle().setTextAlign(Style.TextAlign.RIGHT);
+        }
     }
 
     public void setTop(boolean top){
@@ -172,8 +184,9 @@ public class FieldLabel extends Component implements Layout {
 
     public void setLabelText(String text){
         this.label = text;
-        if(isAttached())
-            lblEl.setInnerHTML("<span>"+label+"&nbsp;:</span>");
+        if(isAttached()) {
+            lblEl.setInnerHTML("<span>" + label + "&nbsp;:</span>");
+        }
     }
 
     public FieldLabel withAutoFill(){

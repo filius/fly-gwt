@@ -72,6 +72,11 @@ public class Component extends Widget{
         setPixelSize(width, -1);
     }
 
+    public Component withWidth(int width){
+        setWidth(width);
+        return this;
+    }
+
     public int getWidth(){
         return getWidth(false);
     }
@@ -83,6 +88,11 @@ public class Component extends Widget{
 
     public void setHeight(int height){
         setPixelSize(-1, height);
+    }
+
+    public Component withHeight(int height){
+        setHeight(height);
+        return this;
     }
 
     public int getHeight(){
@@ -264,8 +274,9 @@ public class Component extends Widget{
     }
 
     public void unmask(){
-        if(maskEl == null)
+        if(maskEl == null) {
             return;
+        }
         String oldPosition = maskEl.getAttribute("f-old-position");
         if(oldPosition != null && !oldPosition.isEmpty()){
             getStyle().setProperty("position", oldPosition);
@@ -274,23 +285,27 @@ public class Component extends Widget{
     }
 
     public void setData(String key, Object val){
-        if(data == null)
+        if(data == null) {
             data = new HashMap<String, Object>();
+        }
         data.put(key, val);
     }
 
     public Object getData(String key){
-        if(data == null)
+        if(data == null) {
             return null;
+        }
         return data.get(key);
     }
 
     @Override
     public void setPixelSize(int width, int height) {
-        if(width >= 0)
+        if(width >= 0) {
             this.width = width;
-        if(height >= 0)
+        }
+        if(height >= 0) {
             this.height = height;
+        }
         super.setPixelSize(width, height);
     }
 }
