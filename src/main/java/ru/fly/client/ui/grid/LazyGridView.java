@@ -35,12 +35,13 @@ public class LazyGridView<T> extends GridView<T> {
 
     private final GridDecor res = GWT.create(GridDecor.class);
     private Map<Integer, FElement> viewRows = new HashMap<Integer, FElement>();
-    LastPassExecutor renderArea = new LastPassExecutor(.01) {
+    LastPassExecutor renderAreaExec = new LastPassExecutor(.01) {
         @Override
         protected void exec(Object param) {
             renderViewArea();
         }
     };
+    boolean inRenderProcess = false;
 
     public LazyGridView(){
         super();
@@ -60,7 +61,7 @@ public class LazyGridView<T> extends GridView<T> {
             inner.setHeight(grid.getStore().getList().size() * rowHeight);
         }
         viewRows.clear();
-        renderArea.pass();
+        renderAreaExec.pass();
     }
 
     private void addScrollListener(){
@@ -72,7 +73,7 @@ public class LazyGridView<T> extends GridView<T> {
                     oldLnr.onBrowserEvent(event);
                 switch (event.getTypeInt()){
                     case Event.ONSCROLL:
-                        renderArea.pass();
+                        renderAreaExec.pass();
                         break;
                 }
             }
@@ -86,28 +87,37 @@ public class LazyGridView<T> extends GridView<T> {
     }
 
     private void renderViewArea(){
-        List<T> l = grid.getStore().getList();
-
-        long top = getElement().getScrollTop();
-        long bottom = top + getHeight(true);
-        int stIdx = (int) (top / rowHeight);
-        int enIdx = (int) (bottom / rowHeight)+2;
-        if(enIdx > l.size())
-            enIdx = l.size();
-
-        for(int i=stIdx; i<enIdx; i++){
-            if(!viewRows.containsKey(i)){
-                FElement row = renderRow(l.get(i), isStripe(i));
-                row.setTop(rowHeight*i);
-                viewRows.put(i, row);
-            }
+        if(inRenderProcess){
+            renderAreaExec.pass();
+            return;
         }
-        Set<Integer> idxs = new HashSet<Integer>(viewRows.keySet());
-        for(Integer idx : idxs){
-            if(idx < stIdx || idx > enIdx){
-                viewRows.get(idx).removeFromParent();
-                viewRows.remove(idx);
+        try {
+            inRenderProcess = true;
+            List<T> l = grid.getStore().getList();
+
+            long top = getElement().getScrollTop();
+            long bottom = top + getHeight(true);
+            int stIdx = (int) (top / rowHeight);
+            int enIdx = (int) (bottom / rowHeight) + 2;
+            if (enIdx > l.size())
+                enIdx = l.size();
+
+            for (int i = stIdx; i < enIdx; i++) {
+                if (!viewRows.containsKey(i)) {
+                    FElement row = renderRow(l.get(i), isStripe(i));
+                    row.setTop(rowHeight * i);
+                    viewRows.put(i, row);
+                }
             }
+            Set<Integer> idxs = new HashSet<Integer>(viewRows.keySet());
+            for (Integer idx : idxs) {
+                if (idx < stIdx || idx > enIdx) {
+                    viewRows.get(idx).removeFromParent();
+                    viewRows.remove(idx);
+                }
+            }
+        }finally {
+            inRenderProcess = false;
         }
     }
 
