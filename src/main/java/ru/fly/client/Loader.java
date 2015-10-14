@@ -25,6 +25,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public interface Loader<C, T> {
 
-    public void load(C config, AsyncCallback<T> cback);
+    void load(C config, AsyncCallback<T> cback);
 
 }

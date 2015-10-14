@@ -36,7 +36,7 @@ import ru.fly.shared.Getter;
 import ru.fly.client.util.LastPassExecutor;
 import ru.fly.shared.util.StringUtils;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * User: fil
@@ -47,7 +47,7 @@ public class ComboBox<T> extends TriggerField<T> {
 
     private final ComboBoxDecor decor;
 
-    private Loader<String, List<T>> loader;
+    private Loader loader;
     private ListStore<T> store = new ListStore<T>();
     private ListView<T> listView;
     private Getter<T> getter;
@@ -177,7 +177,7 @@ public class ComboBox<T> extends TriggerField<T> {
         getListView().setHasEmpty(hasEmpty);
     }
 
-    public void setLoader(Loader<String, List<T>> loader){
+    public <C extends Collection<T>> void setLoader(Loader<String, C> loader){
         this.loader = loader;
     }
 
@@ -247,11 +247,12 @@ public class ComboBox<T> extends TriggerField<T> {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void load(){
         if(loader != null){
-            loader.load(query, new LastRespAsyncCallback<List<T>>(loaderUID) {
+            loader.load(query, new LastRespAsyncCallback<Collection<T>>(loaderUID) {
                 @Override
-                public void onSuccessLast(List<T> result) {
+                public void onSuccessLast(Collection<T> result) {
                     store.fill(result);
                     redrawListView();
                 }

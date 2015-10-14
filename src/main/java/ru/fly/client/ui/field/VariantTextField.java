@@ -37,7 +37,7 @@ import ru.fly.client.ui.listview.ListView;
 import ru.fly.client.util.LastPassExecutor;
 import ru.fly.shared.util.StringUtils;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * User: fil
@@ -48,7 +48,7 @@ public class VariantTextField<T> extends TextField implements SelectEvent.HasSel
 
     private final ComboBoxDecor cbDecor = GWT.create(ComboBoxDecor.class);
 
-    private Loader<String, List<T>> loader;
+    private Loader<String, Collection<T>> loader;
     private ListStore<T> store = new ListStore<T>();
     protected Expander expander;
     private ListView<T> listView;
@@ -122,15 +122,15 @@ public class VariantTextField<T> extends TextField implements SelectEvent.HasSel
         expander.setEnabled(isEnabled());
     }
 
-    public void setLoader(Loader<String, List<T>> loader){
+    public void setLoader(Loader<String, Collection<T>> loader){
         this.loader = loader;
     }
 
     private void load(){
         if(loader != null){
-            loader.load(query, new LastRespAsyncCallback<List<T>>(loaderUID) {
+            loader.load(query, new LastRespAsyncCallback<Collection<T>>(loaderUID) {
                 @Override
-                public void onSuccessLast(List<T> result) {
+                public void onSuccessLast(Collection<T> result) {
                     store.clear();
                     if(result == null || result.size() < 1 || !isFocused()){
                         expander.collapse();
