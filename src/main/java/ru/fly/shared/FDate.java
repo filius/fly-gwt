@@ -16,6 +16,10 @@
 
 package ru.fly.shared;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.datepicker.client.CalendarUtil;
+import ru.fly.client.log.Log;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -161,9 +165,19 @@ public class FDate {
      * @return -
      */
     public FDate setMonth1(int month){
+        GWT.log("b "+toStringFull());
+        int oldDay = getDay();
+        setDay(1);
         Date d = new Date(time);
         d.setMonth(month-1);
         time = d.getTime();
+        GWT.log("m "+toStringFull());
+        setDay(oldDay);
+        int delta = getDay()-oldDay;
+        if(delta != 0) {
+            addDay(delta);
+        }
+        GWT.log(delta+" a "+toStringFull());
         return this;
     }
 
@@ -180,6 +194,11 @@ public class FDate {
 
     public FDate addMinute(long minute){
         time += (MINUTE * minute);
+        return this;
+    }
+
+    public FDate addHour(long hour){
+        time += (HOUR * hour);
         return this;
     }
 
@@ -280,6 +299,18 @@ public class FDate {
         return monthNames.get(new Date(time).getMonth());
     }
 
+    public int getHours(){
+        return new Date(time).getHours();
+    }
+
+    public int getMinutes(){
+        return new Date(time).getMinutes();
+    }
+
+    public int getSeconds(){
+        return new Date(time).getSeconds();
+    }
+
     public FDate clearTime(){
         Date d = new Date(time);
         time -= ( d.getHours() * HOUR + d.getMinutes() * MINUTE + d.getSeconds() * SECOND );
@@ -290,5 +321,10 @@ public class FDate {
     @Override
     public String toString() {
         return getDay()+"."+getMonthString()+"."+getYear();
+    }
+
+    public String toStringFull() {
+        return getDay()+"."+getMonthString()+"."+getYear()+
+                "#"+getHours()+":"+getMinutes()+":"+getSeconds();
     }
 }

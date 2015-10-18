@@ -25,7 +25,6 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.impl.TextBoxImpl;
 import ru.fly.client.event.KeyUpEvent;
-import ru.fly.client.event.ValueChangeEvent;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.ui.field.InputElementField;
 import ru.fly.client.ui.field.TextFieldDecor;
@@ -164,15 +163,12 @@ public class DateField extends InputElementField<Date> implements KeyUpEvent.Has
     }
 
     @Override
-    public void setValue(Date value) {
-        boolean isNew = super.setValue(value, false);
+    public boolean setValue(Date value, boolean fire) {
         if(isAttached()){
             out = (value == null) ? EMPTY_MASK : fmt.format(value);
             printMask(out);
         }
-        if(isNew){
-            fireEvent(new ValueChangeEvent<Date>(value));
-        }
+        return super.setValue(value, fire);
     }
 
     @Override
@@ -217,8 +213,7 @@ public class DateField extends InputElementField<Date> implements KeyUpEvent.Has
             if(imonth > 12) month = "12";
             if(imonth < 1) month = "01";
         }
-        StringBuilder ret = new StringBuilder();
-        return ret.append(day).append(".").append(month).append(val.substring(5,10)).toString();
+        return day + "." + month + val.substring(5, 10);
     }
 
     private void erasePrev(int pos){

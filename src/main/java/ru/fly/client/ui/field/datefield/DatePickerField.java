@@ -116,18 +116,14 @@ public class DatePickerField extends TriggerField<Date> {
     }
 
     @Override
-    public void setValue(Date value) {
-        Date old = getValue();
-        super.setValue(value);
-        if(view != null){
-            if(value == null)
+    public boolean setValue(Date value, boolean fire) {
+        if (view != null) {
+            if (value == null)
                 view.setInnerHTML("");
             else
                 view.setInnerHTML(format.format(value));
         }
-        if((old != null && !old.equals(value)) || (value != null && !value.equals(old))){
-            fireEvent(new ChangeEvent<Date>(value));
-        }
+        return super.setValue(value, fire);
     }
 
 }

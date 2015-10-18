@@ -8,7 +8,6 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
-import ru.fly.client.event.ChangeEvent;
 import ru.fly.client.event.ValueChangeEvent;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.ui.field.TriggerField;
@@ -104,17 +103,13 @@ public class MonthPickerField extends TriggerField<Date> {
     }
 
     @Override
-    public void setValue(Date value) {
-        Date old = getValue();
-        super.setValue(value);
+    public boolean setValue(Date value, boolean fire) {
         if (view != null) {
             if (value == null)
                 view.setInnerHTML("");
             else
                 view.setInnerHTML(format.format(value));
         }
-        if ((old != null && !old.equals(value)) || (value != null && !value.equals(old))) {
-            fireEvent(new ChangeEvent<Date>(value));
-        }
+        return super.setValue(value, fire);
     }
 }
