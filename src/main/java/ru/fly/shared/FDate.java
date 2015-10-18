@@ -28,7 +28,7 @@ import java.util.Map;
 @SuppressWarnings("deprecation")
 public class FDate {
 
-    private static final Map<Integer, String> monthNames = new HashMap<Integer, String>(){{
+    public static final Map<Integer, String> monthNames = new HashMap<Integer, String>(){{
         put(0, "Январь");
         put(1, "Февраль");
         put(2, "Март");
@@ -79,7 +79,7 @@ public class FDate {
     }
 
     public FDate setDate(Date date){
-        setTime(date.getTime());
+        setTime(date == null ? new Date().getTime() : date.getTime());
         return this;
     }
 
@@ -155,16 +155,25 @@ public class FDate {
         return this;
     }
 
-    public FDate setMonth(int month){
+    /**
+     * 1 - январь
+     * 12 - декабрь
+     * @return -
+     */
+    public FDate setMonth1(int month){
         Date d = new Date(time);
-        d.setMonth(month);
+        d.setMonth(month-1);
         time = d.getTime();
         return this;
     }
 
-    public FDate setYear(int year){
+    /**
+     * set year of date
+     * @return -
+     */
+    public FDate setYear1(int year){
         Date d = new Date(time);
-        d.setYear(year);
+        d.setYear(year-1900);
         time = d.getTime();
         return this;
     }
@@ -234,7 +243,7 @@ public class FDate {
 
     /**
      * 1 - понедельник
-     * 2 - воскресенье
+     * 7 - воскресенье
      * @return
      */
     public int getDayOfWeek(){

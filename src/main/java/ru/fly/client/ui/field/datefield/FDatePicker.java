@@ -17,11 +17,11 @@
 package ru.fly.client.ui.field.datefield;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.datepicker.client.DatePicker;
 import ru.fly.client.event.ClickEvent;
+import ru.fly.client.event.ValueChangeEvent;
 import ru.fly.client.ui.button.Button;
 import ru.fly.client.ui.field.datefield.decor.DateFieldDecor;
 import ru.fly.client.ui.panel.FlowLayout;
@@ -33,15 +33,23 @@ import java.util.Date;
  * Date: 25.01.14
  * Time: 0:30
  */
-public class FDatePicker extends FlowLayout {
-
-    private final DateFieldDecor decor = GWT.create(DateFieldDecor.class);
+public class FDatePicker extends FlowLayout implements ValueChangeEvent.HasValueChangeHandler<Date> {
 
     private final DatePicker dp;
 
     public FDatePicker(){
+        this(GWT.<DateFieldDecor>create(DateFieldDecor.class));
+    }
+
+    public FDatePicker(DateFieldDecor decor){
         setStyleName(decor.css().datePicker());
         dp = new DatePicker();
+        dp.addValueChangeHandler(new ValueChangeHandler<Date>() {
+            @Override
+            public void onValueChange(com.google.gwt.event.logical.shared.ValueChangeEvent<Date> event) {
+                FDatePicker.this.fireEvent(new ValueChangeEvent<Date>(event.getValue()));
+            }
+        });
         add(dp);
         add(new Button("сегодня", new ClickEvent.ClickHandler() {
             @Override
@@ -58,7 +66,7 @@ public class FDatePicker extends FlowLayout {
     }
 
     public void setValue(Date value){
-        setValue(value, false);
+        setValue(value, true);
     }
 
     public void setValue(Date value, boolean fire){
@@ -70,9 +78,8 @@ public class FDatePicker extends FlowLayout {
         return dp.getValue();
     }
 
-    public HandlerRegistration addValueChangeHandler(
-            ValueChangeHandler<Date> handler) {
-        return dp.addHandler(handler, ValueChangeEvent.getType());
+    @Override
+    public HandlerRegistration addValueChangeHandler(ValueChangeEvent.ValueChangeHandler<Date> h) {
+        return addHandler(h, ValueChangeEvent.<Date>getType());
     }
-
 }

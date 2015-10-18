@@ -18,11 +18,11 @@ package ru.fly.client.ui.field.datefield;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.ui.RootPanel;
 import ru.fly.client.event.ChangeEvent;
+import ru.fly.client.event.ValueChangeEvent;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.ui.field.TriggerField;
 import ru.fly.client.ui.field.datefield.decor.DateFieldDecor;
@@ -36,8 +36,7 @@ import java.util.Date;
  */
 public class DatePickerField extends TriggerField<Date> {
 
-    private final DateFieldDecor decor = GWT.create(DateFieldDecor.class);
-
+    private DateFieldDecor decor;
     private FDatePicker datePicker;
     private DateTimeFormat format;
 
@@ -46,6 +45,11 @@ public class DatePickerField extends TriggerField<Date> {
     }
 
     public DatePickerField(DateTimeFormat format) {
+        this(GWT.<DateFieldDecor>create(DateFieldDecor.class), format);
+    }
+
+    public DatePickerField(DateFieldDecor decor, DateTimeFormat format){
+        this.decor = decor;
         this.format = format;
         addStyleName(decor.css().dateField());
         setWidth(100);
@@ -86,22 +90,20 @@ public class DatePickerField extends TriggerField<Date> {
         getDatePicker().getElement().getStyle().setZIndex(10000);
         RootPanel.get().add(getDatePicker());
         if(getElement().getAbsoluteTop() + getHeight() + 170 > wndViewHeight){
-            ((FElement)getDatePicker().getElement()).setPosition(left, getAbsoluteTop() - 170);
+            getDatePicker().getElement().setPosition(left, getAbsoluteTop() - 170);
         }else{
-            ((FElement)getDatePicker().getElement()).setPosition(left, getAbsoluteTop() + getHeight() + 2);
+            getDatePicker().getElement().setPosition(left, getAbsoluteTop() + getHeight() + 2);
         }
-        getDatePicker().setValue(getValue());
+        getDatePicker().setValue(getValue(), false);
     }
 
     private FDatePicker getDatePicker(){
         if(datePicker == null){
-            datePicker = new FDatePicker(){
-
-            };
-            datePicker.addValueChangeHandler(new ValueChangeHandler<Date>() {
+            datePicker = new FDatePicker(decor);
+            datePicker.addValueChangeHandler(new ValueChangeEvent.ValueChangeHandler<Date>() {
                 @Override
-                public void onValueChange(com.google.gwt.event.logical.shared.ValueChangeEvent<Date> event) {
-                    DatePickerField.this.setValue(datePicker.getValue());
+                public void onValueChange(Date object) {
+                    DatePickerField.this.setValue(object);
                     expander.collapse();
                 }
             });

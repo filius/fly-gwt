@@ -3,6 +3,7 @@ package ru.fly.client.ui.tree;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
+import ru.fly.client.log.Log;
 import ru.fly.client.ui.Container;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.ui.tree.decor.TreeDecor;
@@ -56,10 +57,15 @@ public abstract class TreeRowItem<T> extends Container {
         iconElement.setClassName(decor.css().icon());
         headerInner.appendChild(iconElement);
 
-        FElement text = DOM.createSpan().cast();
-        text.setInnerText(tree.getGetter().get(model));
-        text.setClassName(decor.css().text());
-        headerInner.appendChild(text);
+        FElement textEl = DOM.createSpan().cast();
+        try{
+            textEl.setInnerText(tree.getGetter().get(model));
+        }catch (NullPointerException e){
+            textEl.setInnerText("");
+            Log.warn("Unprocessed NULL model", new RuntimeException(e));
+        }
+        textEl.setClassName(decor.css().text());
+        headerInner.appendChild(textEl);
 
         childrenContainer = DOM.createDiv().cast();
     }

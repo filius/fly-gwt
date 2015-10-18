@@ -27,10 +27,10 @@ import ru.fly.client.ui.field.FieldDecor;
  */
 public class DateFieldDecor {
 
-    public static interface Resources extends FieldDecor.Resources {
+    public interface Resources extends FieldDecor.Resources {
 
         @Source({"ru/fly/client/ui/common.css", "ru/fly/client/ui/field/field.css", "datefield.css"})
-        public Styles css();
+        Styles css();
 
         @Source("trigger.png")
         @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
@@ -38,21 +38,57 @@ public class DateFieldDecor {
 
     }
 
-    public static interface Styles extends FieldDecor.Styles {
+    public interface Styles extends FieldDecor.Styles {
 
-        @ClassName("datefield")
         String dateField();
 
-        @ClassName("datefield-view")
         String dateFieldView();
 
-        @ClassName("date-picker")
         String datePicker();
 
         String dateFieldTrigger();
 
         String dateFieldTriggerIcon();
 
+        String datePickerWeekendLabel();
+
+        @ClassName("datePickerNextButton-up-hovering")
+        String datePickerNextButtonUpHovering();
+
+        String datePickerMonth();
+
+        String datePickerMonthSelector();
+
+        String datePickerDayIsFiller();
+
+        String datePickerPreviousButton();
+
+        String datePickerDayIsToday();
+
+        @ClassName("datePickerPreviousButton-up-hovering")
+        String datePickerPreviousButtonUpHovering();
+
+        String datePickerNextButton();
+
+        String datePickerDayIsWeekend();
+
+        String datePickerDayIsHighlighted();
+
+        String datePickerWeekdayLabel();
+
+        String datePickerDay();
+
+        String datePickerDayIsValue();
+
+        String monthPicker();
+
+        String monthPickerPrevBtn();
+
+        String monthPickerNextBtn();
+
+        String monthPickerMonth();
+
+        String monthPickerMonthValue();
     }
 
     private final Resources res = GWT.create(Resources.class);

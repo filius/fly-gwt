@@ -5,6 +5,7 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.ui.Widget;
 import ru.fly.client.F;
+import ru.fly.client.log.Log;
 import ru.fly.client.ui.Container;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.ui.grid.ColumnConfig;
@@ -66,9 +67,14 @@ public abstract class TreeGridRowItem<T> extends Container {
                     F.attach(w);
                 }
             } else {
-                FElement text = DOM.createSpan().cast();
-                text.setInnerText(c.getGetter().get(model));
-                col.appendChild(text);
+                FElement textEl = DOM.createSpan().cast();
+                try{
+                    textEl.setInnerText(c.getGetter().get(model));
+                }catch (NullPointerException e){
+                    textEl.setInnerText("");
+                    Log.warn("Unprocessed NULL model", new RuntimeException(e));
+                }
+                col.appendChild(textEl);
             }
         }
         childrenContainer = DOM.createDiv().cast();

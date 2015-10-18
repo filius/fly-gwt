@@ -1,13 +1,13 @@
 @external datePicker*;
 
-.datefield{
+.dateField{
     border: 1px solid #5e93ab;
     background-color: #fff;
     /*box-shadow: inset 1px 1px 2px #ddd;*/
     height: 22px;
 }
 
-.datefield-view{
+.dateFieldView{
     font :pFont;
     position: absolute;
     top: 0;
@@ -20,7 +20,7 @@
     cursor: default;
     text-align: right;
 }
-.disabled .datefield-view{
+.disabled .dateFieldView{
     background-color: #eee;
     color: #444;
 }
@@ -47,7 +47,7 @@
     gwt-image: 'trigger';
 }
 
-.date-picker{
+.datePicker{
     background-color: #fff;
     border: 1px solid #5e93ab;
     padding: 2px;
@@ -107,5 +107,35 @@
     background-color: #eee;
 }
 .datePickerDayIsValue{
+    background-color: #c1d4e7;
+}
+
+.monthPicker{
+    width: 150px;
+    height: 164px;
+    background-color: #fff;
+    border: 1px solid #5e93ab;
+    padding: 2px;
+    text-align: center;
+    box-shadow: 0 3px 5px rgb(34, 34, 34);
+}
+.monthPickerPrevBtn{
+
+}
+.monthPickerNextBtn{
+
+}
+.monthPickerMonth{
+    font: pFont;
+    font-size: 11px;
+    padding: 2px 0;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+.monthPickerMonth.over{
+    border-color: pColorOrange;
+    background-color: #c1d4e7;
+}
+.monthPickerMonthValue{
     background-color: #c1d4e7;
 }
