@@ -40,6 +40,10 @@ public class FDateJUnitTest extends Assert {
 
         //прошел день полсе дня рождения
         assertEquals(2, new FDate(1,2,2000).getYearPeriod(new FDate(2,2,2002)));
+
+        assertEquals(2, new FDate(31,1,2002).setMonth1(2).getMonth());
+
+        assertEquals(2003, new FDate(31,9,2002).addMonth(4).getYear());
     }
 
 }

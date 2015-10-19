@@ -165,19 +165,16 @@ public class FDate {
      * @return -
      */
     public FDate setMonth1(int month){
-        GWT.log("b "+toStringFull());
-        int oldDay = getDay();
-        setDay(1);
         Date d = new Date(time);
+        int oldMonth = d.getMonth()+1;
+        int delta = month - oldMonth;
         d.setMonth(month-1);
-        time = d.getTime();
-        GWT.log("m "+toStringFull());
-        setDay(oldDay);
-        int delta = getDay()-oldDay;
-        if(delta != 0) {
-            addDay(delta);
+        int newMonth = d.getMonth()+1;
+        // after month switch from 31.01.2002 to day 28.02.2002 for example, date make switch to 03.03.2002, fix it
+        if(newMonth != oldMonth + delta){
+            d.setDate(0);
         }
-        GWT.log(delta+" a "+toStringFull());
+        time = d.getTime();
         return this;
     }
 
@@ -226,9 +223,8 @@ public class FDate {
         if(years != 0){
             d.setYear(d.getYear()+years);
         }
-        d.setMonth(newm);
         time = d.getTime();
-        return this;
+        return setMonth1(newm);
     }
 
     public FDate addYear(int year){
