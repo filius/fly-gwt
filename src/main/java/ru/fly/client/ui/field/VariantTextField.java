@@ -122,8 +122,9 @@ public class VariantTextField<T> extends TextField implements SelectEvent.HasSel
         expander.setEnabled(isEnabled());
     }
 
-    public void setLoader(Loader<String, Collection<T>> loader){
-        this.loader = loader;
+    @SuppressWarnings("unchecked")
+    public void setLoader(Loader<String, ? extends Collection<T>> loader){
+        this.loader = (Loader<String, Collection<T>>) loader;
     }
 
     private void load(){

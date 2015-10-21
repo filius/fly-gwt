@@ -26,6 +26,6 @@ import ru.fly.shared.PagingResult;
  */
 public interface PageLoader<T> {
 
-    public void load(long offset, long limit, AsyncCallback<PagingResult<T>> cback);
+    void load(long offset, long limit, AsyncCallback<PagingResult<T>> cback);
 
 }

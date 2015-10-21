@@ -47,7 +47,7 @@ public class ComboBox<T> extends TriggerField<T> {
 
     private final ComboBoxDecor decor;
 
-    private Loader loader;
+    private Loader<String, Collection<T>> loader;
     private ListStore<T> store = new ListStore<T>();
     private ListView<T> listView;
     private Getter<T> getter;
@@ -177,8 +177,9 @@ public class ComboBox<T> extends TriggerField<T> {
         getListView().setHasEmpty(hasEmpty);
     }
 
-    public <C extends Collection<T>> void setLoader(Loader<String, C> loader){
-        this.loader = loader;
+    @SuppressWarnings("unchecked")
+    public void setLoader(Loader<String, ? extends Collection<T>> loader){
+        this.loader = (Loader<String, Collection<T>>) loader;
     }
 
     private void updatePositionAndSize(){
@@ -247,7 +248,6 @@ public class ComboBox<T> extends TriggerField<T> {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private void load(){
         if(loader != null){
             loader.load(query, new LastRespAsyncCallback<Collection<T>>(loaderUID) {
