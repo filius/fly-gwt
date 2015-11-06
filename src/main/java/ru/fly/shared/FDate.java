@@ -16,10 +16,6 @@
 
 package ru.fly.shared;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.datepicker.client.CalendarUtil;
-import ru.fly.client.log.Log;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -168,13 +164,15 @@ public class FDate {
         Date d = new Date(time);
         int oldMonth = d.getMonth()+1;
         int delta = month - oldMonth;
-        d.setMonth(month-1);
-        int newMonth = d.getMonth()+1;
-        // after month switch from 31.01.2002 to day 28.02.2002 for example, date make switch to 03.03.2002, fix it
-        if(newMonth != oldMonth + delta){
-            d.setDate(0);
+        if(delta != 0) {
+            d.setMonth(month - 1);
+            int newMonth = d.getMonth() + 1;
+            // after month switch from 31.01.2002 to day 28.02.2002 for example, date make switch to 03.03.2002, fix it
+            if (newMonth != oldMonth + delta) {
+                d.setDate(0);
+            }
+            time = d.getTime();
         }
-        time = d.getTime();
         return this;
     }
 
@@ -207,15 +205,15 @@ public class FDate {
     public FDate addMonth(int month){
         Date d = new Date(time);
         int years = 0;
-        int newm = d.getMonth() + month;
-        if(newm > 11){
-            while(newm > 11){
+        int newm = d.getMonth() + month + 1;
+        if(newm > 12){
+            while(newm > 12){
                 newm -= 12;
                 years++;
             }
         }
-        if(newm < -11){
-            while(newm < -11){
+        if(newm < 1){
+            while(newm < 1){
                 newm += 12;
                 years--;
             }
@@ -250,16 +248,24 @@ public class FDate {
 
     /**
      * 1 - 31
-     * @return
+     * @return -
      */
     public int getDay(){
         return new Date(time).getDate();
     }
 
     /**
+     * 1 - 31
+     * @return -
+     */
+    public String getDayString(){
+        return supl(new Date(time).getDate());
+    }
+
+    /**
      * 1 - понедельник
      * 7 - воскресенье
-     * @return
+     * @return -
      */
     public int getDayOfWeek(){
         int day = new Date(time).getDay();
@@ -287,8 +293,7 @@ public class FDate {
      * @return
      */
     public String getMonthString(){
-        int m = new Date(time).getMonth()+1;
-        return m<10?("0"+m):String.valueOf(m);
+        return supl(new Date(time).getMonth()+1);
     }
 
     public String getMonthName(){
@@ -316,11 +321,20 @@ public class FDate {
 
     @Override
     public String toString() {
-        return getDay()+"."+getMonthString()+"."+getYear();
+        return getDayString()+"."+getMonthString()+"."+getYear();
     }
 
     public String toStringFull() {
-        return getDay()+"."+getMonthString()+"."+getYear()+
-                "#"+getHours()+":"+getMinutes()+":"+getSeconds();
+        return getDayString()+"."+getMonthString()+"."+getYear()+
+                "#"+supl(getHours())+":"+supl(getMinutes())+":"+supl(getSeconds());
+    }
+
+    private String supl(Object obj){
+        String ret = obj.toString();
+        if(ret.length() < 2){
+            return "0"+ret;
+        }else{
+            return ret;
+        }
     }
 }

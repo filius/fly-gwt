@@ -44,6 +44,10 @@ public class FDateJUnitTest extends Assert {
         assertEquals(2, new FDate(31,1,2002).setMonth1(2).getMonth());
 
         assertEquals(2003, new FDate(31,9,2002).addMonth(4).getYear());
+
+        assertEquals("01.10.2015#00:00:00", new FDate(1, 1, 2016).clearTime().addMonth(-3).toStringFull());
+
+        assertEquals("01.01.2015#00:00:00", new FDate(1, 1, 2016).clearTime().addMonth(-12).toStringFull());
     }
 
 }

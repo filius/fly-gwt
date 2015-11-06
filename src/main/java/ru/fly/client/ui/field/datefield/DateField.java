@@ -164,11 +164,12 @@ public class DateField extends InputElementField<Date> implements KeyUpEvent.Has
 
     @Override
     public boolean setValue(Date value, boolean fire) {
+        boolean ret = super.setValue(value, fire);
         if(isAttached()){
             out = (value == null) ? EMPTY_MASK : fmt.format(value);
             printMask(out);
         }
-        return super.setValue(value, fire);
+        return ret;
     }
 
     @Override
