@@ -21,6 +21,7 @@ import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.RootPanel;
+import ru.fly.client.ui.FElement;
 import ru.fly.client.ui.button.decor.BtnDecor;
 import ru.fly.client.ui.field.Expander;
 import ru.fly.client.event.ClickEvent;
@@ -35,7 +36,6 @@ public class MenuButton extends Button{
 
     private final BtnDecor decor = GWT.create(BtnDecor.class);
 
-    private ImageElement arrow;
     private Expander expander;
     private Menu menu;
 
@@ -54,7 +54,12 @@ public class MenuButton extends Button{
                 expander.collapse();
             }
         }, ClickEvent.getType());
-        expander = new Expander(getElement(), menu.getElement()) {
+        expander = new Expander(getElement()) {
+            @Override
+            protected FElement getExpandedElement() {
+                return menu.getElement();
+            }
+
             @Override
             public void onExpand() {
                 menu.getStyle().setPosition(Style.Position.ABSOLUTE);
@@ -69,6 +74,11 @@ public class MenuButton extends Button{
                 if(menu.isAttached())
                     RootPanel.get().remove(menu);
             }
+
+            @Override
+            public boolean isEnabled() {
+                return MenuButton.this.isEnabled();
+            }
         };
         addStyleName(decor.css().buttonMenu());
     }
@@ -76,7 +86,7 @@ public class MenuButton extends Button{
     @Override
     public void onAfterFirstAttach() {
         super.onAfterFirstAttach();
-        arrow = DOM.createImg().cast();
+        ImageElement arrow = DOM.createImg().cast();
         arrow.setSrc(decor.res.dropArrow().getSafeUri().asString());
         getElement().appendChild(arrow);
     }
@@ -90,12 +100,6 @@ public class MenuButton extends Button{
         if(menu.getWidth(false) < getWidth()) {
             menu.getStyle().setWidth(getWidth(), Style.Unit.PX);
         }
-    }
-
-    @Override
-    public void setEnabled(boolean val) {
-        super.setEnabled(val);
-        expander.setEnabled(val);
     }
 
     public Menu getMenu(){

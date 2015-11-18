@@ -27,15 +27,15 @@ import com.google.gwt.resources.client.CssResource;
  */
 public class CommonDecor {
 
-    public static interface Resources extends ClientBundle {
+    public interface Resources extends ClientBundle {
 
         @Source("common.css")
-        public Styles css();
+        Styles css();
 
     }
 
     @CssResource.Shared
-    public static interface Styles extends CssResource {
+    public interface Styles extends CssResource {
 
         String pColorBackground();
 

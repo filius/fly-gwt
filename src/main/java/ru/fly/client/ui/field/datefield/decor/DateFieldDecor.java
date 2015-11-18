@@ -40,6 +40,8 @@ public class DateFieldDecor {
 
     public interface Styles extends FieldDecor.Styles {
 
+        int pTriggerWidth();
+
         String dateField();
 
         String dateFieldView();

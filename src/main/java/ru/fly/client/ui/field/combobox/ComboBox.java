@@ -28,10 +28,11 @@ import ru.fly.client.event.UpdateEvent;
 import ru.fly.client.log.Log;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.ListStore;
+import ru.fly.client.ui.field.Field;
+import ru.fly.client.ui.field.TriggerController;
 import ru.fly.client.ui.field.combobox.decor.ComboBoxDecor;
 import ru.fly.client.ui.listview.ListView;
 import ru.fly.client.Loader;
-import ru.fly.client.ui.field.TriggerField;
 import ru.fly.shared.Getter;
 import ru.fly.client.util.LastPassExecutor;
 import ru.fly.shared.util.StringUtils;
@@ -43,10 +44,11 @@ import java.util.Collection;
  * Date: 05.08.13
  * Time: 21:45
  */
-public class ComboBox<T> extends TriggerField<T> {
+public class ComboBox<T> extends Field<T> {
 
     private final ComboBoxDecor decor;
 
+    private TriggerController triggerController;
     private Loader<String, Collection<T>> loader;
     private ListStore<T> store = new ListStore<T>();
     private ListView<T> listView;
@@ -60,7 +62,7 @@ public class ComboBox<T> extends TriggerField<T> {
             if(!StringUtils.equalsTrim(query, param)){
                 query = param;
                 store.clear();
-                expander.expand(true);
+                triggerController.expand(true);
             }
         }
     };
@@ -68,6 +70,8 @@ public class ComboBox<T> extends TriggerField<T> {
     private boolean selectOnly = true;
     private boolean needRedraw = false;
     private boolean alwaysLoad = false;
+    private FElement viewElement;
+    private FElement triggerElement;
 
     public ComboBox(Getter<T> getter) {
         this(GWT.<ComboBoxDecor>create(ComboBoxDecor.class), getter);
@@ -83,13 +87,47 @@ public class ComboBox<T> extends TriggerField<T> {
                 needRedraw = true;
             }
         });
+        viewElement = DOM.createInputText().cast();
+        viewElement.addClassName(decor.css().comboBoxView());
+        triggerElement = buildTriggerElement();
+        triggerController = new TriggerController(this, triggerElement) {
+            @Override
+            protected FElement getExpandedElement() {
+                return getListView().getElement();
+            }
+
+            @Override
+            public void onExpand() {
+                ComboBox.this.onExpand();
+            }
+
+            @Override
+            public void onCollapse() {
+                ComboBox.this.onCollapse();
+            }
+
+            @Override
+            public boolean isEnabled() {
+                return ComboBox.this.isEnabled();
+            }
+        };
+    }
+
+    @Override
+    public void onAfterFirstAttach() {
+        super.onAfterFirstAttach();
+        getElement().appendChild(viewElement);
+        getElement().appendChild(triggerElement);
+        setSelectOnly(selectOnly);
+//        if(tr == null){
+//            addStyleName(decor.css().untriggered());
+//        }
     }
 
     public ComboBoxDecor getDecor(){
         return decor;
     }
 
-    @Override
     protected FElement buildTriggerElement() {
         FElement ret = DOM.createDiv().cast();
         ret.addClassName(decor.css().comboBoxTrigger());
@@ -99,34 +137,14 @@ public class ComboBox<T> extends TriggerField<T> {
         return ret;
     }
 
-    @Override
-    public void onAfterFirstAttach() {
-        super.onAfterFirstAttach();
-        view.addClassName(decor.css().comboBoxView());
-        setSelectOnly(selectOnly);
-        if(tr == null){
-            addStyleName(decor.css().untriggered());
-        }
-    }
-
-    @Override
-    protected FElement getExpandedElement() {
-        return getListView().getElement();
-    }
-
-    @Override
-    protected FElement buildViewElement() {
-        return DOM.createInputText().cast();
-    }
-
     public void setGetter(Getter<T> getter){
         this.getter = getter;
     }
 
     public void setSelectOnly(boolean selectOnly){
         this.selectOnly = selectOnly;
-        if(view != null){
-            ((InputElement)view.cast()).setReadOnly(selectOnly);
+        if(viewElement != null){
+            ((InputElement)viewElement.cast()).setReadOnly(selectOnly);
         }
     }
 
@@ -137,15 +155,15 @@ public class ComboBox<T> extends TriggerField<T> {
     @Override
     protected void onAttach() {
         super.onAttach();
-        DOM.setEventListener(view, new EventListener() {
+        DOM.setEventListener(viewElement, new EventListener() {
             @Override
             public void onBrowserEvent(Event event) {
                 if (event.getTypeInt() == Event.ONKEYUP && !selectOnly) {
-                    queryExec.pass(((InputElement) view.cast()).getValue());
+                    queryExec.pass(((InputElement) viewElement.cast()).getValue());
                 }
             }
         });
-        DOM.sinkEvents(view, Event.ONKEYUP);
+        DOM.sinkEvents(viewElement, Event.ONKEYUP);
     }
 
     /**
@@ -159,7 +177,7 @@ public class ComboBox<T> extends TriggerField<T> {
     @Override
     public void setValue(T value) {
         super.setValue(value);
-        if(view != null){
+        if(viewElement != null){
             String str = "";
             // ловим тут случай когда в геттере не обработан NULL
             try{
@@ -167,7 +185,7 @@ public class ComboBox<T> extends TriggerField<T> {
             } catch (Exception e){
                 Log.warn("Не обработан NULL", e);
             }
-            ((InputElement)view.cast()).setValue(str);
+            ((InputElement)viewElement.cast()).setValue(str);
         }
         getListView().select(value, false);
     }
@@ -183,7 +201,7 @@ public class ComboBox<T> extends TriggerField<T> {
     }
 
     private void updatePositionAndSize(){
-        if(!expander.isExpanded())
+        if(!triggerController.isExpanded())
             return;
         int top = getElement().getAbsoluteTop() + getHeight();
         int left = getElement().getAbsoluteLeft();
@@ -215,7 +233,7 @@ public class ComboBox<T> extends TriggerField<T> {
             listView.addSelectHandler(new SelectEvent.SelectHandler<T>() {
                 @Override
                 public void onSelect(T object) {
-                    expander.collapse();
+                    triggerController.collapse();
                     setValue(object);
                     fireEvent(new SelectEvent<T>(object));
                 }
@@ -227,7 +245,6 @@ public class ComboBox<T> extends TriggerField<T> {
         return listView;
     }
 
-    @Override
     protected void onExpand(){
         getListView().setPosition(-10000, -10000);
         RootPanel.get().add(getListView());
@@ -239,7 +256,6 @@ public class ComboBox<T> extends TriggerField<T> {
         updatePositionAndSize();
     }
 
-    @Override
     protected void onCollapse(){
         getListView().removeFromParent();
         if(query != null && !query.isEmpty()){

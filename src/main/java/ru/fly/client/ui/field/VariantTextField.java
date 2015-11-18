@@ -31,6 +31,7 @@ import ru.fly.client.ListStore;
 import ru.fly.client.Loader;
 import ru.fly.client.event.SelectEvent;
 import ru.fly.client.log.Log;
+import ru.fly.client.ui.FElement;
 import ru.fly.client.ui.field.combobox.decor.ComboBoxDecor;
 import ru.fly.shared.Getter;
 import ru.fly.client.ui.listview.ListView;
@@ -97,7 +98,12 @@ public class VariantTextField<T> extends TextField implements SelectEvent.HasSel
     @Override
     public void onAfterFirstAttach() {
         super.onAfterFirstAttach();
-        expander = new Expander(getElement(), null) {
+        expander = new Expander(getElement()) {
+            @Override
+            protected FElement getExpandedElement() {
+                return null;
+            }
+
             @Override
             public void onExpand() {
                 getListView().setPosition(-10000, -10000);
@@ -118,8 +124,12 @@ public class VariantTextField<T> extends TextField implements SelectEvent.HasSel
                     store.clear();
                 }
             }
+
+            @Override
+            public boolean isEnabled() {
+                return VariantTextField.this.isEnabled();
+            }
         };
-        expander.setEnabled(isEnabled());
     }
 
     @SuppressWarnings("unchecked")
@@ -178,13 +188,6 @@ public class VariantTextField<T> extends TextField implements SelectEvent.HasSel
             }
         });
         DOM.sinkEvents(getInputElement(), DOM.getEventsSunk(getInputElement()) | Event.ONKEYUP);
-    }
-
-    @Override
-    public void setEnabled(boolean val) {
-        super.setEnabled(val);
-        if(expander != null)
-            expander.setEnabled(val);
     }
 
     public void rebuildListView(){

@@ -17,14 +17,13 @@
 package ru.fly.client.ui.field.datefield;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.*;
 import com.google.gwt.user.client.ui.RootPanel;
-import ru.fly.client.event.ChangeEvent;
 import ru.fly.client.event.ValueChangeEvent;
 import ru.fly.client.ui.FElement;
-import ru.fly.client.ui.field.TriggerField;
+import ru.fly.client.ui.field.TriggerController;
 import ru.fly.client.ui.field.datefield.decor.DateFieldDecor;
 
 import java.util.Date;
@@ -34,41 +33,67 @@ import java.util.Date;
  * Date: 06.08.13
  * Time: 23:05
  */
-public class DatePickerField extends TriggerField<Date> {
+public class DatePickerField extends DateField {
 
     private DateFieldDecor decor;
+    private TriggerController triggerController;
     private FDatePicker datePicker;
-    private DateTimeFormat format;
+    private FElement triggerElement;
 
-    public DatePickerField(){
-        this(DateTimeFormat.getFormat("dd.MM.yyyy"));
+    public DatePickerField() {
+        this(GWT.<DateFieldDecor>create(DateFieldDecor.class));
     }
 
-    public DatePickerField(DateTimeFormat format) {
-        this(GWT.<DateFieldDecor>create(DateFieldDecor.class), format);
-    }
-
-    public DatePickerField(DateFieldDecor decor, DateTimeFormat format){
+    public DatePickerField(DateFieldDecor decor){
         this.decor = decor;
-        this.format = format;
         addStyleName(decor.css().dateField());
         setWidth(100);
+
+        triggerElement = buildTriggerElement();
+        triggerController = new TriggerController(this, triggerElement) {
+            @Override
+            protected FElement getExpandedElement() {
+                return DatePickerField.this.getDatePicker().getElement().cast();
+            }
+
+            @Override
+            public void onExpand() {
+                DatePickerField.this.onExpand();
+            }
+
+            @Override
+            public void onCollapse() {
+                DatePickerField.this.onCollapse();
+            }
+
+            @Override
+            public boolean isEnabled() {
+                return DatePickerField.this.isEnabled();
+            }
+        };
+    }
+
+    public void setEditable(boolean editable){
+        ((InputElement)getInputElement().cast()).setReadOnly(!editable);
     }
 
     @Override
     public void onAfterFirstAttach() {
         super.onAfterFirstAttach();
-        view.addClassName(decor.css().dateFieldView());
-        DOM.setEventListener(view, new EventListener() {
-            @Override
-            public void onBrowserEvent(Event event) {
-                expander.expandCollapse();
-            }
-        });
-        DOM.sinkEvents(view, Event.ONCLICK);
+        getInputElement().addClassName(decor.css().dateFieldView());
+        getElement().appendChild(triggerElement);
+
+        if(((InputElement)getInputElement().cast()).isReadOnly()) {
+            DOM.setEventListener(getInputElement(), new EventListener() {
+                @Override
+                public void onBrowserEvent(Event event) {
+                    triggerController.expandCollapse();
+                }
+            });
+            DOM.sinkEvents(getInputElement(), Event.ONCLICK);
+        }
     }
 
-    @Override
     protected FElement buildTriggerElement() {
         FElement ret = DOM.createDiv().cast();
         ret.addClassName(decor.css().dateFieldTrigger());
@@ -76,11 +101,6 @@ public class DatePickerField extends TriggerField<Date> {
         ret.appendChild(trIcon);
         trIcon.setClassName(decor.css().dateFieldTriggerIcon());
         return ret;
-    }
-
-    @Override
-    protected FElement getExpandedElement() {
-        return getDatePicker().getElement().cast();
     }
 
     protected void onExpand(){
@@ -104,7 +124,7 @@ public class DatePickerField extends TriggerField<Date> {
                 @Override
                 public void onValueChange(Date object) {
                     DatePickerField.this.setValue(object);
-                    expander.collapse();
+                    triggerController.collapse();
                 }
             });
         }
@@ -116,14 +136,11 @@ public class DatePickerField extends TriggerField<Date> {
     }
 
     @Override
-    public boolean setValue(Date value, boolean fire) {
-        if (view != null) {
-            if (value == null)
-                view.setInnerHTML("");
-            else
-                view.setInnerHTML(format.format(value));
+    public void setPixelSize(int width, int height) {
+        super.setPixelSize(width, height);
+        if(decor != null) {
+            getInputElement().setWidth(width - decor.css().pTriggerWidth());
         }
-        return super.setValue(value, fire);
     }
 
 }

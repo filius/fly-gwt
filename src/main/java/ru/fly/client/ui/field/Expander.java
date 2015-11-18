@@ -16,9 +16,9 @@
 
 package ru.fly.client.ui.field;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 import ru.fly.client.ui.FElement;
 
@@ -29,19 +29,12 @@ import ru.fly.client.ui.FElement;
  */
 public abstract class Expander {
 
-    private boolean enabled = true;
     private boolean expanded = false;
     private HandlerRegistration hReg;
     private FElement element;
-    private FElement expandElement;
 
-    public Expander(FElement element, FElement expandElement){
+    public Expander(FElement element){
         this.element = element;
-        this.expandElement = expandElement;
-    }
-
-    public void setEnabled(boolean val){
-        this.enabled = val;
     }
 
     private void addGlobalHideListener(){
@@ -54,8 +47,9 @@ public abstract class Expander {
                     case Event.ONSCROLL:
                     case Event.ONCLICK:
                         Element target = event.getNativeEvent().getEventTarget().cast();
-                        if (!DOM.isOrHasChild(element, target)
-                                && (expandElement == null || !DOM.isOrHasChild(expandElement, target)))
+                        Element expandElement = getExpandedElement();
+                        if (!element.isOrHasChild(target)
+                                && (expandElement == null || !expandElement.isOrHasChild(target)))
                             collapse();
                 }
             }
@@ -78,7 +72,7 @@ public abstract class Expander {
     }
 
     public void expand(boolean force){
-        if(!enabled || (expanded && !force))
+        if(!isEnabled() || (expanded && !force))
             return;
         expanded = true;
         addGlobalHideListener();
@@ -95,8 +89,12 @@ public abstract class Expander {
         return expanded;
     }
 
+    protected abstract FElement getExpandedElement();
+
     public abstract void onExpand();
 
     public abstract void onCollapse();
+
+    public abstract boolean isEnabled();
 
 }

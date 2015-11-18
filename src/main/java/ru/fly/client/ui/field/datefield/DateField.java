@@ -204,15 +204,15 @@ public class DateField extends InputElementField<Date> implements KeyUpEvent.Has
     private String normalizeDate(String val){
         String day = val.substring(0,2);
         if(!day.contains("_")){
-            int iday = Integer.valueOf(day);
-            if(iday > 31) day = "31";
-            if(iday < 1) day = "01";
+            int iDay = Integer.valueOf(day);
+            if(iDay > 31) day = "31";
+            if(iDay < 1) day = "01";
         }
         String month = val.substring(3,5);
         if(!month.contains("_")){
-            int imonth = Integer.valueOf(month);
-            if(imonth > 12) month = "12";
-            if(imonth < 1) month = "01";
+            int iMonth = Integer.valueOf(month);
+            if(iMonth > 12) month = "12";
+            if(iMonth < 1) month = "01";
         }
         return day + "." + month + val.substring(5, 10);
     }

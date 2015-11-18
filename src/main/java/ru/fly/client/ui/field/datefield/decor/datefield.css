@@ -1,4 +1,5 @@
 @external datePicker*;
+@def pTriggerWidth 18px;
 
 .dateField{
     border: 1px solid #5e93ab;
@@ -18,7 +19,7 @@
     line-height: 22px;
     overflow: hidden;
     cursor: default;
-    text-align: right;
+    /*text-align: right;*/
 }
 .disabled .dateFieldView{
     background-color: #eee;
@@ -29,7 +30,7 @@
     position: absolute;
     top: 0;
     right: 0;
-    width: 18px;
+    width: pTriggerWidth;
     height: 22px;
     background: #c1d4e7; /* Old browsers */
     background: linear-gradient(to bottom, #E0F0FF 0%,#b3c3d6 64%,#d7e1ef 100%); /* W3C */
