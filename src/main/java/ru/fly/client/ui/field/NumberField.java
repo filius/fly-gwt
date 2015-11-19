@@ -174,11 +174,6 @@ public class NumberField<T extends Number> extends InputElementField<T> implemen
     }
 
     @Override
-    public void setPixelSize(int width, int height) {
-        super.setPixelSize((width < 0)?width:width-2, (height < 0)?height:height-2);
-    }
-
-    @Override
     public HandlerRegistration addKeyUpHandler(KeyUpEvent.KeyUpHandler lnr){
         return addHandler(lnr, KeyUpEvent.getType());
     }

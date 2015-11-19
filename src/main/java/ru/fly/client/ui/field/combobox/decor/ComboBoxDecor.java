@@ -27,24 +27,21 @@ import ru.fly.client.ui.field.FieldDecor;
  */
 public class ComboBoxDecor {
 
-    public static interface Resources extends FieldDecor.Resources {
+    public interface Resources extends FieldDecor.Resources {
 
         @Source({"ru/fly/client/ui/common.css", "ru/fly/client/ui/field/field.css", "combobox.css"})
-        public Styles css();
+        Styles css();
 
         @Source("trigger.png")
         @ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
         ImageResource trigger();
 
-
     }
 
-    public static interface Styles extends FieldDecor.Styles {
+    public interface Styles extends FieldDecor.Styles {
 
-        @ClassName("combobox")
         String comboBox();
 
-        @ClassName("combobox-view")
         String comboBoxView();
 
         String comboBoxTrigger();
@@ -53,7 +50,6 @@ public class ComboBoxDecor {
 
         String untriggered();
 
-        @ClassName("list-view")
         String listView();
     }
 

@@ -4,8 +4,8 @@
 .dateField{
     border: 1px solid #5e93ab;
     background-color: #fff;
-    /*box-shadow: inset 1px 1px 2px #ddd;*/
-    height: 22px;
+    height: 24px;
+    box-sizing: border-box;
 }
 
 .dateFieldView{

@@ -1,10 +1,11 @@
-.combobox{
+.comboBox {
     border: 1px solid #5e93ab;
     background-color: #fff;
-    height: 22px;
+    height: 24px;
+    box-sizing: border-box;
 }
 
-.combobox-view{
+.comboBoxView {
     font :pFont;
     position: absolute;
     width: 100%;
@@ -14,21 +15,19 @@
     overflow: hidden;
     cursor: default;
     box-sizing: border-box;
-    \-moz-box-sizing: border-box;
-    \-webkit-box-sizing: border-box;
 }
-.untriggered .combobox-view{
+.untriggered .comboBoxView {
     right: 0;
 }
-.disabled .combobox-view{
+.disabled .comboBoxView {
     background-color: #eee;
     color: #444;
 }
-input.combobox-view{
+input.comboBoxView {
     background: transparent none;
 }
 @if user.agent ie6 ie8 {
-    input.combobox-view{
+    input.comboBoxView {
         line-height: 22px;
     }
 }
@@ -55,7 +54,7 @@ input.combobox-view{
     right: 3px;
 }
 
-.list-view{
+.listView {
     position: absolute;
     box-sizing: border-box;
     box-shadow: 0 3px 5px rgb(34, 34, 34);

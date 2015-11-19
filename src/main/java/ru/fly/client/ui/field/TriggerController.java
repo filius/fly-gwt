@@ -31,7 +31,6 @@ public abstract class TriggerController extends Expander {
     }
 
     private void initListeners(){
-        GWT.log("expand");
         if(tr != null){
             DOM.setEventListener(tr, new EventListener() {
                 @Override
