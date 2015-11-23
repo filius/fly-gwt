@@ -107,6 +107,13 @@ public class TabPanel extends LayoutContainer {
         }
     }
 
+    public void setItemHeader(Widget w, String text){
+        TabItem item = getItem(w);
+        if(item != null) {
+            item.setButtonHeader(text);
+        }
+    }
+
     public void add(Widget w, String text){
         getWidgets().add(w);
         TabItem item = new TabItem(this, w, text) {

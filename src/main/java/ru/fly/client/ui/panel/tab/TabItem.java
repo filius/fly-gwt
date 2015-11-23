@@ -42,8 +42,8 @@ public abstract class TabItem {
         this.panel = panel;
         this.w = w;
         btn = DOM.createDiv().cast();
-        btn.setInnerHTML("<span>"+text+"</span>");
         btn.setClassName(res.css().tabBtn());
+        setButtonHeader(text);
     }
 
     public void renderTabButton(FElement parent){
@@ -60,6 +60,10 @@ public abstract class TabItem {
         });
         DOM.sinkEvents(btn, Event.ONCLICK);
         btn.listenOver(res.css().over());
+    }
+
+    public void setButtonHeader(String text){
+        btn.setInnerHTML("<span>"+text+"</span>");
     }
 
     public void layout(){
