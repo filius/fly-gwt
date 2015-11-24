@@ -23,6 +23,6 @@ package ru.fly.client.ui.validator;
  */
 public interface Validator<T> {
 
-    public String validate(T value);
+    String validate(T value);
 
 }
