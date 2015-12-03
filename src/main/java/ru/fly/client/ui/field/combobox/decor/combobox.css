@@ -40,6 +40,7 @@ input.comboBoxView {
     height: 22px;
     background: #c1d4e7; /* Old browsers */
     background: linear-gradient(to bottom, #E0F0FF 0%,#b3c3d6 64%,#d7e1ef 100%); /* W3C */
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.7);
     border-left: 1px solid #5e93ab;
     cursor: pointer;
 }

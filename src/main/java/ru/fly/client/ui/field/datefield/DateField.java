@@ -158,11 +158,6 @@ public class DateField extends InputElementField<Date> implements KeyUpEvent.Has
     }
 
     @Override
-    public void setPixelSize(int width, int height) {
-        super.setPixelSize((width < 0) ? width : (width - 2), (height < 0) ? height : (height - 2));
-    }
-
-    @Override
     public boolean setValue(Date value, boolean fire) {
         boolean ret = super.setValue(value, fire);
         if(isAttached()){

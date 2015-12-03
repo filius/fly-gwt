@@ -54,12 +54,14 @@
     display: inline-block;
     border-color: transparent;
     background: transparent none;
+    box-shadow: none;
 }
 
 .toolbar .button.over{
     border-color: #F2BD54;
     background: #fdf5e3; /* Old browsers */
     background: linear-gradient(to bottom, #fdf5e3 0%,#f5d38a 63%,#fbe9c1 100%); /* W3C */
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.7);
 }
 
 .toolbar .button.focused{

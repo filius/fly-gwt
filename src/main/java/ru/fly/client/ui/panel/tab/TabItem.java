@@ -24,6 +24,7 @@ import com.google.gwt.user.client.ui.Widget;
 import ru.fly.client.F;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.ui.panel.Layout;
+import ru.fly.client.ui.panel.tab.decor.TabDecor;
 
 /**
  * User: fil
@@ -32,7 +33,7 @@ import ru.fly.client.ui.panel.Layout;
  */
 public abstract class TabItem {
 
-    private final TabRes res = GWT.create(TabRes.class);
+    private final TabDecor res = GWT.create(TabDecor.class);
 
     private TabPanel panel;
     private FElement btn;

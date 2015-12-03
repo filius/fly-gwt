@@ -80,6 +80,18 @@ public class ListStore<T> extends EventBase {
         return list.contains(item);
     }
 
+    /**
+     * exchange two element of store
+     * @param idx1 - element one
+     * @param idx2 - element two
+     */
+    public void exchange(int idx1, int idx2){
+        T tmp = list.get(idx1);
+        list.set(idx1, list.get(idx2));
+        list.set(idx2, tmp);
+        fireEvent(new UpdateEvent());
+    }
+
     public int size(){
         return getList().size();
     }

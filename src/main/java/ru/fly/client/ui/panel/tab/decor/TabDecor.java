@@ -14,7 +14,7 @@
  * the License.
  */
 
-package ru.fly.client.ui.panel.tab;
+package ru.fly.client.ui.panel.tab.decor;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
@@ -25,16 +25,16 @@ import ru.fly.client.ui.CommonDecor;
  * Date: 01.09.13
  * Time: 21:38
  */
-public class TabRes {
+public class TabDecor {
 
-    public static interface Resources extends ClientBundle{
+    public interface Resources extends ClientBundle{
 
         @Source({"ru/fly/client/ui/common.css", "tab.css"})
-        public TabCss css();
+        TabCss css();
 
     }
 
-    public static interface TabCss extends CommonDecor.Styles {
+    public interface TabCss extends CommonDecor.Styles {
 
         int pHdrHeight();
 
@@ -53,7 +53,7 @@ public class TabRes {
 
     private final Resources res = GWT.create(Resources.class);
 
-    public TabRes(){
+    public TabDecor(){
         res.css().ensureInjected();
     }
 

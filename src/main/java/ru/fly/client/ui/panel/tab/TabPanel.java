@@ -22,6 +22,7 @@ import com.google.gwt.user.client.ui.Widget;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.event.SelectEvent;
 import ru.fly.client.ui.panel.LayoutContainer;
+import ru.fly.client.ui.panel.tab.decor.TabDecor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ import java.util.List;
  */
 public class TabPanel extends LayoutContainer {
 
-    private final TabRes res = GWT.create(TabRes.class);
+    private final TabDecor res = GWT.create(TabDecor.class);
     private FElement tabButtons;
     private FElement container;
     private List<TabItem> items = new ArrayList<TabItem>();
