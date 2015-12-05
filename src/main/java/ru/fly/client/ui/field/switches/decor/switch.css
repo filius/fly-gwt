@@ -1,0 +1,54 @@
+.switchButton{
+    position: relative;
+    width: 60px;
+    height: 24px;
+    box-sizing: border-box;
+    border: 2px solid #5e93ab;
+    background: #eee;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.7);
+    cursor: pointer;
+    text-align: center;
+}
+
+@sprite .trigger{
+    gwt-image: 'trigger';
+    background-size: 20px 20px;
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+}
+
+.status{
+    display: none;
+    width: 34px;
+    height: 20px;
+    color: gray;
+    font: bold 12px arial;
+    line-height: 20px;
+}
+
+.switchButton.on{
+    background: #fdf5e3; /* Old browsers */
+    background: linear-gradient(to bottom, #fdf5e3 0%,#f5d38a 63%,#fbe9c1 100%); /* W3C */
+}
+.on .trigger{
+    float: right;
+}
+.on .status{
+    display: block;
+    margin: 0 20px 0 0;
+    color: green;
+}
+
+.switchButton.off{
+    background: #B8DEFA; /* Old browsers */
+    background: linear-gradient(to bottom, #DCECFA 0, #B8DEFA 64%, #D9E8FD 100%); /* W3C */
+}
+.off .trigger{
+    float: left;
+}
+.off .status{
+    display: block;
+    margin: 0 0 0 20px;
+    color: red;
+}

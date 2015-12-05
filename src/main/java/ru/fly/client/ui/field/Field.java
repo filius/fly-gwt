@@ -39,7 +39,8 @@ import java.util.List;
  * Date: 05.08.13
  * Time: 21:05
  */
-public class Field<T> extends Component implements LeafValueEditor<T>, HasEditorErrors<T> {
+public class Field<T> extends Component implements LeafValueEditor<T>, HasEditorErrors<T>,
+        ValueChangeEvent.HasValueChangeHandler<T> {
 
     private final FieldDecor decor = GWT.create(FieldDecor.class);
 
@@ -200,6 +201,7 @@ public class Field<T> extends Component implements LeafValueEditor<T>, HasEditor
         return true;
     }
 
+    @Override
     public HandlerRegistration addValueChangeHandler(ValueChangeEvent.ValueChangeHandler<T> handler) {
         return addHandler(handler, ValueChangeEvent.<T>getType());
     }
