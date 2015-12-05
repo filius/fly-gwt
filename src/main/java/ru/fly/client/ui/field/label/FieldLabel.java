@@ -23,7 +23,7 @@ import com.google.gwt.user.client.ui.Widget;
 import ru.fly.client.ui.Component;
 import ru.fly.client.F;
 import ru.fly.client.ui.FElement;
-import ru.fly.client.ui.field.combobox.ComboBox;
+import ru.fly.client.ui.field.label.decor.LabelDecor;
 import ru.fly.client.ui.panel.Layout;
 
 /**
@@ -122,6 +122,8 @@ public class FieldLabel extends Component implements Layout {
 
         lblEl = DOM.createDiv().cast();
         lblEl.setClassName(decor.css().label());
+        lblEl.getStyle().setMarginLeft(decor.css().pLabelMargin(), Style.Unit.PX);
+        lblEl.getStyle().setMarginRight(decor.css().pLabelMargin(), Style.Unit.PX);
         getElement().appendChild(lblEl);
         setLabelText(label);
 
@@ -133,27 +135,34 @@ public class FieldLabel extends Component implements Layout {
     }
 
     private void setLabelWidth(int labelWidth){
-        if(top){
-            fld.getElement().getStyle().clearMarginLeft();
-        }else{
-            fld.getElement().getStyle().setMarginLeft(labelWidth, Style.Unit.PX);
-        }
         if(lblEl != null){
-            lblEl.setWidth(labelWidth-labelMargin);
+            if(autoFill && top){
+                lblEl.setWidth(width - labelMargin);
+            }else {
+                lblEl.setWidth(labelWidth - labelMargin);
+            }
         }
-        if(autoFill && fld != null){
+        if (autoFill && fld != null) {
             int afWidth = width;
-            if(top){
-                if(afWidth < labelWidth){
+            if (top) {
+                if (afWidth < labelWidth) {
                     afWidth = labelWidth;
                 }
-            }else{
+                if(lblEl != null){
+                    int afHeight = getHeight(true) - lblEl.getHeight();
+                    if (fld instanceof Component) {
+                        ((Component) fld).setHeight(afHeight);
+                    } else {
+                        fld.setHeight(afHeight + "px");
+                    }
+                }
+            } else {
                 afWidth -= labelWidth;
             }
-            if(fld instanceof Component){
-                ((Component)fld).setWidth(afWidth);
-            }else{
-                fld.setWidth(afWidth+"px");
+            if (fld instanceof Component) {
+                ((Component) fld).setWidth(afWidth);
+            } else {
+                fld.setWidth(afWidth + "px");
             }
         }
     }
@@ -170,10 +179,15 @@ public class FieldLabel extends Component implements Layout {
         if(lblEl != null){
             if(top){
                 lblEl.getStyle().clearFloat();
-//                setHeight(fld.getHeight()+lblEl.getOffsetHeight());
             }else{
                 lblEl.getStyle().setFloat(Style.Float.LEFT);
-//                setHeight(fld.getHeight());
+            }
+        }
+        if(fld != null){
+            if(top){
+                fld.getElement().getStyle().setDisplay(Style.Display.BLOCK);
+            }else{
+                fld.getElement().getStyle().setDisplay(Style.Display.INLINE_BLOCK);
             }
         }
     }

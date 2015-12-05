@@ -17,8 +17,14 @@
 package ru.fly.client;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.AnchorElement;
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.web.bindery.event.shared.Event;
 import ru.fly.client.ui.CommonDecor;
 import ru.fly.client.ui.Container;
 
@@ -36,7 +42,7 @@ public class F {
     /**
      * вернет host + контекст приложения.
      * например: http://www.host.com/appname/
-     * @return
+     * @return -
      */
     public static String getHostAndContext(){
         String url = GWT.getHostPageBaseURL();
@@ -91,10 +97,6 @@ public class F {
         w.@com.google.gwt.user.client.ui.Widget::onAttach()();
     }-*/;
 
-//    private static native void onDetach(Widget w)/*-{
-//        w.@com.google.gwt.user.client.ui.Widget::onDetach()()
-//    }-*/;
-
     public static void setEnableTextSelection(Element e, boolean enabled){
         if(enabled){
             e.removeClassName(commonDecor.css().disableTextSelection());
@@ -117,7 +119,9 @@ public class F {
         }
     }-*/;
 
-    /** enable/disable page text selection by double click */
+    /**
+     * enable/disable page text selection by double click
+     */
     public native static void setEnableDblClickSelection(boolean enabled)/*-{
         if(enabled) {
             $doc.ondblclick = null;
@@ -132,7 +136,9 @@ public class F {
         }
     }-*/;
 
-    /** clear selection of text */
+    /**
+     * clear selection of text
+     */
     public native static void clearSelection()/*-{
         if ($wnd.getSelection) {
             $wnd.getSelection().removeAllRanges();
@@ -173,5 +179,19 @@ public class F {
             return @java.lang.Integer::valueOf(I)(number);
         }
     }-*/;
+
+    public static void startDownload(String url, boolean preventOpen){
+        if(BrowserDetect.isChrome() || BrowserDetect.isSafari()) {
+            AnchorElement link = DOM.createAnchor().cast();
+            link.setHref(url);
+            if (preventOpen) {
+                String fileName = url.substring(url.lastIndexOf('/') + 1, url.length());
+                link.setAttribute("download", fileName);
+            }
+            link.dispatchEvent(Document.get().createClickEvent(0, 0, 0, 0, 0, false, false, false, false));
+        }else{
+            Window.open(url, "_blank", "");
+        }
+    }
 
 }

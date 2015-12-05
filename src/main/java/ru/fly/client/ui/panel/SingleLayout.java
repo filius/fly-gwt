@@ -35,15 +35,20 @@ public class SingleLayout extends LayoutContainer implements HasOneWidget {
         super(el);
     }
 
+    public SingleLayout(Widget w){
+        this();
+        add(w);
+    }
+
     @Override
     public void add(Widget w) {
-        clear();
-        super.add(w);
+        add(w, new Margin(0));
     }
 
     public void add(Widget w, Margin m){
+        clear();
         w.setLayoutData(m);
-        add(w);
+        super.add(w);
     }
 
     @Override

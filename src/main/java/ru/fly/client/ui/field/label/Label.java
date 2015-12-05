@@ -19,6 +19,7 @@ package ru.fly.client.ui.field.label;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import ru.fly.client.ui.Component;
+import ru.fly.client.ui.field.label.decor.LabelDecor;
 
 public class Label extends Component {
 

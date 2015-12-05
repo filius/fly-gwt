@@ -14,7 +14,7 @@
  * the License.
  */
 
-package ru.fly.client.ui.field.label;
+package ru.fly.client.ui.field.label.decor;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
@@ -44,9 +44,14 @@ public class LabelDecor {
 
     }
 
-    public final Resources res = GWT.create(Resources.class);
+    private final Resources res;
 
     public LabelDecor(){
+        this(GWT.<Resources>create(Resources.class));
+    }
+
+    public LabelDecor(Resources res){
+        this.res = res;
         res.css().ensureInjected();
     }
 
