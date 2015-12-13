@@ -77,8 +77,8 @@ public class ContentPanel extends SingleLayout{
     protected void doLayout() {
         int w = getWidth(true)-innerBorderSpace;
         int h = getHeight(true)-headerEl.getOffsetHeight()-innerBorderSpace;
-        containerEl.setWidth(w);
-        containerEl.setHeight(h);
+        containerEl.setWidth(w < 0 ? 0 : w);
+        containerEl.setHeight(h < 0 ? h : h);
         Widget child = getWidget();
         if(child != null){
             if(child.getLayoutData() instanceof Margin){
