@@ -63,6 +63,10 @@ public class LazyLoadGrid<T> extends Grid<T> {
         loadNext();
     }
 
+    public void setPageSize(long pageSize){
+        this.pageSize = pageSize;
+    }
+
     public void clear(){
         fullSize = -1;
         offset = 0;
@@ -122,7 +126,7 @@ public class LazyLoadGrid<T> extends Grid<T> {
                     FElement inner = viewElement.getFirstChild().cast();
                     int h = viewElement.getHeight(true);
                     int top = viewElement.getScrollTop();
-                    if(top + h >= inner.getHeight()-400){
+                    if(top + h >= inner.getHeight() - (20 * pageSize / 2)){
                         loadNext();
                     }
                 }
