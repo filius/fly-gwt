@@ -43,6 +43,10 @@ public class FDate {
         put(11, "Декабрь");
     }};
 
+    public static FDate now(){
+        return new FDate();
+    }
+
     private static final long SECOND = 1000;
     private static final long MINUTE = 60000;
     private static final long HOUR = 3600000;
