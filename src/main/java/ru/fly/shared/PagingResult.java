@@ -18,7 +18,7 @@ package ru.fly.shared;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * User: fil
@@ -29,11 +29,11 @@ public class PagingResult<T> implements IsSerializable {
 
     private long fullSize;
 
-    private List<T> list;
+    private Collection<T> list;
 
     public PagingResult(){}
 
-    public PagingResult(long fullSize, List<T> list){
+    public PagingResult(long fullSize, Collection<T> list){
         this.fullSize = fullSize;
         this.list = list;
     }
@@ -46,11 +46,11 @@ public class PagingResult<T> implements IsSerializable {
         this.fullSize = fullSize;
     }
 
-    public List<T> getList() {
+    public Collection<T> getList() {
         return list;
     }
 
-    public void setList(List<T> list) {
+    public void setList(Collection<T> list) {
         this.list = list;
     }
 }
