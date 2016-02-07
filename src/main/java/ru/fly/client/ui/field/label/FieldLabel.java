@@ -38,36 +38,37 @@ public class FieldLabel extends Component implements Layout {
     private static final int DEFAULT_WIDTH = 100;
     private final int labelMargin = decor.css().pLabelMargin() * 2;
 
-    public static class FieldLabelR extends FieldLabel{
+    public static class FieldLabelR extends FieldLabel {
 
-        public FieldLabelR(Widget fld, String label){
+        public FieldLabelR(Widget fld, String label) {
             this(fld, label, DEFAULT_WIDTH);
         }
 
-        public FieldLabelR(Widget fld, String label, int labelWidth){
+        public FieldLabelR(Widget fld, String label, int labelWidth) {
             super(fld, label, labelWidth);
             setLabelRight(true);
         }
 
     }
 
-    public static class FieldLabelT extends FieldLabel{
+    public static class FieldLabelT extends FieldLabel {
 
-        public FieldLabelT(Widget fld, String label){
+        public FieldLabelT(Widget fld, String label) {
             this(fld, label, false);
         }
-        public FieldLabelT(Widget fld, String label, boolean floatLeft){
+
+        public FieldLabelT(Widget fld, String label, boolean floatLeft) {
             this(fld, label, DEFAULT_WIDTH, floatLeft);
         }
 
-        public FieldLabelT(Widget fld, String label, int labelWidth){
+        public FieldLabelT(Widget fld, String label, int labelWidth) {
             this(fld, label, labelWidth, false);
         }
 
-        public FieldLabelT(Widget fld, String label, int labelWidth, boolean floatLeft){
+        public FieldLabelT(Widget fld, String label, int labelWidth, boolean floatLeft) {
             super(fld, label, labelWidth);
             setTop(true);
-            if(floatLeft) {
+            if (floatLeft) {
                 setFloatLeft();
             }
         }
@@ -82,7 +83,7 @@ public class FieldLabel extends Component implements Layout {
     private boolean top = false;
     private boolean autoFill = false;
 
-    public FieldLabel(Widget fld, String label){
+    public FieldLabel(Widget fld, String label) {
         this(fld, label, DEFAULT_WIDTH);
     }
 
@@ -96,7 +97,7 @@ public class FieldLabel extends Component implements Layout {
 
     @Override
     public void layout(boolean force) {
-        if(fld != null && fld instanceof Layout) {
+        if (fld != null && fld instanceof Layout) {
             ((Layout) fld).layout(force);
         }
     }
@@ -111,7 +112,7 @@ public class FieldLabel extends Component implements Layout {
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
-        if(visible) {
+        if (visible) {
             layout(true);
         }
     }
@@ -134,11 +135,12 @@ public class FieldLabel extends Component implements Layout {
         setTop(top);
     }
 
-    private void setLabelWidth(int labelWidth){
-        if(lblEl != null){
-            if(autoFill && top){
+    private void setLabelWidth(int labelWidth) {
+        if (lblEl != null) {
+            if (autoFill && top) {
                 lblEl.setWidth(width - labelMargin);
-            }else {
+            } else {
+                GWT.log(labelWidth + "-" + labelMargin);
                 lblEl.setWidth(labelWidth - labelMargin);
             }
         }
@@ -148,7 +150,7 @@ public class FieldLabel extends Component implements Layout {
                 if (afWidth < labelWidth) {
                     afWidth = labelWidth;
                 }
-                if(lblEl != null){
+                if (lblEl != null) {
                     int afHeight = getHeight(true) - lblEl.getHeight();
                     if (fld instanceof Component) {
                         ((Component) fld).setHeight(afHeight);
@@ -162,48 +164,50 @@ public class FieldLabel extends Component implements Layout {
             if (fld instanceof Component) {
                 ((Component) fld).setWidth(afWidth);
             } else {
-                fld.setWidth(afWidth + "px");
+                if (afWidth > 0) {
+                    fld.setWidth(afWidth + "px");
+                }
             }
         }
     }
 
-    public void setLabelRight(boolean right){
+    public void setLabelRight(boolean right) {
         this.labelRight = right;
-        if(lblEl != null && right) {
+        if (lblEl != null && right) {
             lblEl.getStyle().setTextAlign(Style.TextAlign.RIGHT);
         }
     }
 
-    public void setTop(boolean top){
+    public void setTop(boolean top) {
         this.top = top;
-        if(lblEl != null){
-            if(top){
+        if (lblEl != null) {
+            if (top) {
                 lblEl.getStyle().clearFloat();
-            }else{
+            } else {
                 lblEl.getStyle().setFloat(Style.Float.LEFT);
             }
         }
-        if(fld != null){
-            if(top){
+        if (fld != null) {
+            if (top) {
                 fld.getElement().getStyle().setDisplay(Style.Display.BLOCK);
-            }else{
+            } else {
                 fld.getElement().getStyle().setDisplay(Style.Display.INLINE_BLOCK);
             }
         }
     }
 
-    public Widget getField(){
+    public Widget getField() {
         return fld;
     }
 
-    public void setLabelText(String text){
+    public void setLabelText(String text) {
         this.label = text;
-        if(isAttached()) {
+        if (isAttached()) {
             lblEl.setInnerHTML("<span>" + label + "&nbsp;:</span>");
         }
     }
 
-    public FieldLabel withAutoFill(){
+    public FieldLabel withAutoFill() {
         autoFill = true;
         setLabelWidth(labelWidth);
         return this;
