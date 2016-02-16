@@ -87,8 +87,7 @@ public class ComboBox<T> extends Field<T> {
                 needRedraw = true;
             }
         });
-        viewElement = DOM.createInputText().cast();
-        viewElement.addClassName(decor.css().comboBoxView());
+        viewElement = buildViewElement();
         triggerElement = buildTriggerElement();
         triggerController = new TriggerController(this, triggerElement) {
             @Override
@@ -135,6 +134,16 @@ public class ComboBox<T> extends Field<T> {
         ret.appendChild(trIcon);
         trIcon.setClassName(decor.css().comboBoxTriggerIcon());
         return ret;
+    }
+
+    protected FElement buildViewElement(){
+        FElement ret = DOM.createInputText().cast();
+        ret.addClassName(decor.css().comboBoxView());
+        return ret;
+    }
+
+    protected FElement getViewElement(){
+        return viewElement;
     }
 
     public void setGetter(Getter<T> getter){
