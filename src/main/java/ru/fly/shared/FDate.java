@@ -191,6 +191,11 @@ public class FDate {
         return this;
     }
 
+    public FDate addSeconds(long sec){
+        time += (SECOND * sec);
+        return this;
+    }
+
     public FDate addMinute(long minute){
         time += (MINUTE * minute);
         return this;
