@@ -17,8 +17,8 @@
 package ru.fly.client.ui;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Widget;
 import ru.fly.client.F;
@@ -102,6 +102,10 @@ public class Component extends Widget{
     public int getHeight(boolean client){
         int h = getElement().getHeight(client);
         return h > 0 ? h : this.height;
+    }
+
+    public void clearHeight() {
+        getElement().clearHeight();
     }
 
     public void setLeft(int left){

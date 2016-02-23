@@ -72,6 +72,10 @@ public class FElement extends com.google.gwt.user.client.Element {
         getStyle().setHeight(height < 0 ? 0 : height, Style.Unit.PX);
     }
 
+    public final void clearHeight() {
+        getStyle().clearHeight();
+    }
+
     public final void setMargin(int val){
         getStyle().setMargin(val, Style.Unit.PX);
     }

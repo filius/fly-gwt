@@ -19,22 +19,25 @@ package ru.fly.client.ui.field.combobox;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.*;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.EventListener;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
 import ru.fly.client.F;
 import ru.fly.client.LastRespAsyncCallback;
+import ru.fly.client.ListStore;
+import ru.fly.client.Loader;
 import ru.fly.client.event.SelectEvent;
 import ru.fly.client.event.UpdateEvent;
 import ru.fly.client.log.Log;
 import ru.fly.client.ui.FElement;
-import ru.fly.client.ListStore;
 import ru.fly.client.ui.field.Field;
 import ru.fly.client.ui.field.TriggerController;
 import ru.fly.client.ui.field.combobox.decor.ComboBoxDecor;
 import ru.fly.client.ui.listview.ListView;
-import ru.fly.client.Loader;
-import ru.fly.shared.Getter;
 import ru.fly.client.util.LastPassExecutor;
+import ru.fly.shared.Getter;
 import ru.fly.shared.util.StringUtils;
 
 import java.util.Collection;
@@ -58,8 +61,8 @@ public class ComboBox<T> extends Field<T> {
     private LastPassExecutor<String> queryExec = new LastPassExecutor<String>() {
         @Override
         protected void exec(String param) {
-            if(param != null && param.trim().isEmpty()) param = null;
-            if(!StringUtils.equalsTrim(query, param)){
+            if (param != null && param.trim().isEmpty()) param = null;
+            if (!StringUtils.equalsTrim(query, param)) {
                 query = param;
                 store.clear();
                 triggerController.expand(true);
@@ -118,12 +121,9 @@ public class ComboBox<T> extends Field<T> {
         getElement().appendChild(viewElement);
         getElement().appendChild(triggerElement);
         setSelectOnly(selectOnly);
-//        if(tr == null){
-//            addStyleName(decor.css().untriggered());
-//        }
     }
 
-    public ComboBoxDecor getDecor(){
+    public ComboBoxDecor getDecor() {
         return decor;
     }
 
@@ -136,28 +136,36 @@ public class ComboBox<T> extends Field<T> {
         return ret;
     }
 
-    protected FElement buildViewElement(){
+    public void setViewWordWrap(boolean wrap) {
+        if (wrap) {
+            getListView().addStyleName(decor.css().lineWrap());
+        } else {
+            getListView().removeStyleName(decor.css().lineWrap());
+        }
+    }
+
+    protected FElement buildViewElement() {
         FElement ret = DOM.createInputText().cast();
         ret.addClassName(decor.css().comboBoxView());
         return ret;
     }
 
-    protected FElement getViewElement(){
+    protected FElement getViewElement() {
         return viewElement;
     }
 
-    public void setGetter(Getter<T> getter){
+    public void setGetter(Getter<T> getter) {
         this.getter = getter;
     }
 
-    public void setSelectOnly(boolean selectOnly){
+    public void setSelectOnly(boolean selectOnly) {
         this.selectOnly = selectOnly;
-        if(viewElement != null){
-            ((InputElement)viewElement.cast()).setReadOnly(selectOnly);
+        if (viewElement != null) {
+            ((InputElement) viewElement.cast()).setReadOnly(selectOnly);
         }
     }
 
-    public void setAlwaysLoad(boolean val){
+    public void setAlwaysLoad(boolean val) {
         alwaysLoad = val;
     }
 
@@ -178,7 +186,7 @@ public class ComboBox<T> extends Field<T> {
     /**
      * очищает поле и удаляет все записи из его хранилища
      */
-    public void invalidate(){
+    public void invalidate() {
         clear();
         store.clear();
     }
@@ -186,58 +194,63 @@ public class ComboBox<T> extends Field<T> {
     @Override
     public void setValue(T value) {
         super.setValue(value);
-        if(viewElement != null){
+        if (viewElement != null) {
             String str = "";
             // ловим тут случай когда в геттере не обработан NULL
-            try{
+            try {
                 str = getter.get(value);
-            } catch (Exception e){
+            } catch (Exception e) {
                 Log.warn("Не обработан NULL", e);
             }
-            ((InputElement)viewElement.cast()).setValue(str);
+            ((InputElement) viewElement.cast()).setValue(str);
         }
         getListView().select(value, false);
     }
 
-    public void setHasEmpty(boolean hasEmpty){
+    public void setHasEmpty(boolean hasEmpty) {
         this.hasEmpty = hasEmpty;
         getListView().setHasEmpty(hasEmpty);
     }
 
     @SuppressWarnings("unchecked")
-    public void setLoader(Loader<String, ? extends Collection<T>> loader){
+    public void setLoader(Loader<String, ? extends Collection<T>> loader) {
         this.loader = (Loader<String, Collection<T>>) loader;
     }
 
-    private void updatePositionAndSize(){
-        if(!triggerController.isExpanded())
+    private void updatePositionAndSize() {
+        if (!triggerController.isExpanded())
             return;
         int top = getElement().getAbsoluteTop() + getHeight();
         int left = getElement().getAbsoluteLeft();
-        int wndViewHeight = Window.getClientHeight()+Window.getScrollTop() - 20;
+        int wndViewWidth = Window.getClientWidth() + Window.getScrollLeft() - 20;
+        int wndViewHeight = Window.getClientHeight() + Window.getScrollTop() - 20;
 
-        int height = getListView().getMaxHeight();
-        if(top < wndViewHeight / 2){
-            if(height > wndViewHeight - top){
+        if (getListView().getWidth() < getWidth()) {
+            getListView().setWidth(getWidth());
+        } else if (getListView().getWidth() > (wndViewWidth - getElement().getAbsoluteLeft())) {
+            getListView().setWidth(wndViewWidth - getElement().getAbsoluteLeft());
+        }
+        getListView().clearHeight();
+        int height = getListView().getHeight();
+        if (top < wndViewHeight / 2) {
+            if (height > wndViewHeight - top) {
                 height = wndViewHeight - top;
             }
-        }else{
-            if(height > getElement().getAbsoluteTop() - 20){
+        } else {
+            if (height > getElement().getAbsoluteTop() - 20) {
                 height = getElement().getAbsoluteTop() - 20;
                 top = 20;
-            }else{
+            } else {
                 top = getElement().getAbsoluteTop() - height;
             }
         }
-        if(getListView().getWidth() < getWidth())
-            getListView().setWidth(getWidth());
         getListView().setHeight(height);
         getListView().setPosition(left, top);
         getListView().focus();
     }
 
-    private ListView<T> getListView(){
-        if(listView == null){
+    protected ListView<T> getListView() {
+        if (listView == null) {
             listView = new ListView<>(store, getter);
             listView.addSelectHandler(new SelectEvent.SelectHandler<T>() {
                 @Override
@@ -254,27 +267,27 @@ public class ComboBox<T> extends Field<T> {
         return listView;
     }
 
-    protected void onExpand(){
+    protected void onExpand() {
         getListView().setPosition(-10000, -10000);
         RootPanel.get().add(getListView());
 
-        if(alwaysLoad || needRedraw || store.isEmpty() || query != null){
+        if (alwaysLoad || needRedraw || store.isEmpty() || query != null) {
             getListView().setLoading();
             load();
         }
         updatePositionAndSize();
     }
 
-    protected void onCollapse(){
+    protected void onCollapse() {
         getListView().removeFromParent();
-        if(query != null && !query.isEmpty()){
+        if (query != null && !query.isEmpty()) {
             query = null;
             store.clear();
         }
     }
 
-    private void load(){
-        if(loader != null){
+    private void load() {
+        if (loader != null) {
             loader.load(query, new LastRespAsyncCallback<Collection<T>>(loaderUID) {
                 @Override
                 public void onSuccessLast(Collection<T> result) {
@@ -289,17 +302,17 @@ public class ComboBox<T> extends Field<T> {
                     redrawListView();
                 }
             });
-        }else{
+        } else {
             redrawListView();
         }
     }
 
-    public String getQuery(){
+    public String getQuery() {
         return query;
     }
 
-    public void redrawListView(){
-        if(isAttached()){
+    public void redrawListView() {
+        if (isAttached()) {
             getListView().forceRedraw();
             getListView().getStyle().clearWidth();
         }
@@ -307,7 +320,7 @@ public class ComboBox<T> extends Field<T> {
         needRedraw = false;
     }
 
-    public ListStore<T> getStore(){
+    public ListStore<T> getStore() {
         return store;
     }
 

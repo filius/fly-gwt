@@ -24,10 +24,10 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
 import ru.fly.client.F;
 import ru.fly.client.ListStore;
+import ru.fly.client.event.SelectEvent;
 import ru.fly.client.event.UpdateEvent;
 import ru.fly.client.ui.Component;
 import ru.fly.client.ui.FElement;
-import ru.fly.client.event.SelectEvent;
 import ru.fly.client.ui.listview.decor.ListViewDecor;
 import ru.fly.shared.Getter;
 
@@ -51,7 +51,7 @@ public class ListView<T> extends Component {
     private T selected;
     private HandlerRegistration storeListener;
 
-    public ListView(ListViewDecor decor, ListStore<T> listStore, Getter<T> getter){
+    public ListView(ListViewDecor decor, ListStore<T> listStore, Getter<T> getter) {
         super(DOM.createDiv());
         this.decor = decor;
         this.store = listStore;
@@ -65,11 +65,11 @@ public class ListView<T> extends Component {
         });
     }
 
-    public ListView(ListStore<T> listStore, Getter<T> getter){
+    public ListView(ListStore<T> listStore, Getter<T> getter) {
         this(GWT.<ListViewDecor>create(ListViewDecor.class), listStore, getter);
     }
 
-    public ListView(Getter<T> getter){
+    public ListView(Getter<T> getter) {
         this(new ListStore<T>(), getter);
     }
 
@@ -77,7 +77,7 @@ public class ListView<T> extends Component {
     protected void onAttach() {
         super.onAttach();
         F.setEnableTextSelection(getElement(), false);
-        if(!rendered){
+        if (!rendered) {
             redraw();
         }
         addEventListeners();
@@ -89,7 +89,7 @@ public class ListView<T> extends Component {
         getElement().setTabIndex(F.getNextTabIdx());
     }
 
-    private void addEventListeners(){
+    private void addEventListeners() {
         final EventListener oldLnr = DOM.getEventListener(getElement());
         DOM.setEventListener(getElement(), new EventListener() {
             @Override
@@ -97,8 +97,8 @@ public class ListView<T> extends Component {
                 if (oldLnr != null) {
                     oldLnr.onBrowserEvent(event);
                 }
-                if(event.getTypeInt() == Event.ONKEYDOWN) {
-                    switch(event.getKeyCode()) {
+                if (event.getTypeInt() == Event.ONKEYDOWN) {
+                    switch (event.getKeyCode()) {
                         case KeyCodes.KEY_UP:
                             selectPrev();
                             event.preventDefault();
@@ -116,42 +116,43 @@ public class ListView<T> extends Component {
         DOM.sinkEvents(getElement(), DOM.getEventsSunk(getElement()) | Event.ONKEYDOWN);
     }
 
-    public void focus(){
+    public void focus() {
         getElement().focus();
     }
 
-    public Getter<T> getGetter(){
+    public Getter<T> getGetter() {
         return getter;
     }
 
-    public T getSelected(){
+    public T getSelected() {
         return selected;
     }
 
-    public ListStore<T> getStore(){
+    public ListStore<T> getStore() {
         return store;
     }
 
-    public void removeStoreListener(){
+    public void removeStoreListener() {
         storeListener.removeHandler();
     }
 
-    public void setLoading(){
+    public void setLoading() {
         setHeight(40);
         getElement().setInnerHTML(LOAD_PROCESS);
     }
 
-    public void fillData(List<T> list, boolean hasEmpty){
+    public void fillData(List<T> list, boolean hasEmpty) {
         rendered = false;
         this.hasEmpty = hasEmpty;
         this.store.fill(list);
         redraw();
     }
 
-    public int getMaxHeight(){
-        if(store.isEmpty())
+    public int getMaxHeight() {
+        if (store.isEmpty()) {
             return 40;
-        return ((hasEmpty)?store.getList().size()+1:store.getList().size()) *
+        }
+        return ((hasEmpty) ? store.getList().size() + 1 : store.getList().size()) *
                 (decor.css().pListViewItemHeight()) + decor.css().pListViewPadding() * 2 + 2;
     }
 
@@ -159,104 +160,104 @@ public class ListView<T> extends Component {
         return addHandler(handler, SelectEvent.<T>getType());
     }
 
-    public void select(T model){
+    public void select(T model) {
         select(model, true);
     }
 
-    public void select(T model, boolean fireEvent){
-        if(selected != null){
+    public void select(T model, boolean fireEvent) {
+        if (selected != null) {
             FElement item = getItemElement(selected);
-            if(item != null){
+            if (item != null) {
                 item.removeClassName(decor.css().selected());
             }
         }
         selected = model;
         FElement item = getItemElement(selected);
-        if(item != null){
+        if (item != null) {
             item.addClassName(decor.css().selected());
         }
-        if(fireEvent) {
+        if (fireEvent) {
             fireEvent(new SelectEvent<T>(model));
         }
     }
 
-    public void selectNext(){
+    public void selectNext() {
         List<T> l = getStore().getList();
         T selected = getSelected();
         int idx = selected == null ? 0 : (l.indexOf(selected) + 1);
-        if(idx >= l.size()) idx = l.size()-1;
+        if (idx >= l.size()) idx = l.size() - 1;
         T now = l.get(idx);
-        if(now.equals(selected)) {
+        if (now.equals(selected)) {
             return;
         }
         select(now, false);
     }
 
-    public void selectPrev(){
+    public void selectPrev() {
         List<T> l = getStore().getList();
         T selected = getSelected();
-        int idx = selected == null ? (l.size()-1) : (l.indexOf(selected) - 1);
-        if(idx < 0) idx = 0;
+        int idx = selected == null ? (l.size() - 1) : (l.indexOf(selected) - 1);
+        if (idx < 0) idx = 0;
         T now = l.get(idx);
-        if(now.equals(selected)) {
+        if (now.equals(selected)) {
             return;
         }
         select(now, false);
     }
 
-    public void clearSelection(){
+    public void clearSelection() {
         select(null, true);
     }
 
-    public void forceRedraw(){
+    public void forceRedraw() {
         redraw(true);
     }
 
-    public void setHasEmpty(boolean hasEmpty){
+    public void setHasEmpty(boolean hasEmpty) {
         boolean needRedraw = this.hasEmpty != hasEmpty;
         this.hasEmpty = hasEmpty;
-        if(needRedraw){
+        if (needRedraw) {
             redraw(true);
         }
     }
 
-    protected void redraw(){
+    protected void redraw() {
         redraw(false);
     }
 
-    protected void redraw(boolean force){
-        if((!isAttached() || rendered) && !force)
+    protected void redraw(boolean force) {
+        if ((!isAttached() || rendered) && !force)
             return;
         getElement().removeAll();
-        if(store.isEmpty()){
+        if (store.isEmpty()) {
             getElement().setInnerHTML(EMPTY);
-        }else{
+        } else {
             getElement().setInnerHTML("");
-            if(hasEmpty){
+            if (hasEmpty) {
                 renderItem(null);
             }
-            for(T item : store.getList()){
+            for (T item : store.getList()) {
                 renderItem(item);
             }
         }
         rendered = true;
     }
 
-    protected void renderItem(final T model){
+    protected void renderItem(final T model) {
         FElement el = DOM.createDiv().cast();
         el.setClassName(decor.css().listViewItem());
-        if(selected != null && selected.equals(model)){
+        if (selected != null && selected.equals(model)) {
             el.addClassName(decor.css().selected());
         }
         Object display = getter.get(model);
-        el.setInnerHTML((display == null)?"":display.toString());
+        el.setInnerHTML((display == null) ? "" : display.toString());
         getElement().appendChild(el);
         DOM.setEventListener(el, new EventListener() {
             @Override
             public void onBrowserEvent(Event event) {
-                if(event.getTypeInt() == Event.ONCLICK){
-                    if(isEnabled()){
-                        select(model,true);
+                if (event.getTypeInt() == Event.ONCLICK) {
+                    if (isEnabled()) {
+                        select(model, true);
                     }
                 }
             }
@@ -265,13 +266,13 @@ public class ListView<T> extends Component {
         el.listenOver(decor.css().over());
     }
 
-    private FElement getItemElement(T model){
+    private FElement getItemElement(T model) {
         int pos = store.getList().indexOf(model);
-        if(pos == -1)
+        if (pos == -1)
             return null;
-        if(hasEmpty)
+        if (hasEmpty)
             pos++;
-        if(getElement().getChildCount() <= pos)
+        if (getElement().getChildCount() <= pos)
             return null;
         return getElement().getChild(pos).cast();
     }

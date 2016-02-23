@@ -51,6 +51,8 @@ public class ComboBoxDecor {
         String untriggered();
 
         String listView();
+
+        String lineWrap();
     }
 
     private final Resources res;

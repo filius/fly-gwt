@@ -61,3 +61,8 @@ input.comboBoxView {
     box-shadow: 0 3px 5px rgb(34, 34, 34);
     z-index: 9999;
 }
+
+.listView.lineWrap div {
+    height: auto;
+    white-space: normal;
+}
