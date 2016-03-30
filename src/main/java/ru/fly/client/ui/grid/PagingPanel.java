@@ -17,7 +17,8 @@
 package ru.fly.client.ui.grid;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.rpc.AsyncCallback;
+import ru.fly.client.F;
+import ru.fly.client.LastRespAsyncCallback;
 import ru.fly.client.PageLoader;
 import ru.fly.client.event.ClickEvent;
 import ru.fly.client.log.Log;
@@ -35,6 +36,7 @@ import ru.fly.shared.PagingResult;
 public class PagingPanel<T> extends ToolBar{
 
     private final GridDecor decor = GWT.create(GridDecor.class);
+    private final String uid = F.getUID();
 
     private Grid<T> grid;
     private PageLoader<T> loader;
@@ -136,16 +138,17 @@ public class PagingPanel<T> extends ToolBar{
         long offset = (currentPage-1)*pageSize;
         if(fullSize == -1 || offset < fullSize){
             doMask();
-            loader.load(offset, pageSize, new AsyncCallback<PagingResult<T>>() {
-                @Override
-                public void onSuccess(PagingResult<T> result) {
-                    fullSize = result.getFullSize();
-                    grid.getStore().fill(result.getList());
-                    doUnmask();
-                }
+            loader.load(offset, pageSize, new LastRespAsyncCallback<PagingResult<T>>(uid) {
 
                 @Override
-                public void onFailure(Throwable caught) {
+                public void onSuccessLast(PagingResult<T> result) {
+                        fullSize = result.getFullSize();
+                        grid.getStore().fill(result.getList());
+                        doUnmask();
+                    }
+
+                @Override
+                public void onFailureLast(Throwable caught) {
                     Log.error("Ошибка при получении записей", caught);
                     doUnmask();
                 }

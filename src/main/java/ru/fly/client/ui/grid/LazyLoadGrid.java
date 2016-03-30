@@ -21,6 +21,8 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import ru.fly.client.F;
+import ru.fly.client.LastRespAsyncCallback;
 import ru.fly.client.log.Log;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.PageLoader;
@@ -37,6 +39,7 @@ import java.util.List;
 public class LazyLoadGrid<T> extends Grid<T> {
 
     private final GridDecor decor = GWT.create(GridDecor.class);
+    private final String uid = F.getUID();
     private long offset = 0;
     private long pageSize = 100;
     private long fullSize = -1;
@@ -86,23 +89,24 @@ public class LazyLoadGrid<T> extends Grid<T> {
             final long next = offset + pageSize;
             if(fullSize == -1 || offset < fullSize){
                 showLoadingMasker();
-                loader.load(offset, pageSize, new AsyncCallback<PagingResult<T>>() {
-                    @Override
-                    public void onSuccess(PagingResult<T> result) {
-                        hideLoadingMasker();
-                        offset = next;
-                        fullSize = result.getFullSize();
-                        getStore().addAll(result.getList());
-                        if(select != null){
-                            select(select);
-                        }
-                        if(cback != null){
-                            cback.onSuccess(result);
-                        }
-                    }
+                loader.load(offset, pageSize, new LastRespAsyncCallback<PagingResult<T>>(uid) {
 
                     @Override
-                    public void onFailure(Throwable caught) {
+                    public void onSuccessLast(PagingResult<T> result) {
+                            hideLoadingMasker();
+                            offset = next;
+                            fullSize = result.getFullSize();
+                            getStore().addAll(result.getList());
+                            if(select != null){
+                                select(select);
+                            }
+                            if(cback != null){
+                                cback.onSuccess(result);
+                            }
+                        }
+
+                    @Override
+                    public void onFailureLast(Throwable caught) {
                         Log.error("Ошибка при получении записей", caught);
                         hideLoadingMasker();
                         if(cback != null){
