@@ -252,6 +252,7 @@ public class ComboBox<T> extends Field<T> {
     protected ListView<T> getListView() {
         if (listView == null) {
             listView = new ListView<>(store, getter);
+            listView.setFireWalkingSelect(false);
             listView.addSelectHandler(new SelectEvent.SelectHandler<T>() {
                 @Override
                 public void onSelect(T object) {

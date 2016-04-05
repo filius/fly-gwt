@@ -17,6 +17,8 @@
 package ru.fly.client.ui.listview;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Node;
+import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
@@ -34,11 +36,9 @@ import ru.fly.shared.Getter;
 import java.util.List;
 
 /**
- * User: fil
- * Date: 05.08.13
- * Time: 21:49
+ * @author fil
  */
-public class ListView<T> extends Component {
+public class ListView<T> extends Component implements SelectEvent.HasSelectHandler<T> {
 
     protected final ListViewDecor decor;
 
@@ -48,6 +48,10 @@ public class ListView<T> extends Component {
     private Getter<T> getter;
     private boolean hasEmpty;
     private boolean rendered = false;
+    /**
+     * fire select event when select next or select prev by arrows
+     */
+    private boolean fireWalkingSelect = true;
     private T selected;
     private HandlerRegistration storeListener;
 
@@ -74,78 +78,29 @@ public class ListView<T> extends Component {
     }
 
     @Override
-    protected void onAttach() {
-        super.onAttach();
-        F.setEnableTextSelection(getElement(), false);
-        if (!rendered) {
-            redraw();
-        }
-        addEventListeners();
+    public HandlerRegistration addSelectHandler(SelectEvent.SelectHandler<T> handler) {
+        return addHandler(handler, SelectEvent.<T>getType());
     }
 
-    @Override
-    protected void onAfterFirstAttach() {
-        super.onAfterFirstAttach();
-        getElement().setTabIndex(F.getNextTabIdx());
-    }
-
-    private void addEventListeners() {
-        final EventListener oldLnr = DOM.getEventListener(getElement());
-        DOM.setEventListener(getElement(), new EventListener() {
-            @Override
-            public void onBrowserEvent(Event event) {
-                if (oldLnr != null) {
-                    oldLnr.onBrowserEvent(event);
-                }
-                if (event.getTypeInt() == Event.ONKEYDOWN) {
-                    switch (event.getKeyCode()) {
-                        case KeyCodes.KEY_UP:
-                            selectPrev();
-                            event.preventDefault();
-                            break;
-                        case KeyCodes.KEY_DOWN:
-                            selectNext();
-                            event.preventDefault();
-                            break;
-                        case KeyCodes.KEY_ENTER:
-                            select(getSelected(), true);
-                    }
-                }
-            }
-        });
-        DOM.sinkEvents(getElement(), DOM.getEventsSunk(getElement()) | Event.ONKEYDOWN);
-    }
-
-    public void focus() {
-        getElement().focus();
-    }
-
-    public Getter<T> getGetter() {
-        return getter;
-    }
-
-    public T getSelected() {
-        return selected;
-    }
-
-    public ListStore<T> getStore() {
-        return store;
+    public void setFireWalkingSelect(boolean fireWalkingSelect) {
+        this.fireWalkingSelect = fireWalkingSelect;
     }
 
     public void removeStoreListener() {
         storeListener.removeHandler();
     }
 
+    public void setHasEmpty(boolean hasEmpty) {
+        boolean needRedraw = this.hasEmpty != hasEmpty;
+        this.hasEmpty = hasEmpty;
+        if (needRedraw) {
+            redraw(true);
+        }
+    }
+
     public void setLoading() {
         setHeight(40);
         getElement().setInnerHTML(LOAD_PROCESS);
-    }
-
-    public void fillData(List<T> list, boolean hasEmpty) {
-        rendered = false;
-        this.hasEmpty = hasEmpty;
-        this.store.fill(list);
-        redraw();
     }
 
     public int getMaxHeight() {
@@ -156,8 +111,31 @@ public class ListView<T> extends Component {
                 (decor.css().pListViewItemHeight()) + decor.css().pListViewPadding() * 2 + 2;
     }
 
-    public HandlerRegistration addSelectHandler(SelectEvent.SelectHandler<T> handler) {
-        return addHandler(handler, SelectEvent.<T>getType());
+    public void focus() {
+        getElement().focus();
+    }
+
+    public void forceRedraw() {
+        redraw(true);
+    }
+
+    public Getter<T> getGetter() {
+        return getter;
+    }
+
+    public ListStore<T> getStore() {
+        return store;
+    }
+
+    public void fillData(List<T> list, boolean hasEmpty) {
+        rendered = false;
+        this.hasEmpty = hasEmpty;
+        this.store.fill(list);
+        redraw();
+    }
+
+    public T getSelected() {
+        return selected;
     }
 
     public void select(T model) {
@@ -190,7 +168,7 @@ public class ListView<T> extends Component {
         if (now.equals(selected)) {
             return;
         }
-        select(now, false);
+        select(now, fireWalkingSelect);
     }
 
     public void selectPrev() {
@@ -202,23 +180,36 @@ public class ListView<T> extends Component {
         if (now.equals(selected)) {
             return;
         }
-        select(now, false);
+        select(now, fireWalkingSelect);
     }
 
     public void clearSelection() {
         select(null, true);
     }
 
-    public void forceRedraw() {
-        redraw(true);
+    @Override
+    protected void onAttach() {
+        super.onAttach();
+        F.setEnableTextSelection(getElement(), false);
+        if (!rendered) {
+            redraw();
+        }
+        addEventListeners();
     }
 
-    public void setHasEmpty(boolean hasEmpty) {
-        boolean needRedraw = this.hasEmpty != hasEmpty;
-        this.hasEmpty = hasEmpty;
-        if (needRedraw) {
-            redraw(true);
+    @Override
+    protected void onDetach() {
+        super.onDetach();
+        NodeList<Node> childNodes = getElement().getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            ((FElement) childNodes.getItem(i).cast()).removeClassName(decor.css().over());
         }
+    }
+
+    @Override
+    protected void onAfterFirstAttach() {
+        super.onAfterFirstAttach();
+        getElement().setTabIndex(F.getNextTabIdx());
     }
 
     protected void redraw() {
@@ -264,6 +255,33 @@ public class ListView<T> extends Component {
         });
         DOM.sinkEvents(el, Event.ONCLICK);
         el.listenOver(decor.css().over());
+    }
+
+    private void addEventListeners() {
+        final EventListener oldLnr = DOM.getEventListener(getElement());
+        DOM.setEventListener(getElement(), new EventListener() {
+            @Override
+            public void onBrowserEvent(Event event) {
+                if (oldLnr != null) {
+                    oldLnr.onBrowserEvent(event);
+                }
+                if (event.getTypeInt() == Event.ONKEYDOWN) {
+                    switch (event.getKeyCode()) {
+                        case KeyCodes.KEY_UP:
+                            selectPrev();
+                            event.preventDefault();
+                            break;
+                        case KeyCodes.KEY_DOWN:
+                            selectNext();
+                            event.preventDefault();
+                            break;
+                        case KeyCodes.KEY_ENTER:
+                            select(getSelected(), true);
+                    }
+                }
+            }
+        });
+        DOM.sinkEvents(getElement(), DOM.getEventsSunk(getElement()) | Event.ONKEYDOWN);
     }
 
     private FElement getItemElement(T model) {

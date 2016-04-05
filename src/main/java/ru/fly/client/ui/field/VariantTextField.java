@@ -33,9 +33,9 @@ import ru.fly.client.event.SelectEvent;
 import ru.fly.client.log.Log;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.ui.field.combobox.decor.ComboBoxDecor;
-import ru.fly.shared.Getter;
 import ru.fly.client.ui.listview.ListView;
 import ru.fly.client.util.LastPassExecutor;
+import ru.fly.shared.Getter;
 import ru.fly.shared.util.StringUtils;
 
 import java.util.Collection;
@@ -78,6 +78,7 @@ public class VariantTextField<T> extends TextField implements SelectEvent.HasSel
     private ListView<T> getListView(){
         if(listView == null){
             listView = new ListView<T>(expandGetter);
+            listView.setFireWalkingSelect(false);
             listView.addSelectHandler(new SelectEvent.SelectHandler<T>() {
                 @Override
                 public void onSelect(T object) {
