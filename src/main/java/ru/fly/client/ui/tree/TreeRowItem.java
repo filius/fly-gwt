@@ -59,7 +59,7 @@ public abstract class TreeRowItem<T> extends Container {
 
         FElement textEl = DOM.createSpan().cast();
         try{
-            textEl.setInnerText(tree.getGetter().get(model));
+            textEl.setInnerHTML(tree.getGetter().get(model));
         }catch (NullPointerException e){
             textEl.setInnerText("");
             Log.warn("Unprocessed NULL model", new RuntimeException(e));
