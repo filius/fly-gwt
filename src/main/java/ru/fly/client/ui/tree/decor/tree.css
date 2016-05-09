@@ -1,4 +1,4 @@
-@def pTreeGridRowHeight 24px;
+@def pTreeRowHeight 24px;
 
 .tree{
     position: relative;
@@ -115,8 +115,8 @@
 }
 .treeGridRowItemHeader{
     padding: 0;
-    height: pTreeGridRowHeight;
-    line-height: pTreeGridRowHeight;
+    height: pTreeRowHeight;
+    line-height: pTreeRowHeight;
 }
 .treeGridRowItemHeader .arrow, .treeGridRowItemHeader .icon{
     margin-top: 2px;

@@ -17,25 +17,22 @@
 package ru.fly.client.ui.grid;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.ui.Widget;
-import ru.fly.client.event.GridRowDblClickEvent;
-import ru.fly.client.ui.Component;
 import ru.fly.client.F;
-import ru.fly.client.ui.FElement;
+import ru.fly.client.event.GridRowDblClickEvent;
 import ru.fly.client.event.SelectEvent;
+import ru.fly.client.ui.Component;
+import ru.fly.client.ui.FElement;
 import ru.fly.client.ui.grid.decor.GridDecor;
 
 import java.util.List;
 
 /**
- * User: fil
- * Date: 31.08.13
- * Time: 14:41
+ * @author fil
  */
 public class GridView<T> extends Component {
 

@@ -9,18 +9,23 @@ import ru.fly.client.event.SelectEvent;
 import ru.fly.client.event.UpdateEvent;
 import ru.fly.client.ui.Component;
 import ru.fly.client.ui.tree.decor.TreeDecor;
+import ru.fly.client.util.LastPassExecutor;
 import ru.fly.shared.FlyException;
 
 /**
- * User: fil
- * Date: 05.03.15
+ * @author fil
  */
 public class Tree<T> extends Component implements SelectEvent.HasSelectHandler<T> {
 
-
+    private final LastPassExecutor<T> redrawExec = new LastPassExecutor<T>(.5) {
+        @Override
+        protected void exec(T param) {
+            redraw();
+        }
+    };
     private final TreeDecor decor;
-    private TreeGetter<T> getter;
-    protected TreeStore<T> store;
+    private final TreeGetter<T> getter;
+    private final TreeStore<T> store;
     private TreeView<T> treeView;
 
     public Tree(TreeGetter<T> getter) {
@@ -29,7 +34,7 @@ public class Tree<T> extends Component implements SelectEvent.HasSelectHandler<T
 
     public Tree(TreeDecor decor, TreeGetter<T> getter) {
         super(DOM.createDiv());
-        if(decor == null){
+        if (decor == null) {
             throw new FlyException("Decorator for Tree component cant be NULL!");
         }
         this.decor = decor;
@@ -39,10 +44,26 @@ public class Tree<T> extends Component implements SelectEvent.HasSelectHandler<T
         store.addUpdateHandler(new UpdateEvent.UpdateHandler() {
             @Override
             public void onUpdate() {
-                redraw();
+                redrawExec.pass();
             }
         });
-        treeView = new TreeView<>();
+        setView(new TreeView<T>());
+    }
+
+    public TreeDecor getDecor() {
+        return decor;
+    }
+
+    public TreeGetter<T> getGetter() {
+        return getter;
+    }
+
+    public TreeStore<T> getStore() {
+        return store;
+    }
+
+    public void setView(TreeView<T> view) {
+        treeView = view;
         treeView.setTree(this);
         treeView.addSelectHandler(new SelectEvent.SelectHandler<T>() {
             @Override
@@ -52,37 +73,25 @@ public class Tree<T> extends Component implements SelectEvent.HasSelectHandler<T
         });
     }
 
-    public TreeDecor getDecor(){
-        return decor;
-    }
-
-    public TreeGetter<T> getGetter(){
-        return getter;
-    }
-
-    public TreeStore<T> getStore(){
-        return store;
-    }
-
-    public TreeView<T> getView(){
+    public TreeView<T> getView() {
         return treeView;
     }
 
-    public T getSelected(){
+    public T getSelected() {
         return getView().getSelected();
     }
 
-    public void select(T model){
+    public void select(T model) {
         getView().select(model, true);
     }
 
-    public void clear(){
+    public void clear() {
         getStore().clear();
         getView().select(null, false);
     }
 
-    public void expandAll(){
-        for(T child : getStore().getChildren(null)){
+    public void expandAll() {
+        for (T child : getStore().getChildren(null)) {
             getView().expandAll(child);
         }
     }
@@ -94,15 +103,17 @@ public class Tree<T> extends Component implements SelectEvent.HasSelectHandler<T
         redraw();
     }
 
-    public void redraw(){
-        if(!isAttached())
+    public void redraw() {
+        if (!isAttached()) {
             return;
+        }
         updateView();
     }
 
-    private void updateView(){
-        if(getView() != null)
+    private void updateView() {
+        if (getView() != null) {
             getView().redraw();
+        }
     }
 
     @Override

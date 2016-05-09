@@ -20,9 +20,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import ru.fly.shared.PagingResult;
 
 /**
- * User: fil
- * Date: 01.09.13
- * Time: 16:38
+ * @author fil
  */
 public interface PageLoader<T> {
 

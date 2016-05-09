@@ -58,6 +58,7 @@ public class TreeDecor {
 
     @CssResource.Shared
     public interface Styles extends CommonDecor.Styles {
+        int pTreeRowHeight();
         String tree();
         String treeRowItem();
         String treeRowItemHeader();

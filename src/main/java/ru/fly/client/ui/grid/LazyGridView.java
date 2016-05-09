@@ -24,28 +24,33 @@ import ru.fly.client.ui.FElement;
 import ru.fly.client.ui.grid.decor.GridDecor;
 import ru.fly.client.util.LastPassExecutor;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
- * User: fil
- * Date: 31.08.13
- * Time: 23:31
+ * @author fil
  */
 public class LazyGridView<T> extends GridView<T> {
 
-    private final GridDecor res = GWT.create(GridDecor.class);
     private Map<Integer, FElement> viewRows = new HashMap<Integer, FElement>();
-    LastPassExecutor renderAreaExec = new LastPassExecutor(.01) {
+    private LastPassExecutor renderAreaExec = new LastPassExecutor(.01) {
         @Override
         protected void exec(Object param) {
             renderViewArea();
         }
     };
-    boolean inRenderProcess = false;
+    private boolean inRenderProcess = false;
 
     public LazyGridView(){
-        super();
-        addStyleName(res.css().gridViewLazy());
+        this(GWT.<GridDecor>create(GridDecor.class));
+    }
+
+    public LazyGridView(GridDecor decor) {
+        super(decor);
+        addStyleName(decor.css().gridViewLazy());
     }
 
     @Override
@@ -104,7 +109,7 @@ public class LazyGridView<T> extends GridView<T> {
 
             for (int i = stIdx; i < enIdx; i++) {
                 if (!viewRows.containsKey(i)) {
-                    FElement row = renderRow(l.get(i), isStripe(i));
+                    FElement row = renderRow(l.get(i), i % 2 == 0);
                     row.setTop(rowHeight * i);
                     viewRows.put(i, row);
                 }
@@ -119,10 +124,6 @@ public class LazyGridView<T> extends GridView<T> {
         }finally {
             inRenderProcess = false;
         }
-    }
-
-    private boolean isStripe(int i){
-        return (float)i/2F > i/2;
     }
 
 }

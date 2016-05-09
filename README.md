@@ -3,7 +3,7 @@
 Small set of UI components for GWT applications
 
 ##Current Snapshot
-0.4.0-SNAPSHOT-SNAPSHOT
+0.5.0-SNAPSHOT-SNAPSHOT
 
 ##Examples
 http://filius.github.io/fly-gwt-examples/
