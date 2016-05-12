@@ -17,8 +17,7 @@
 package ru.fly.shared.util;
 
 /**
- * User: fil
- * Date: 27.11.14
+ * @author fil
  */
 public class StringUtils {
 
@@ -41,6 +40,10 @@ public class StringUtils {
         }else{
             return s2 != null && s1.trim().equals(s2.trim());
         }
+    }
+
+    public static boolean isEmpty(String str){
+        return str == null || str.trim().length() == 0;
     }
 
 }
