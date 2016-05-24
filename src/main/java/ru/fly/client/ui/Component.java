@@ -68,6 +68,11 @@ public class Component extends Widget{
         return getElement().getStyle();
     }
 
+    public Component withPixelsize(int width, int height) {
+        setPixelSize(width, height);
+        return this;
+    }
+
     public void setWidth(int width){
         setPixelSize(width, -1);
     }
