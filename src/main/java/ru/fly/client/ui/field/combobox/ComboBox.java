@@ -43,9 +43,7 @@ import ru.fly.shared.util.StringUtils;
 import java.util.Collection;
 
 /**
- * User: fil
- * Date: 05.08.13
- * Time: 21:45
+ * @author fil
  */
 public class ComboBox<T> extends Field<T> {
 
@@ -231,7 +229,7 @@ public class ComboBox<T> extends Field<T> {
             getListView().setWidth(wndViewWidth - getElement().getAbsoluteLeft());
         }
         getListView().clearHeight();
-        int height = getListView().getHeight();
+        int height = getListView().getMaxHeight();
         if (top < wndViewHeight / 2) {
             if (height > wndViewHeight - top) {
                 height = wndViewHeight - top;
