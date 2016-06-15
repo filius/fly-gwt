@@ -190,8 +190,8 @@ public class ComboBox<T> extends Field<T> {
     }
 
     @Override
-    public void setValue(T value) {
-        super.setValue(value);
+    public boolean setValue(T value, boolean fire) {
+        boolean ret = super.setValue(value, fire);
         if (viewElement != null) {
             String str = "";
             // ловим тут случай когда в геттере не обработан NULL
@@ -203,6 +203,7 @@ public class ComboBox<T> extends Field<T> {
             ((InputElement) viewElement.cast()).setValue(str);
         }
         getListView().select(value, false);
+        return ret;
     }
 
     public void setHasEmpty(boolean hasEmpty) {
