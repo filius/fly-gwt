@@ -20,16 +20,14 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Widget;
-import ru.fly.client.ui.Component;
 import ru.fly.client.F;
+import ru.fly.client.ui.Component;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.ui.field.label.decor.LabelDecor;
 import ru.fly.client.ui.panel.Layout;
 
 /**
- * User: fil
- * Date: 10.08.13
- * Time: 10:58
+ * @author fil
  */
 public class FieldLabel extends Component implements Layout {
 
@@ -97,8 +95,15 @@ public class FieldLabel extends Component implements Layout {
 
     @Override
     public void layout(boolean force) {
-        if (fld != null && fld instanceof Layout) {
-            ((Layout) fld).layout(force);
+        if (fld != null) {
+//            if (autoFill) {
+//                if (top) {
+//                    fld.setPixelSize(getWidth(), getHeight() - lblEl.getHeight());
+//                }
+//            }
+            if (fld instanceof Layout) {
+                ((Layout) fld).layout(force);
+            }
         }
     }
 
@@ -150,14 +155,14 @@ public class FieldLabel extends Component implements Layout {
                 if (afWidth < labelWidth) {
                     afWidth = labelWidth;
                 }
-                if (lblEl != null) {
-                    int afHeight = getHeight(true) - lblEl.getHeight();
-                    if (fld instanceof Component) {
-                        ((Component) fld).setHeight(afHeight);
-                    } else {
-                        fld.setHeight(afHeight + "px");
-                    }
-                }
+//                if (lblEl != null && isAttached()) {
+//                    int afHeight = getHeight(true) - lblEl.getHeight();
+//                    if (fld instanceof Component) {
+//                        ((Component) fld).setHeight(afHeight);
+//                    } else {
+//                        fld.setHeight(afHeight + "px");
+//                    }
+//                }
             } else {
                 afWidth -= labelWidth;
             }
