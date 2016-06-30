@@ -36,7 +36,7 @@ public class ListViewDecor {
     }
 
     @CssResource.Shared
-    public static interface Styles extends CommonDecor.Styles {
+    public interface Styles extends CommonDecor.Styles {
 
         int pListViewItemHeight();
 

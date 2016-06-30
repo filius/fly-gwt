@@ -108,7 +108,7 @@ public class ListView<T> extends Component implements SelectEvent.HasSelectHandl
             return 40;
         }
         return ((hasEmpty) ? store.getList().size() + 1 : store.getList().size()) *
-                (decor.css().pListViewItemHeight()) + decor.css().pListViewPadding() * 2 + 2;
+                (decor.css().pListViewItemHeight() + 2) + decor.css().pListViewPadding() * 2 + 2;
     }
 
     public void focus() {

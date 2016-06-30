@@ -227,7 +227,7 @@ public class ComboBox<T> extends Field<T> {
         if (getListView().getWidth() < getWidth()) {
             getListView().setWidth(getWidth());
         } else if (getListView().getWidth() > (wndViewWidth - getElement().getAbsoluteLeft())) {
-            getListView().setWidth(wndViewWidth - getElement().getAbsoluteLeft());
+            getListView().setWidth(wndViewWidth - getElement().getAbsoluteLeft() + 2);
         }
         getListView().clearHeight();
         int height = getListView().getMaxHeight();
@@ -291,7 +291,7 @@ public class ComboBox<T> extends Field<T> {
             loader.load(query, new LastRespAsyncCallback<Collection<T>>(loaderUID) {
                 @Override
                 public void onSuccessLast(Collection<T> result) {
-                    store.fill(result);
+                    store.fill(filterResult(result));
                     redrawListView();
                 }
 
@@ -305,6 +305,10 @@ public class ComboBox<T> extends Field<T> {
         } else {
             redrawListView();
         }
+    }
+
+    protected Collection<T> filterResult(Collection<T> result) {
+        return result;
     }
 
     public String getQuery() {
