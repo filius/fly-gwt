@@ -20,14 +20,17 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * User: fil
- * Date: 08.01.14
- * Time: 14:45
+ * @author fil
  */
 public class FlowLayout extends LayoutContainer{
 
     public FlowLayout() {
         super(DOM.createDiv());
+    }
+
+    public FlowLayout(Widget child) {
+        this();
+        add(child);
     }
 
     @Override

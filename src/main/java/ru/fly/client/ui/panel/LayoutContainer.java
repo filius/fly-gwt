@@ -25,9 +25,7 @@ import ru.fly.client.ui.CommonDecor;
 import ru.fly.client.ui.Container;
 
 /**
- * User: fil
- * Date: 03.09.13
- * Time: 23:10
+ * @author fil
  */
 public class LayoutContainer extends Container implements Layout {
 

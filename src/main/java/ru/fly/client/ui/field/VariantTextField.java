@@ -41,9 +41,7 @@ import ru.fly.shared.util.StringUtils;
 import java.util.Collection;
 
 /**
- * User: fil
- * Date: 24.09.13
- * Time: 21:53
+ * @author fil
  */
 public class VariantTextField<T> extends TextField implements SelectEvent.HasSelectHandler<T> {
 
@@ -59,8 +57,8 @@ public class VariantTextField<T> extends TextField implements SelectEvent.HasSel
     private LastPassExecutor<String> queryExec = new LastPassExecutor<String>() {
         @Override
         protected void exec(String param) {
-            if(param != null && param.trim().isEmpty()) param = null;
-            if(!StringUtils.equalsTrim(query, param)){
+            if (param != null && param.trim().isEmpty()) param = null;
+            if (!StringUtils.equalsTrim(query, param)) {
                 query = param;
                 store.clear();
                 expander.expand(true);
@@ -69,14 +67,14 @@ public class VariantTextField<T> extends TextField implements SelectEvent.HasSel
     };
     private String loaderUID = F.getUID();
 
-    public VariantTextField(Getter<T> getter, Getter<T> expandGetter){
+    public VariantTextField(Getter<T> getter, Getter<T> expandGetter) {
         super();
         this.getter = getter;
         this.expandGetter = expandGetter;
     }
 
-    private ListView<T> getListView(){
-        if(listView == null){
+    private ListView<T> getListView() {
+        if (listView == null) {
             listView = new ListView<T>(expandGetter);
             listView.setFireWalkingSelect(false);
             listView.addSelectHandler(new SelectEvent.SelectHandler<T>() {
@@ -92,7 +90,7 @@ public class VariantTextField<T> extends TextField implements SelectEvent.HasSel
         return listView;
     }
 
-    protected boolean beforeQuery(String query){
+    protected boolean beforeQuery(String query) {
         return true;
     }
 
@@ -110,7 +108,7 @@ public class VariantTextField<T> extends TextField implements SelectEvent.HasSel
                 getListView().setPosition(-10000, -10000);
                 RootPanel.get().add(getListView());
 
-                if(store.isEmpty() || query != null){
+                if (store.isEmpty() || query != null) {
                     getListView().setLoading();
                     load();
                 }
@@ -120,7 +118,7 @@ public class VariantTextField<T> extends TextField implements SelectEvent.HasSel
             @Override
             public void onCollapse() {
                 getListView().removeFromParent();
-                if(query != null && !query.isEmpty()){
+                if (query != null && !query.isEmpty()) {
                     query = null;
                     store.clear();
                 }
@@ -134,19 +132,19 @@ public class VariantTextField<T> extends TextField implements SelectEvent.HasSel
     }
 
     @SuppressWarnings("unchecked")
-    public void setLoader(Loader<String, ? extends Collection<T>> loader){
+    public void setLoader(Loader<String, ? extends Collection<T>> loader) {
         this.loader = (Loader<String, Collection<T>>) loader;
     }
 
-    private void load(){
-        if(loader != null){
+    private void load() {
+        if (loader != null) {
             loader.load(query, new LastRespAsyncCallback<Collection<T>>(loaderUID) {
                 @Override
                 public void onSuccessLast(Collection<T> result) {
                     store.clear();
-                    if(result == null || result.size() < 1 || !isFocused()){
+                    if (result == null || result.size() < 1 || !isFocused()) {
                         expander.collapse();
-                    }else{
+                    } else {
                         store.addAll(result);
                         rebuildListView();
                     }
@@ -169,7 +167,7 @@ public class VariantTextField<T> extends TextField implements SelectEvent.HasSel
         DOM.setEventListener(getInputElement(), new EventListener() {
             @Override
             public void onBrowserEvent(Event event) {
-                if(oldLnr != null) {
+                if (oldLnr != null) {
                     oldLnr.onBrowserEvent(event);
                 }
                 if (event.getTypeInt() == Event.ONKEYUP) {
@@ -191,40 +189,47 @@ public class VariantTextField<T> extends TextField implements SelectEvent.HasSel
         DOM.sinkEvents(getInputElement(), DOM.getEventsSunk(getInputElement()) | Event.ONKEYUP);
     }
 
-    public void rebuildListView(){
-        if(isAttached()) {
+    public void rebuildListView() {
+        if (isAttached()) {
             getListView().fillData(store.getList(), false);
         }
         updatePositionAndSize();
     }
 
-    private void updatePositionAndSize(){
-        if(!expander.isExpanded())
+    private void updatePositionAndSize() {
+        if (!expander.isExpanded()) {
             return;
+        }
+        ListView<T> listView = getListView();
         int top = getElement().getAbsoluteTop() + getHeight();
         int left = getElement().getAbsoluteLeft();
-        int wndViewHeight = Window.getClientHeight()+Window.getScrollTop() - 20;
+        int wndViewWidth = Window.getClientWidth() + Window.getScrollLeft() - 20;
+        int wndViewHeight = Window.getClientHeight() + Window.getScrollTop() - 20;
+        // ListView width calculation
+        if (listView.getWidth() < getWidth()) {
+            listView.setWidth(getWidth());
+        } else if (listView.getWidth() > (wndViewWidth - getElement().getAbsoluteLeft())) {
+            listView.setWidth(wndViewWidth - getElement().getAbsoluteLeft() + 2);
+        }
 
-        int height = getListView().getMaxHeight();
-        if(top < wndViewHeight / 2){
-            if(height > wndViewHeight - top){
+        // now we may recalculate position and height
+        listView.clearHeight();
+        int height = listView.getHeight();
+        if (top < wndViewHeight / 2) {
+            if (height > wndViewHeight - top) {
                 height = wndViewHeight - top;
             }
-        }else{
-            if(height > getElement().getAbsoluteTop() - 20){
+        } else {
+            if (height > getElement().getAbsoluteTop() - 20) {
                 height = getElement().getAbsoluteTop() - 20;
                 top = 20;
-            }else{
+            } else {
                 top = getElement().getAbsoluteTop() - height;
             }
         }
-        getListView().setHeight(height);
-        getListView().setPosition(left, top);
-
-        int right = getListView().getElement().getAbsoluteRight();
-        if(right > Window.getClientWidth()){
-            getListView().setWidth(getListView().getWidth(false) - right + Window.getClientWidth() - 20);
-        }
+        listView.setPosition(left, top);
+        // change height
+        listView.setHeight(height);
     }
 
     public HandlerRegistration addSelectHandler(SelectEvent.SelectHandler<T> handler) {

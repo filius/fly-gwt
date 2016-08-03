@@ -217,20 +217,23 @@ public class ComboBox<T> extends Field<T> {
     }
 
     private void updatePositionAndSize() {
-        if (!triggerController.isExpanded())
+        if (!triggerController.isExpanded()) {
             return;
+        }
+        ListView<T> listView = getListView();
         int top = getElement().getAbsoluteTop() + getHeight();
         int left = getElement().getAbsoluteLeft();
         int wndViewWidth = Window.getClientWidth() + Window.getScrollLeft() - 20;
         int wndViewHeight = Window.getClientHeight() + Window.getScrollTop() - 20;
-
-        if (getListView().getWidth() < getWidth()) {
-            getListView().setWidth(getWidth());
-        } else if (getListView().getWidth() > (wndViewWidth - getElement().getAbsoluteLeft())) {
-            getListView().setWidth(wndViewWidth - getElement().getAbsoluteLeft() + 2);
+        // ListView width calculation
+        if (listView.getWidth() < getWidth()) {
+            listView.setWidth(getWidth());
+        } else if (listView.getWidth() > (wndViewWidth - getElement().getAbsoluteLeft())) {
+            listView.setWidth(wndViewWidth - getElement().getAbsoluteLeft() + 2);
         }
-        getListView().clearHeight();
-        int height = getListView().getMaxHeight();
+        // now we may recalculate position and height
+        listView.clearHeight();
+        int height = listView.getHeight();
         if (top < wndViewHeight / 2) {
             if (height > wndViewHeight - top) {
                 height = wndViewHeight - top;
@@ -243,9 +246,10 @@ public class ComboBox<T> extends Field<T> {
                 top = getElement().getAbsoluteTop() - height;
             }
         }
-        getListView().setHeight(height);
-        getListView().setPosition(left, top);
-        getListView().focus();
+        listView.setPosition(left, top);
+        // change height
+        listView.setHeight(height);
+        listView.focus();
     }
 
     protected ListView<T> getListView() {

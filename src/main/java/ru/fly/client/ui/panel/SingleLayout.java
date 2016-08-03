@@ -21,9 +21,7 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.*;
 
 /**
- * User: fil
- * Date: 03.09.13
- * Time: 23:19
+ * @author fil
  */
 public class SingleLayout extends LayoutContainer implements HasOneWidget {
 
