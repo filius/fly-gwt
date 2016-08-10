@@ -145,7 +145,6 @@ public class FieldLabel extends Component implements Layout {
             if (autoFill && top) {
                 lblEl.setWidth(width - labelMargin);
             } else {
-                GWT.log(labelWidth + "-" + labelMargin);
                 lblEl.setWidth(labelWidth - labelMargin);
             }
         }

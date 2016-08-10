@@ -56,6 +56,10 @@ public class FDate {
     private static final int MAX_DAY_OF_WEEK = 6;
     private static final int ISO_THURSDAY = 4;
 
+    public static boolean equals(Date o1, Date o2) {
+        return (o1 == null && o2 == null) || (o1 != null && o2 != null && o1.getTime() == o2.getTime());
+    }
+
     private long time;
 
     public FDate(){

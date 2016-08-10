@@ -193,7 +193,6 @@ public class Header<T> extends Component implements GridColumnResizeEvent.HasGri
         }
         left += 20;
         right -= 20;
-        GWT.log(left+" "+right);
         if(left > right){
             left = right;
         }

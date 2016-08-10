@@ -19,8 +19,7 @@ import org.junit.Test;
 import ru.fly.shared.FDate;
 
 /**
- * fil
- * 03.07.14
+ * @author fil
  */
 public class FDateJUnitTest extends Assert {
 
@@ -48,6 +47,14 @@ public class FDateJUnitTest extends Assert {
         assertEquals("01.10.2015#00:00:00", new FDate(1, 1, 2016).clearTime().addMonth(-3).toStringFull());
 
         assertEquals("01.01.2015#00:00:00", new FDate(1, 1, 2016).clearTime().addMonth(-12).toStringFull());
+    }
+
+    @Test
+    public void testEquals() {
+        assertTrue(FDate.equals(null, null));
+        assertFalse(FDate.equals(new FDate(1, 1, 2016).asDate(), null));
+        assertFalse(FDate.equals(null, new FDate(1, 1, 2016).asDate()));
+        assertTrue(FDate.equals(new FDate(1, 1, 2016).asDate(), new FDate(1, 1, 2016).asDate()));
     }
 
 }

@@ -25,9 +25,11 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.impl.TextBoxImpl;
 import ru.fly.client.event.KeyUpEvent;
+import ru.fly.client.event.ValueChangeEvent;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.ui.field.InputElementField;
 import ru.fly.client.ui.field.TextFieldDecor;
+import ru.fly.shared.FDate;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -186,7 +188,17 @@ public class DateField extends InputElementField<Date> implements KeyUpEvent.Has
         }
         return super.getValue();
     }
-    
+
+    @Override
+    protected void onBlur() {
+        super.onBlur();
+        Date oldValue = value;
+        Date newValue = getValue();
+        if (!FDate.equals(oldValue, newValue)) {
+            fireEvent(new ValueChangeEvent<Date>(newValue));
+        }
+    }
+
     private boolean isEmptyMask(String val){
         for(int i=0; i<val.length(); i++){
             if(out.charAt(i) != '_' && maskFormat.charAt(i) == '9'){
