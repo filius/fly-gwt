@@ -1,3 +1,8 @@
+##0.4.13
+###New feature
+
+- Added new function showToTheLeft for positioning PopUp to the right 
+
 ##0.4.12
 ###Improvement
 
