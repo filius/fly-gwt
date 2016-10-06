@@ -1,3 +1,8 @@
+##0.5.0
+###New feature
+
+- Added multiple upload component
+
 ##0.4.13
 ###New feature
 
