@@ -1,3 +1,8 @@
+##0.5.1
+###New feature
+
+- added KeyResolver for ListStore and implement logic for Grid 
+
 ##0.5.0
 ###New feature
 

@@ -63,7 +63,7 @@ public class LazyGridView<T> extends GridView<T> {
     protected void redraw() {
         if(inner != null){
             inner.removeAll();
-            inner.setHeight(grid.getStore().getList().size() * rowHeight);
+            inner.setHeight(grid.getStore().size() * rowHeight);
         }
         viewRows.clear();
         renderAreaExec.pass();
@@ -104,8 +104,9 @@ public class LazyGridView<T> extends GridView<T> {
             long bottom = top + getHeight(true);
             int stIdx = (int) (top / rowHeight);
             int enIdx = (int) (bottom / rowHeight) + 2;
-            if (enIdx > l.size())
+            if (enIdx > l.size()) {
                 enIdx = l.size();
+            }
 
             for (int i = stIdx; i < enIdx; i++) {
                 if (!viewRows.containsKey(i)) {
