@@ -1,9 +1,11 @@
 ## Fly-GWT
-
 Small set of UI components for GWT applications
 
-##Current Snapshot
-0.5.0-SNAPSHOT-SNAPSHOT
+## Maven repository
+http://dl.bintray.com/fil/maven
+
+##Current actual version
+0.5.1
 
 ##Examples
 http://filius.github.io/fly-gwt-examples/

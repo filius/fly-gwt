@@ -17,10 +17,30 @@
         <gwt.version>2.7.0</gwt.version>
     </properties>
 
+    <scm>
+        <connection>scm:git:https://github.com/filius/fly-gwt.git</connection>
+        <developerConnection>scm:git:git@github.com:filius/fly-gwt.git</developerConnection>
+        <url>https://github.com/filius/fly-gwt</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <repositories>
+        <repository>
+            <id>bintray</id>
+            <url>http://dl.bintray.com/fil/maven</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <distributionManagement>
         <repository>
-            <id>bonasorto.repo</id>
-            <url>file:///opt/maven</url>
+            <id>bintray</id>
+            <url>https://api.bintray.com/maven/fil/maven/fly-gwt</url>
         </repository>
     </distributionManagement>
 
@@ -68,7 +88,6 @@
 
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
                 <version>2.2.1</version>
                 <executions>
@@ -80,6 +99,24 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                </configuration>
             </plugin>
         </plugins>
     </build>
