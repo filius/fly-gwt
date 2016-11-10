@@ -17,7 +17,7 @@
     </properties>
 
     <scm>
-        <developerConnection>scm:git:file:///home/fil/fly-gwt</developerConnection>
+        <developerConnection>scm:git:file:///home/fil/git/fly-gwt</developerConnection>
       <tag>fly-gwt-0.5.1</tag>
   </scm>
     <!--<scm>-->
