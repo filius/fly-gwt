@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ru.fly</groupId>
     <artifactId>fly-gwt</artifactId>
-    <version>0.5.1</version>
+    <version>0.5.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -12,14 +14,12 @@
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <maven.compiler.target>1.7</maven.compiler.target>
         <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.javadoc.skip>true</maven.javadoc.skip>
         <gwt.version>2.7.0</gwt.version>
     </properties>
 
     <scm>
-        <developerConnection>scm:git:file:///home/fil/git/fly-gwt</developerConnection>
-      <tag>fly-gwt-0.5.1</tag>
-  </scm>
+        <developerConnection>scm:git:file:///home/fil/fly-gwt</developerConnection>
+    </scm>
     <!--<scm>-->
         <!--<connection>scm:git:https://github.com/filius/fly-gwt.git</connection>-->
         <!--<developerConnection>scm:git:git@github.com:filius/fly-gwt.git</developerConnection>-->
