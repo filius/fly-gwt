@@ -18,11 +18,14 @@
     </properties>
 
     <scm>
-        <connection>scm:git:https://github.com/filius/fly-gwt.git</connection>
-        <developerConnection>scm:git:git@github.com:filius/fly-gwt.git</developerConnection>
-        <url>https://github.com/filius/fly-gwt</url>
-        <tag>HEAD</tag>
+        <developerConnection>scm:git:file:///home/fil/fly-gwt</developerConnection>
     </scm>
+    <!--<scm>-->
+        <!--<connection>scm:git:https://github.com/filius/fly-gwt.git</connection>-->
+        <!--<developerConnection>scm:git:git@github.com:filius/fly-gwt.git</developerConnection>-->
+        <!--<url>https://github.com/filius/fly-gwt</url>-->
+        <!--<tag>HEAD</tag>-->
+    <!--</scm>-->
 
     <repositories>
         <repository>
