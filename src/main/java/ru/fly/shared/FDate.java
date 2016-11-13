@@ -21,9 +21,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * User: fil
- * Date: 20.08.13
- * Time: 15:40
+ * @author fil
+ *
+ * @deprecated use {CDate}
  */
 @SuppressWarnings("deprecation")
 public class FDate {

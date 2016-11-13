@@ -5,7 +5,7 @@ Small set of UI components for GWT applications
 http://dl.bintray.com/fil/maven
 
 ##Current actual version
-0.5.1
+0.5.2
 
 ##Examples
 http://filius.github.io/fly-gwt-examples/
