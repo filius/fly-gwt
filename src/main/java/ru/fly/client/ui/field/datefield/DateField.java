@@ -24,21 +24,19 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.impl.TextBoxImpl;
+import ru.fly.client.CDate;
 import ru.fly.client.event.KeyUpEvent;
 import ru.fly.client.event.ValueChangeEvent;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.ui.field.InputElementField;
 import ru.fly.client.ui.field.TextFieldDecor;
-import ru.fly.shared.FDate;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 /**
- * User: fil
- * Date: 08.01.14
- * Time: 15:43
+ * @author fil
  */
 public class DateField extends InputElementField<Date> implements KeyUpEvent.HasKeyUpHandler {
 
@@ -194,7 +192,7 @@ public class DateField extends InputElementField<Date> implements KeyUpEvent.Has
         super.onBlur();
         Date oldValue = value;
         Date newValue = getValue();
-        if (!FDate.equals(oldValue, newValue)) {
+        if (!CDate.equals(oldValue, newValue)) {
             fireEvent(new ValueChangeEvent<Date>(newValue));
         }
     }

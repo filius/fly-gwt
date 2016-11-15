@@ -1,4 +1,4 @@
-/*
+package ru.fly.client;/*
  * Copyright 2015 Valeriy Filatov.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -14,16 +14,20 @@
  * the License.
  */
 
-import org.junit.Assert;
+import com.google.gwt.junit.client.GWTTestCase;
 import org.junit.Test;
-import ru.fly.shared.CDate;
 
 import java.util.Date;
 
 /**
  * @author fil
  */
-public class CDateJUnitTest extends Assert {
+public class CDateJUnitTest extends GWTTestCase {
+
+    @Override
+    public String getModuleName() {
+        return null;
+    }
 
     @Test
     public void testMonthName() {
@@ -68,5 +72,4 @@ public class CDateJUnitTest extends Assert {
         assertFalse(CDate.equals(null, new CDate(1, 1, 2016).asDate()));
         assertTrue(CDate.equals(new CDate(1, 1, 2016).asDate(), new CDate(1, 1, 2016).asDate()));
     }
-
 }

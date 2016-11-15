@@ -1,4 +1,4 @@
-/*
+package ru.fly.shared;/*
  * Copyright 2015 Valeriy Filatov.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -14,14 +14,18 @@
  * the License.
  */
 
-import org.junit.Assert;
+import com.google.gwt.junit.client.GWTTestCase;
 import org.junit.Test;
-import ru.fly.shared.FDate;
 
 /**
  * @author fil
  */
-public class FDateJUnitTest extends Assert {
+public class FDateJUnitTest extends GWTTestCase {
+
+    @Override
+    public String getModuleName() {
+        return null;
+    }
 
     @Test
     public void testGetYearPeriod(){
@@ -56,5 +60,4 @@ public class FDateJUnitTest extends Assert {
         assertFalse(FDate.equals(null, new FDate(1, 1, 2016).asDate()));
         assertTrue(FDate.equals(new FDate(1, 1, 2016).asDate(), new FDate(1, 1, 2016).asDate()));
     }
-
 }

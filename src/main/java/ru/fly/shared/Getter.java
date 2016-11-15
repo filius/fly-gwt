@@ -17,12 +17,10 @@
 package ru.fly.shared;
 
 /**
- * User: fil
- * Date: 31.08.13
- * Time: 17:03
+ * @author fil
  */
 public interface Getter<T> {
 
-    public String get(T model);
+    String get(T model);
 
 }

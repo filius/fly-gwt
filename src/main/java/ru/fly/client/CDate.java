@@ -1,7 +1,9 @@
-package ru.fly.shared;
+package ru.fly.client;
 
-import com.google.gwt.i18n.shared.DateTimeFormat;
-import com.google.gwt.i18n.shared.DefaultDateTimeFormatInfo;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.i18n.client.DefaultDateTimeFormatInfo;
+import com.google.gwt.i18n.client.LocaleInfo;
 
 import java.util.Date;
 
@@ -23,7 +25,15 @@ public class CDate {
     private static final int DAYS_IN_WEEK = 7;
     private static final int MAX_DAY_OF_WEEK = 6;
     private static final int ISO_THURSDAY = 4;
-    private static DateTimeFormat monthNameFormat = new DateTimeFormat("MMMM", new DefaultDateTimeFormatInfo()) {
+    //    /**
+//     * On client side, store localized name of Month
+//     * On server side, store always English representation of names
+//     */
+//    private static DateTimeFormat monthNameFormat = new DateTimeFormat("MMMM",
+//            GWT.isClient() ? LocaleInfo.getCurrentLocale().getDateTimeFormatInfo() : new DefaultDateTimeFormatInfo()) {
+//    };
+    private static DateTimeFormat monthNameFormat = new DateTimeFormat("MMMM",
+            GWT.isClient() ? LocaleInfo.getCurrentLocale().getDateTimeFormatInfo() : new DefaultDateTimeFormatInfo()) {
     };
 
     private static String[] monthNames = new String[MONTH_IN_YEAR];
@@ -32,6 +42,13 @@ public class CDate {
         for (int i = 0; i < MONTH_IN_YEAR; i++) {
             monthNames[i] = monthNameFormat.format(new Date(0, i, 1));
         }
+    }
+
+    public static String getMonthName(int month) {
+        if (month < 1 || month > 12) {
+            return null;
+        }
+        return monthNames[month];
     }
 
     /**
