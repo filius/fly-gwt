@@ -30,6 +30,19 @@ public class CDateJUnitTest extends GWTTestCase {
     }
 
     @Test
+    public void getWeek() throws Exception {
+        assertEquals(1, new CDate(1, 1, 2016).getWeek());
+        assertEquals(46, new CDate(16, 11, 2016).getWeek());
+    }
+
+    @Test
+    public void getDayOfWeek() throws Exception {
+        assertEquals(1, new CDate(14, 11, 2016).getDayOfWeek());
+        assertEquals(3, new CDate(16, 11, 2016).getDayOfWeek());
+        assertEquals(7, new CDate(20, 11, 2016).getDayOfWeek());
+    }
+
+    @Test
     public void testMonthName() {
         CDate january = new CDate(1, 1, 2016);
         assertEquals("January", january.getMonthName());
@@ -39,7 +52,7 @@ public class CDateJUnitTest extends GWTTestCase {
 
     @Test
     public void testGetYearPeriod() {
-        //один год полный, второй не полный не хватает месяца
+        //один год полный, второй не полный, не хватает месяца
         assertEquals(1, new CDate(1, 2, 2000).getYearPeriod(new CDate(1, 1, 2002)));
 
         //попадание в день рождения
@@ -51,7 +64,7 @@ public class CDateJUnitTest extends GWTTestCase {
         //за день до дня рождения
         assertEquals(1, new CDate(1, 2, 2000).getYearPeriod(new CDate(1, 2, 2002).addDay(-1)));
 
-        //прошел день полсе дня рождения
+        //прошел день после дня рождения
         assertEquals(2, new CDate(1, 2, 2000).getYearPeriod(new CDate(2, 2, 2002)));
 
         assertEquals(2, new CDate(31, 1, 2002).withMonth(2).getMonth());
@@ -68,6 +81,9 @@ public class CDateJUnitTest extends GWTTestCase {
         Date d1 = null;
         Date d2 = null;
         assertTrue(CDate.equals(d1, d2));
+        CDate cd1 = null;
+        CDate cd2 = null;
+        assertTrue(CDate.equals(cd1, cd2));
         assertFalse(CDate.equals(new CDate(1, 1, 2016).asDate(), null));
         assertFalse(CDate.equals(null, new CDate(1, 1, 2016).asDate()));
         assertTrue(CDate.equals(new CDate(1, 1, 2016).asDate(), new CDate(1, 1, 2016).asDate()));

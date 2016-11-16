@@ -288,7 +288,7 @@ public class CDate {
      * @return - int
      */
     public int getDayOfWeek() {
-        int day = getDay();
+        int day = new Date(time).getDay();
         return day == 0 ? DAYS_IN_WEEK : day;
     }
 
