@@ -156,7 +156,6 @@ public class MaskedTextField extends TextField {
                 }
                 break;
             case Event.ONKEYUP:
-                GWT.log("code=" + e.getKeyCode());
                 if (e.getKeyCode() == KeyCodes.KEY_LEFT || e.getKeyCode() == KeyCodes.KEY_RIGHT) {
                     correctPosition();
                 } else {
@@ -241,7 +240,7 @@ public class MaskedTextField extends TextField {
         }
         ((InputElement) getInputElement().cast()).setValue(out);
         if (pos == -1) {
-            pos = 0;
+            pos = getValidPositionOrNext(0);
         }
         impl.setSelectionRange(getInputElement(), pos, 0);
     }
