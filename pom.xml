@@ -4,7 +4,7 @@
 
     <groupId>ru.fly</groupId>
     <artifactId>fly-gwt</artifactId>
-    <version>0.5.4-SNAPSHOT</version>
+    <version>0.5.4</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -20,7 +20,7 @@
         <connection>scm:git:https://github.com/filius/fly-gwt.git</connection>
         <developerConnection>scm:git:git@github.com:filius/fly-gwt.git</developerConnection>
         <url>https://github.com/filius/fly-gwt</url>
-        <tag>HEAD</tag>
+        <tag>fly-gwt-0.5.4</tag>
     </scm>
 
     <repositories>
