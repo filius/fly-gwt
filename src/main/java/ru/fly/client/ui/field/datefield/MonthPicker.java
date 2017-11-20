@@ -27,7 +27,7 @@ import java.util.List;
 public class MonthPicker extends VLayout implements ValueChangeEvent.HasValueChangeHandler<Date> {
 
     private DateFieldDecor decor;
-    private List<MonthButton> monthBtns = new ArrayList<>();
+    private List<MonthButton> monthBtns = new ArrayList<MonthButton>();
     private Date value;
     private Label yearLabel;
 
@@ -69,13 +69,13 @@ public class MonthPicker extends VLayout implements ValueChangeEvent.HasValueCha
         VLayout rightPanel = new VLayout();
         monthPanel.add(rightPanel, new VHLayoutData(.5, 1));
 
-        for (int i = 0; i < 6; i++) {
-            MonthButton btn = new MonthButton(i + 1, CDate.getMonthName(i));
+        for (int i = 1; i <= 6; i++) {
+            MonthButton btn = new MonthButton(i, CDate.getMonthName(i));
             monthBtns.add(btn);
             leftPanel.add(btn);
         }
-        for (int i = 6; i < 12; i++) {
-            MonthButton btn = new MonthButton(i + 1, CDate.getMonthName(i));
+        for (int i = 7; i <= 12; i++) {
+            MonthButton btn = new MonthButton(i, CDate.getMonthName(i));
             monthBtns.add(btn);
             rightPanel.add(btn);
         }

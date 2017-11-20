@@ -44,11 +44,17 @@ public class CDate {
         }
     }
 
+    /**
+     * return month name bu number range 1-12 (January is 1)
+     *
+     * @param month - month number [1- 12]
+     * @return - String month name
+     */
     public static String getMonthName(int month) {
         if (month < 1 || month > 12) {
             return null;
         }
-        return monthNames[month];
+        return monthNames[month-1];
     }
 
     /**
