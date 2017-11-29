@@ -23,13 +23,11 @@ import com.google.gwt.resources.client.ImageResource;
 import ru.fly.client.ui.CommonDecor;
 
 /**
- * User: fil
- * Date: 01.09.13
- * Time: 21:38
+ * @author fil
  */
 public class TreeDecor {
 
-    public interface Resources extends ClientBundle{
+    public interface Resources extends ClientBundle {
 
         @Source({"ru/fly/client/ui/common.css", "tree.css"})
         Styles css();
@@ -59,21 +57,40 @@ public class TreeDecor {
     @CssResource.Shared
     public interface Styles extends CommonDecor.Styles {
         int pTreeRowHeight();
+
         String tree();
+
+        String treeView();
+
         String treeRowItem();
+
         String treeRowItemHeader();
+
         String treeRowItemHeaderInner();
+
         String folder();
+
         String arrow();
+
         String icon();
+
         String expanded();
+
         String text();
+
         String gridHdrCol();
+
         String gridHdr();
+
         String treeGridView();
+
         String treeGridCol();
+
         String treeGridRowItemHeader();
+
         String empty();
+
+        String treeLazyLoadMask();
     }
 
     public final Resources res;
@@ -82,12 +99,12 @@ public class TreeDecor {
         this(GWT.<Resources>create(Resources.class));
     }
 
-    public TreeDecor(Resources res){
+    public TreeDecor(Resources res) {
         this.res = res;
         res.css().ensureInjected();
     }
 
-    public Styles css(){
+    public Styles css() {
         return res.css();
     }
 

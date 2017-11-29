@@ -1,6 +1,8 @@
 package ru.fly.client;
 
+import com.google.gwt.event.shared.HandlerRegistration;
 import ru.fly.client.event.UpdateEvent;
+import ru.fly.client.event.UpdateEvent.HasUpdateHandler;
 import ru.fly.client.log.Log;
 import ru.fly.client.ui.EventBase;
 
@@ -12,10 +14,19 @@ import java.util.Map;
 /**
  * @author fil
  */
-public class TreeStore<T> extends EventBase {
+public class TreeStore<T> extends EventBase implements HasUpdateHandler {
 
     private TreeStoreItem<T> root = new TreeStoreItem<>(null, null);
     private Map<T, TreeStoreItem<T>> links = new HashMap<>();
+
+    @Override
+    public HandlerRegistration addUpdateHandler(UpdateEvent.UpdateHandler lnr) {
+        return addHandler(lnr, UpdateEvent.getType());
+    }
+
+    public void fireUpdateEvent() {
+        fireEvent(new UpdateEvent());
+    }
 
     public boolean isEmpty() {
         return root.getChildren().isEmpty();
@@ -36,6 +47,10 @@ public class TreeStore<T> extends EventBase {
     }
 
     public void add(T parent, T model, boolean expanded) {
+        add(parent, model, expanded, true);
+    }
+
+    public void add(T parent, T model, boolean expanded, boolean fireEvent) {
         if (model == null) {
             throw new IllegalArgumentException("Model cant be NULL!");
         }
@@ -47,10 +62,16 @@ public class TreeStore<T> extends EventBase {
         TreeStoreItem<T> item = new TreeStoreItem<>(parent, model, expanded);
         parentItem.getChildren().add(item);
         links.put(model, item);
-        fireEvent(new UpdateEvent());
+        if (fireEvent) {
+            fireEvent(new UpdateEvent());
+        }
     }
 
     public void addAll(T parent, Collection<? extends T> models) {
+        addAll(parent, models, true);
+    }
+
+    public void addAll(T parent, Collection<? extends T> models, boolean fireEvent) {
         TreeStoreItem<T> parentItem = getItem(parent);
         for (T model : models) {
             if (model == null) {
@@ -60,7 +81,9 @@ public class TreeStore<T> extends EventBase {
             parentItem.getChildren().add(item);
             links.put(model, item);
         }
-        fireEvent(new UpdateEvent());
+        if (fireEvent) {
+            fireEvent(new UpdateEvent());
+        }
     }
 
     public boolean contains(T model) {
@@ -96,11 +119,5 @@ public class TreeStore<T> extends EventBase {
     public List<T> getChildren(T parent) {
         return getItem(parent).getModelChildren();
     }
-
-    public void addUpdateHandler(UpdateEvent.UpdateHandler lnr) {
-        addHandler(lnr, UpdateEvent.getType());
-    }
-
-    // ------------------ privates -------------------
 
 }

@@ -6,7 +6,6 @@ import com.google.gwt.user.client.DOM;
 import ru.fly.client.F;
 import ru.fly.client.TreeStore;
 import ru.fly.client.event.SelectEvent;
-import ru.fly.client.event.UpdateEvent;
 import ru.fly.client.ui.Component;
 import ru.fly.client.ui.tree.decor.TreeDecor;
 import ru.fly.client.util.LastPassExecutor;
@@ -20,7 +19,10 @@ public class Tree<T> extends Component implements SelectEvent.HasSelectHandler<T
     private final LastPassExecutor<T> redrawExec = new LastPassExecutor<T>(.5) {
         @Override
         protected void exec(T param) {
-            redraw();
+            if (getView() != null) {
+                getView().markDirty();
+                getView().redraw();
+            }
         }
     };
     private final TreeDecor decor;
@@ -41,13 +43,18 @@ public class Tree<T> extends Component implements SelectEvent.HasSelectHandler<T
         this.getter = getter;
         addStyleName(decor.css().tree());
         store = new TreeStore<>();
-        store.addUpdateHandler(new UpdateEvent.UpdateHandler() {
-            @Override
-            public void onUpdate() {
-                redrawExec.pass();
-            }
-        });
         setView(new TreeView<T>());
+    }
+
+    @Override
+    protected void onAfterFirstAttach() {
+        super.onAfterFirstAttach();
+        F.render(this, getView());
+    }
+
+    @Override
+    public HandlerRegistration addSelectHandler(SelectEvent.SelectHandler<T> h) {
+        return addHandler(h, SelectEvent.<T>getType());
     }
 
     public TreeDecor getDecor() {
@@ -82,7 +89,9 @@ public class Tree<T> extends Component implements SelectEvent.HasSelectHandler<T
     }
 
     public void select(T model) {
-        getView().select(model, true);
+        if (getView() != null) {
+            getView().select(model, true);
+        }
     }
 
     public void clear() {
@@ -96,28 +105,13 @@ public class Tree<T> extends Component implements SelectEvent.HasSelectHandler<T
         }
     }
 
-    @Override
-    protected void onAfterFirstAttach() {
-        super.onAfterFirstAttach();
-        F.render(this, getView());
-        redraw();
-    }
-
+    /**
+     * fully redraw tree.
+     */
     public void redraw() {
         if (!isAttached()) {
             return;
         }
-        updateView();
-    }
-
-    private void updateView() {
-        if (getView() != null) {
-            getView().redraw();
-        }
-    }
-
-    @Override
-    public HandlerRegistration addSelectHandler(SelectEvent.SelectHandler<T> h) {
-        return addHandler(h, SelectEvent.<T>getType());
+        redrawExec.pass();
     }
 }

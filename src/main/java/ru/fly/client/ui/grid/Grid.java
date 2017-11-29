@@ -37,6 +37,7 @@ import java.util.List;
 public class Grid<T> extends Component implements GridRowDblClickEvent.HasGridRowDblClickHandler<T>,
         OrderChangeEvent.HasOrderChangeHandler {
 
+    private final GridDecor decor;
     private LoadConfig<T> loadConfig = new LoadConfig<>();
     private ListStore<T> store;
     private Header<T> header;
@@ -52,6 +53,7 @@ public class Grid<T> extends Component implements GridRowDblClickEvent.HasGridRo
 
     public Grid(GridDecor decor, List<ColumnConfig<T>> cols, GridView<T> view) {
         super(DOM.createDiv());
+        this.decor = decor;
         setStyleName(decor.css().grid());
         header = new Header<>(cols);
         header.addOrderChangeHandler(new OrderChangeEvent.OrderChangeHandler() {
@@ -81,6 +83,15 @@ public class Grid<T> extends Component implements GridRowDblClickEvent.HasGridRo
         } else {
             setGridView(view);
         }
+    }
+
+    /**
+     * return decorator of Grid.
+     *
+     * @return - GridDecor
+     */
+    public GridDecor getDecor() {
+        return decor;
     }
 
     public void setColumnConfigs(List<ColumnConfig<T>> cc) {

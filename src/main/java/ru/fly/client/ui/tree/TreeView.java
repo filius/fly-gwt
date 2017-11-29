@@ -7,8 +7,10 @@ import com.google.gwt.user.client.ui.Widget;
 import ru.fly.client.F;
 import ru.fly.client.TreeStoreItem;
 import ru.fly.client.event.SelectEvent;
+import ru.fly.client.event.UpdateEvent;
 import ru.fly.client.log.Log;
 import ru.fly.client.ui.Component;
+import ru.fly.client.ui.Container;
 import ru.fly.client.ui.tree.decor.TreeDecor;
 import ru.fly.shared.FlyException;
 
@@ -23,7 +25,9 @@ public class TreeView<T> extends Component implements SelectEvent.HasSelectHandl
     private final TreeDecor decor;
     protected final int rowHeight;
     protected final Map<T, TreeRowItem<T>> renderedItems = new HashMap<>();
-
+    protected Container inner;
+    // is TRUE when view must be rebuild, usually when store is removing something
+    private boolean dirtyView = true;
     private Tree<T> tree;
     private T selected;
 
@@ -34,16 +38,44 @@ public class TreeView<T> extends Component implements SelectEvent.HasSelectHandl
     public TreeView(TreeDecor decor) {
         super(DOM.createDiv());
         this.decor = decor;
+        setStyleName(decor.css().treeView());
         rowHeight = decor.css().pTreeRowHeight();
         F.setEnableTextSelection(getElement(), false);
+    }
+
+    @Override
+    public HandlerRegistration addSelectHandler(SelectEvent.SelectHandler<T> h) {
+        return addHandler(h, SelectEvent.<T>getType());
+    }
+
+    @Override
+    protected void onAfterFirstAttach() {
+        super.onAfterFirstAttach();
+        inner = new Container(DOM.createDiv());
+        F.render(this, inner);
+    }
+
+    @Override
+    protected void onAttach() {
+        super.onAttach();
+        redraw();
     }
 
     protected Tree<T> getTree() {
         return tree;
     }
 
-    protected void setTree(Tree<T> tree) {
+    protected void setTree(final Tree<T> tree) {
         this.tree = tree;
+        tree.getStore().addUpdateHandler(new UpdateEvent.UpdateHandler() {
+            @Override
+            public void onUpdate() {
+                if (tree.getStore().isEmpty()) {
+                    markDirty();
+                }
+                redraw();
+            }
+        });
     }
 
     protected T getSelected() {
@@ -67,6 +99,7 @@ public class TreeView<T> extends Component implements SelectEvent.HasSelectHandl
             TreeRowItem<T> row = expandTo(selected);
             if (row != null) {
                 row.setSelected(true);
+                row.getElement().scrollIntoView();
             }
         }
         if (fire) {
@@ -74,27 +107,12 @@ public class TreeView<T> extends Component implements SelectEvent.HasSelectHandl
         }
     }
 
-    @Override
-    protected void onAttach() {
-        super.onAttach();
-        redraw();
-    }
-
-    protected void redraw() {
-        if (!isAttached())
-            return;
-        getElement().removeAll();
-        renderedItems.clear();
-        for (T model : tree.getStore().getChildren(null)) {
-            renderItem(this, model, 0);
-        }
-        expandTo(selected);
-    }
-
     /**
-     * expand all children recursive
+     * expand all children recursive.
+     *
+     * @param model -
      */
-    public void expandAll(T model) {
+    protected void expandAll(T model) {
         TreeRowItem<T> item = getRowItem(model);
         if (item == null) {
             throw new FlyException("Cant found row item!");
@@ -102,6 +120,32 @@ public class TreeView<T> extends Component implements SelectEvent.HasSelectHandl
             item.expand();
             for (T child : tree.getStore().getChildren(model)) {
                 expandAll(child);
+            }
+        }
+    }
+
+    protected void markDirty() {
+        dirtyView = true;
+    }
+
+    protected void redraw() {
+        if (!isAttached()) {
+            return;
+        }
+        if (dirtyView) {
+            inner.getElement().removeAll();
+            renderedItems.clear();
+            dirtyView = false;
+        }
+        for (T model : tree.getStore().getChildren(null)) {
+            if (!renderedItems.containsKey(model)) {
+                renderItem(inner, model, 0);
+            }
+        }
+        if (selected != null) {
+            TreeRowItem<T> row = expandTo(selected);
+            if (row == null) {
+                select(null, true);
             }
         }
     }
@@ -144,11 +188,6 @@ public class TreeView<T> extends Component implements SelectEvent.HasSelectHandl
                 }
             }
         };
-    }
-
-    @Override
-    public HandlerRegistration addSelectHandler(SelectEvent.SelectHandler<T> h) {
-        return addHandler(h, SelectEvent.<T>getType());
     }
 
     private TreeRowItem<T> getRowItem(T model) {

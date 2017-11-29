@@ -1,5 +1,6 @@
 package ru.fly.client.ui.tree;
 
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
@@ -14,6 +15,7 @@ import java.util.Set;
 
 /**
  * @author fil.
+ * @deprecated not really implemented NOT use it
  */
 public class LazyTreeView<T> extends TreeView<T> {
 
@@ -25,7 +27,6 @@ public class LazyTreeView<T> extends TreeView<T> {
             renderViewArea();
         }
     };
-    private boolean inRenderProcess = false;
 
     @Override
     protected void onAfterFirstAttach() {
@@ -34,13 +35,19 @@ public class LazyTreeView<T> extends TreeView<T> {
     }
 
     @Override
+    protected void onAttach() {
+        super.onAttach();
+        DOM.sinkEvents(getElement(), DOM.getEventsSunk(getElement()) | Event.ONSCROLL);
+    }
+
+    @Override
     protected void redraw() {
         plainView.clear();
         for (T model : getTree().getStore().getChildren(null)) {
             addToPlainView(model);
         }
-        getElement().removeAll();
-        getElement().setHeight(plainView.size() * rowHeight);
+        inner.clear();
+        inner.setHeight(plainView.size() * rowHeight);
         renderAreaExec.pass();
     }
 
@@ -58,50 +65,44 @@ public class LazyTreeView<T> extends TreeView<T> {
         DOM.setEventListener(getElement(), new EventListener() {
             @Override
             public void onBrowserEvent(Event event) {
-                if (oldLnr != null)
-                    oldLnr.onBrowserEvent(event);
                 switch (event.getTypeInt()) {
                     case Event.ONSCROLL:
                         renderAreaExec.pass();
                         break;
                 }
+                if (oldLnr != null) {
+                    oldLnr.onBrowserEvent(event);
+                }
             }
         });
-        DOM.sinkEvents(getElement(), DOM.getEventsSunk(getElement()) | Event.ONSCROLL);
     }
 
     private void renderViewArea() {
-        if (inRenderProcess) {
-            renderAreaExec.pass();
-            return;
+        long top = getElement().getScrollTop();
+        long bottom = top + getHeight(true);
+        int stIdx = (int) (top / rowHeight);
+        int enIdx = (int) (bottom / rowHeight) + 2;
+        GWT.log(top + " " + bottom + " " + stIdx + " " + enIdx);
+        if (enIdx > plainView.size()) {
+            enIdx = plainView.size();
         }
-        inRenderProcess = true;
-        try {
-            long top = getElement().getScrollTop();
-            long bottom = top + getHeight(true);
-            int stIdx = (int) (top / rowHeight);
-            int enIdx = (int) (bottom / rowHeight) + 2;
-            if (enIdx > plainView.size())
-                enIdx = plainView.size();
-
-            for (int i = stIdx; i < enIdx; i++) {
-                T model = plainView.get(i);
-                TreeRowItem<T> rowItem = renderedItems.get(model);
-                if (rowItem == null) {
-                    rowItem = renderItem(this, model, 0);
-                    rowItem.setTop(rowHeight * i);
-                }
-                viewRows.put(i, rowItem);
+        int cou = 0;
+        while (cou < (enIdx - stIdx)) {
+            T model = plainView.get(stIdx + cou);
+            TreeRowItem<T> rowItem = renderedItems.get(model);
+            if (rowItem == null) {
+                rowItem = renderItem(inner, model, 0);
+                rowItem.setTop(rowHeight * cou);
             }
-            Set<Integer> idxs = new HashSet<>(viewRows.keySet());
-            for (Integer idx : idxs) {
-                if (idx < stIdx || idx > enIdx) {
-                    viewRows.get(idx).removeFromParent();
-                    viewRows.remove(idx);
-                }
+            viewRows.put(stIdx + cou, rowItem);
+            cou++;
+        }
+        Set<Integer> idxs = new HashSet<>(viewRows.keySet());
+        for (Integer idx : idxs) {
+            if (idx < stIdx || idx > enIdx) {
+                viewRows.get(idx).removeFromParent();
+                viewRows.remove(idx);
             }
-        } finally {
-            inRenderProcess = false;
         }
     }
 

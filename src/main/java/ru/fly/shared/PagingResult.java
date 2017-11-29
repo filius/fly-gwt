@@ -21,9 +21,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 import java.util.Collection;
 
 /**
- * User: fil
- * Date: 01.09.13
- * Time: 16:11
+ * @author fil
  */
 public class PagingResult<T> implements IsSerializable {
 

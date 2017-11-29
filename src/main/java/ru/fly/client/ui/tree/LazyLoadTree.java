@@ -1,20 +1,4 @@
-/*
- * Copyright 2015 Valeriy Filatov.
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- */
-
-package ru.fly.client.ui.grid;
+package ru.fly.client.ui.tree;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
@@ -26,30 +10,28 @@ import ru.fly.client.LastRespAsyncCallback;
 import ru.fly.client.PageLoader;
 import ru.fly.client.log.Log;
 import ru.fly.client.ui.FElement;
-import ru.fly.client.ui.grid.decor.GridDecor;
+import ru.fly.client.ui.tree.decor.TreeDecor;
 import ru.fly.shared.PagingResult;
 
-import java.util.List;
-
 /**
- * @author fil
+ * @author fil.
  */
-public class LazyLoadGrid<T> extends Grid<T> {
+public class LazyLoadTree<T> extends Tree<T> {
 
     private final String uid = F.getUID();
     private long offset = 0;
-    private long pageSize = 100;
+    private long pageSize = 50;
     private long fullSize = -1;
     private PageLoader<T> loader;
     private boolean loading = false;
     private FElement loadingMasker;
 
-    public LazyLoadGrid(List<ColumnConfig<T>> cols) {
-        this(GWT.<GridDecor>create(GridDecor.class), cols, new LazyGridView<T>());
+    public LazyLoadTree(TreeGetter<T> getter) {
+        this(GWT.<TreeDecor>create(TreeDecor.class), getter);
     }
 
-    public LazyLoadGrid(GridDecor decor, List<ColumnConfig<T>> cols, GridView<T> view) {
-        super(decor, cols, view);
+    public LazyLoadTree(TreeDecor decor, TreeGetter<T> getter) {
+        super(decor, getter);
     }
 
     @Override
@@ -60,6 +42,11 @@ public class LazyLoadGrid<T> extends Grid<T> {
 
     public void setLoader(PageLoader<T> loader) {
         this.loader = loader;
+    }
+
+    public void reload(T select) {
+        clear();
+        loadNext(select);
     }
 
     public void reload() {
@@ -75,6 +62,9 @@ public class LazyLoadGrid<T> extends Grid<T> {
         fullSize = -1;
         offset = 0;
         getStore().clear();
+        if (getView() != null) {
+            getView().markDirty();
+        }
     }
 
     public void loadNext() {
@@ -94,16 +84,20 @@ public class LazyLoadGrid<T> extends Grid<T> {
 
                     @Override
                     public void onSuccessLast(PagingResult<T> result) {
-                        hideLoadingMasker();
                         offset = next;
                         fullSize = result.getFullSize();
-                        getStore().addAll(result.getList());
+                        for (T m : result.getList()) {
+                            getStore().add(null, m, false, false);
+                            getStore().addAll(m, getGetter().getChildren(m), false);
+                        }
+                        getStore().fireUpdateEvent();
                         if (select != null) {
                             select(select);
                         }
                         if (cback != null) {
                             cback.onSuccess(result);
                         }
+                        hideLoadingMasker();
                     }
 
                     @Override
@@ -145,7 +139,7 @@ public class LazyLoadGrid<T> extends Grid<T> {
         if (loadingMasker == null) {
             loadingMasker = DOM.createDiv().cast();
             loadingMasker.setInnerHTML("<div id='glbg'></div><div id='gltxt'>Загрузка...</div>");
-            loadingMasker.setClassName(getDecor().css().gridLazyLoadMask());
+            loadingMasker.setClassName(getDecor().css().treeLazyLoadMask());
         }
         getElement().appendChild(loadingMasker);
     }
