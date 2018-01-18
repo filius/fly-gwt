@@ -1,5 +1,6 @@
 ## Fly-GWT
-Small set of UI components for GWT applications
+Small set of UI components for GWT applications 
+[![Build Status](https://travis-ci.org/filius/fly-gwt.svg?branch=master)](https://travis-ci.org/filius/fly-gwt)
 
 ## Maven repository
 http://dl.bintray.com/fil/maven
