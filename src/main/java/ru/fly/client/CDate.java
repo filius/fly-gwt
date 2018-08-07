@@ -54,7 +54,7 @@ public class CDate {
         if (month < 1 || month > 12) {
             return null;
         }
-        return monthNames[month-1];
+        return monthNames[month - 1];
     }
 
     /**
@@ -121,9 +121,30 @@ public class CDate {
      * @param day   - day value [1:31]
      * @param month - month value [1:12]
      * @param year  - year value (without subtract 1900)
+     *
+     * @deprecated use static instead {@link CDate:newDate}
      */
+    @Deprecated
     public CDate(int day, int month, int year) {
         this(new Date(year - SUBTRACT_YEAR, month - 1, day));
+    }
+
+    public static CDate newDate(int year, int month, int day) {
+        return new CDate(new Date(year - SUBTRACT_YEAR, month - 1, day));
+    }
+
+    /**
+     * .
+     *
+     * @param year    - year value (without subtract 1900)
+     * @param month   - month value [1:12]
+     * @param day     - day value [1:31]
+     * @param hour    - hour value [0:23]
+     * @param minutes - minutes value [0:59]
+     * @param seconds - seconds value [0:59]
+     */
+    public CDate(int year, int month, int day, int hour, int minutes, int seconds) {
+        this(new Date(year - SUBTRACT_YEAR, month - 1, day, hour, minutes, seconds));
     }
 
     /**

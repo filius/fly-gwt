@@ -31,49 +31,49 @@ public class CDateJUnitTest extends GWTTestCase {
 
     @Test
     public void getWeek() throws Exception {
-        assertEquals(1, new CDate(1, 1, 2016).getWeek());
-        assertEquals(46, new CDate(16, 11, 2016).getWeek());
+        assertEquals(1, CDate.newDate(2016, 1, 1).getWeek());
+        assertEquals(46, CDate.newDate(2016, 11, 16).getWeek());
     }
 
     @Test
     public void getDayOfWeek() throws Exception {
-        assertEquals(1, new CDate(14, 11, 2016).getDayOfWeek());
-        assertEquals(3, new CDate(16, 11, 2016).getDayOfWeek());
-        assertEquals(7, new CDate(20, 11, 2016).getDayOfWeek());
+        assertEquals(1, CDate.newDate(2016, 11, 14).getDayOfWeek());
+        assertEquals(3, CDate.newDate(2016, 11, 16).getDayOfWeek());
+        assertEquals(7, CDate.newDate(2016, 11, 20).getDayOfWeek());
     }
 
     @Test
     public void testMonthName() {
-        CDate january = new CDate(1, 1, 2016);
+        CDate january = CDate.newDate(2016, 1, 1);
         assertEquals("January", january.getMonthName());
-        CDate december = new CDate(1, 12, 2016);
+        CDate december = CDate.newDate(2016, 12, 1);
         assertEquals("December", december.getMonthName());
     }
 
     @Test
     public void testGetYearPeriod() {
         //один год полный, второй не полный, не хватает месяца
-        assertEquals(1, new CDate(1, 2, 2000).getYearPeriod(new CDate(1, 1, 2002)));
+        assertEquals(1, CDate.newDate(2000, 2, 1).getYearPeriod(CDate.newDate(2002, 1, 1)));
 
         //попадание в день рождения
-        assertEquals(2, new CDate(1, 2, 2000).getYearPeriod(new CDate(1, 2, 2002)));
+        assertEquals(2, CDate.newDate(2000, 2, 1).getYearPeriod(CDate.newDate(2002, 2, 1)));
 
         //прошел месяц после дня рождения
-        assertEquals(2, new CDate(1, 2, 2000).getYearPeriod(new CDate(1, 3, 2002)));
+        assertEquals(2, CDate.newDate(2000, 2, 1).getYearPeriod(CDate.newDate(2002, 3, 1)));
 
         //за день до дня рождения
-        assertEquals(1, new CDate(1, 2, 2000).getYearPeriod(new CDate(1, 2, 2002).addDay(-1)));
+        assertEquals(1, CDate.newDate(2000, 2, 1).getYearPeriod(CDate.newDate(2002, 2, 1).addDay(-1)));
 
         //прошел день после дня рождения
-        assertEquals(2, new CDate(1, 2, 2000).getYearPeriod(new CDate(2, 2, 2002)));
+        assertEquals(2, CDate.newDate(2000, 2, 1).getYearPeriod(CDate.newDate(2002, 2, 2)));
 
-        assertEquals(2, new CDate(31, 1, 2002).withMonth(2).getMonth());
+        assertEquals(2, CDate.newDate(2002, 1, 31).withMonth(2).getMonth());
 
-        assertEquals(2003, new CDate(31, 9, 2002).addMonth(4).getYear());
+        assertEquals(2003, CDate.newDate(2002, 9, 31).addMonth(4).getYear());
 
-        assertEquals("01.10.2015#00:00:00", new CDate(1, 1, 2016).clearTime().addMonth(-3).toStringFull());
+        assertEquals("01.10.2015#00:00:00", CDate.newDate(2016, 1, 1).clearTime().addMonth(-3).toStringFull());
 
-        assertEquals("01.01.2015#00:00:00", new CDate(1, 1, 2016).clearTime().addMonth(-12).toStringFull());
+        assertEquals("01.01.2015#00:00:00", CDate.newDate(2016, 1, 1).clearTime().addMonth(-12).toStringFull());
     }
 
     @Test
@@ -84,8 +84,8 @@ public class CDateJUnitTest extends GWTTestCase {
         CDate cd1 = null;
         CDate cd2 = null;
         assertTrue(CDate.equals(cd1, cd2));
-        assertFalse(CDate.equals(new CDate(1, 1, 2016).asDate(), null));
-        assertFalse(CDate.equals(null, new CDate(1, 1, 2016).asDate()));
-        assertTrue(CDate.equals(new CDate(1, 1, 2016).asDate(), new CDate(1, 1, 2016).asDate()));
+        assertFalse(CDate.equals(CDate.newDate(2016, 1, 1).asDate(), null));
+        assertFalse(CDate.equals(null, CDate.newDate(2016, 1, 1).asDate()));
+        assertTrue(CDate.equals(CDate.newDate(2016, 1, 1).asDate(), CDate.newDate(2016, 1, 1).asDate()));
     }
 }
