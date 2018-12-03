@@ -35,9 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: fil
- * Date: 05.08.13
- * Time: 21:05
+ * @author fil
  */
 public class Field<T> extends Component implements LeafValueEditor<T>, HasEditorErrors<T>,
         ValueChangeEvent.HasValueChangeHandler<T> {
@@ -47,7 +45,7 @@ public class Field<T> extends Component implements LeafValueEditor<T>, HasEditor
     protected T value;
     private String errorMsg;
     private Tooltip errorToolTip;
-    private List<Validator<T>> validators = new ArrayList<Validator<T>>();
+    private List<Validator<T>> validators = new ArrayList<>();
     private boolean focused = false;
     private boolean alwaysDisabled = false;
 

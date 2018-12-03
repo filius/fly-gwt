@@ -46,4 +46,18 @@ public class StringUtils {
         return str == null || str.trim().length() == 0;
     }
 
+    public static boolean isNumeric(String cs) {
+        if (cs != null && cs.length() != 0) {
+            int sz = cs.length();
+            for (int i = 0; i < sz; ++i) {
+                if (!Character.isDigit(cs.charAt(i))) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

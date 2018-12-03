@@ -1,3 +1,8 @@
+##0.6.2
+###New feature
+
+- implemented shared StringUtils.isNumeric
+
 ##0.5.1
 ###New feature
 
