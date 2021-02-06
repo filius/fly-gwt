@@ -6,6 +6,10 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Widget;
 import ru.fly.client.F;
 import ru.fly.client.TreeStoreItem;
+import ru.fly.client.event.BeforeCollapseEvent;
+import ru.fly.client.event.BeforeExpandEvent;
+import ru.fly.client.event.CollapseEvent;
+import ru.fly.client.event.ExpandEvent;
 import ru.fly.client.event.SelectEvent;
 import ru.fly.client.event.UpdateEvent;
 import ru.fly.client.log.Log;
@@ -20,9 +24,10 @@ import java.util.Map;
 /**
  * @author fil
  */
-public class TreeView<T> extends Component implements SelectEvent.HasSelectHandler<T> {
+public class TreeView<T> extends Component implements SelectEvent.HasSelectHandler<T>,
+        ExpandEvent.HasExpandHandler<T>, CollapseEvent.HasCollapseHandler<T>,
+        BeforeExpandEvent.HasBeforeExpandHandler<T>, BeforeCollapseEvent.HasBeforeCollapseHandler<T> {
 
-    private final TreeDecor decor;
     protected final int rowHeight;
     protected final Map<T, TreeRowItem<T>> renderedItems = new HashMap<>();
     protected Container inner;
@@ -37,15 +42,9 @@ public class TreeView<T> extends Component implements SelectEvent.HasSelectHandl
 
     public TreeView(TreeDecor decor) {
         super(DOM.createDiv());
-        this.decor = decor;
         setStyleName(decor.css().treeView());
         rowHeight = decor.css().pTreeRowHeight();
         F.setEnableTextSelection(getElement(), false);
-    }
-
-    @Override
-    public HandlerRegistration addSelectHandler(SelectEvent.SelectHandler<T> h) {
-        return addHandler(h, SelectEvent.<T>getType());
     }
 
     @Override
@@ -59,6 +58,31 @@ public class TreeView<T> extends Component implements SelectEvent.HasSelectHandl
     protected void onAttach() {
         super.onAttach();
         redraw();
+    }
+
+    @Override
+    public HandlerRegistration addSelectHandler(SelectEvent.SelectHandler<T> h) {
+        return addHandler(h, SelectEvent.<T>getType());
+    }
+
+    @Override
+    public HandlerRegistration addCollapseHandler(CollapseEvent.CollapseHandler<T> h) {
+        return addHandler(h, CollapseEvent.<T>getType());
+    }
+
+    @Override
+    public HandlerRegistration addExpandHandler(ExpandEvent.ExpandHandler<T> h) {
+        return addHandler(h, ExpandEvent.<T>getType());
+    }
+
+    @Override
+    public HandlerRegistration addBeforeCollapseHandler(BeforeCollapseEvent.BeforeCollapseHandler<T> h) {
+        return addHandler(h, BeforeCollapseEvent.<T>getType());
+    }
+
+    @Override
+    public HandlerRegistration addBeforeExpandHandler(BeforeExpandEvent.BeforeExpandHandler<T> h) {
+        return addHandler(h, BeforeExpandEvent.<T>getType());
     }
 
     protected Tree<T> getTree() {
@@ -167,14 +191,18 @@ public class TreeView<T> extends Component implements SelectEvent.HasSelectHandl
         return new TreeRowItem<T>(tree, model, lvl, false) {
             @Override
             protected void onExpand(T model) {
+                TreeView.this.fireEvent(new BeforeExpandEvent<>(model));
                 for (T child : tree.getStore().getChildren(model)) {
                     renderItem(this, child, getLvl() + 1);
                 }
+                TreeView.this.fireEvent(new ExpandEvent<>(model));
             }
 
             @Override
             protected void onCollapse(T model) {
+                TreeView.this.fireEvent(new BeforeCollapseEvent<>(model));
                 getContainerElement().removeAll();
+                TreeView.this.fireEvent(new CollapseEvent<>(model));
             }
 
             @Override
