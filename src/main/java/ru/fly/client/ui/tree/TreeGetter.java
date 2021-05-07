@@ -13,11 +13,11 @@ public abstract class TreeGetter<T> implements Getter<T> {
 
     public abstract List<? extends T> getChildren(T model);
 
-    public boolean isSelectable(T model){
+    public boolean isSelectable(T model) {
         return true;
     }
 
-    public boolean hasChildren(T model){
+    public boolean hasChildren(T model) {
         return true;
     }
 

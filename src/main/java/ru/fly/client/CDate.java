@@ -121,7 +121,6 @@ public class CDate {
      * @param day   - day value [1:31]
      * @param month - month value [1:12]
      * @param year  - year value (without subtract 1900)
-     *
      * @deprecated use static instead {@link CDate:newDate}
      */
     @Deprecated

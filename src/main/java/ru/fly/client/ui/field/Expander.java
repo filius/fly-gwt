@@ -89,13 +89,13 @@ public abstract class Expander {
         onExpand();
     }
 
-    public void collapse(){
+    public void collapse() {
         expanded = false;
         removeGlobalHideListener();
         onCollapse();
     }
 
-    public boolean isExpanded(){
+    public boolean isExpanded() {
         return expanded;
     }
 

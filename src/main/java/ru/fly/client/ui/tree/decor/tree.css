@@ -9,7 +9,8 @@
     -webkit-box-sizing: border-box;
     overflow: auto;
 }
-.tree.disabled{
+
+.tree.disabled {
     opacity: .5;
 }
 
@@ -22,15 +23,17 @@
     overflow: auto;
 }
 
-.treeRowItem{
+.treeRowItem {
     font: pFont;
 }
-.treeRowItemHeader{
+
+.treeRowItemHeader {
     padding: 3px 3px;
     border: 1px solid transparent;
     cursor: default;
 }
-.treeRowItemHeaderInner{
+
+.treeRowItemHeaderInner {
     display: inline-block;
     white-space: nowrap;
 }

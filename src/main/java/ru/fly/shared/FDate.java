@@ -22,7 +22,6 @@ import java.util.Map;
 
 /**
  * @author fil
- *
  * @deprecated use {CDate}
  */
 @SuppressWarnings("deprecation")
@@ -62,11 +61,11 @@ public class FDate {
 
     private long time;
 
-    public FDate(){
+    public FDate() {
         this(new Date());
     }
 
-    public FDate(Date date){
+    public FDate(Date date) {
         setDate(date);
     }
 

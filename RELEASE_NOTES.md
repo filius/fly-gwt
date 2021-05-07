@@ -16,26 +16,31 @@
 
 - added KeyResolver for ListStore and implement logic for Grid
 
-##0.5.0
-###New feature
+## 0.5.0
+
+### New feature
 
 - Added multiple upload component
 
-##0.4.13
-###New feature
+## 0.4.13
+
+### New feature
 
 - Added new function showToTheLeft for positioning PopUp to the right
 
-##0.4.12
-###Improvement
+## 0.4.12
+
+### Improvement
 
 - Added ValueChange event after blur DateField
-###New feature
 
-- In FDate added static equals method for comparing two Dates 
+### New feature
 
-##0.4.11
-###Bug fixes:
+- In FDate added static equals method for comparing two Dates
+
+## 0.4.11
+
+### Bug fixes:
 
 - Added release notes
 - ComboBox ListView expand height

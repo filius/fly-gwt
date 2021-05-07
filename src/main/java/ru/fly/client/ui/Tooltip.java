@@ -38,12 +38,12 @@ public class Tooltip extends PopupPanel {
         setStyleName(decor.css().tooltip());
     }
 
-    public void setContent(String html){
+    public void setContent(String html) {
         clear();
         add(new HTML(html));
     }
 
-    public void show(int x, int y){
+    public void show(int x, int y) {
         setPopupPosition(x, y);
         show();
     }

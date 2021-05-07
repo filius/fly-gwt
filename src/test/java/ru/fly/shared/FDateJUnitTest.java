@@ -28,12 +28,12 @@ public class FDateJUnitTest extends GWTTestCase {
     }
 
     @Test
-    public void testGetYearPeriod(){
+    public void testGetYearPeriod() {
         //один год полный, второй не полный не хватает месяца
-        assertEquals(1, new FDate(1,2,2000).getYearPeriod(new FDate(1,1,2002)));
+        assertEquals(1, new FDate(1, 2, 2000).getYearPeriod(new FDate(1, 1, 2002)));
 
         //попадание в день рождения
-        assertEquals(2, new FDate(1,2,2000).getYearPeriod(new FDate(1,2,2002)));
+        assertEquals(2, new FDate(1, 2, 2000).getYearPeriod(new FDate(1, 2, 2002)));
 
         //прошел месяц после дня рождения
         assertEquals(2, new FDate(1,2,2000).getYearPeriod(new FDate(1,3,2002)));
@@ -44,9 +44,9 @@ public class FDateJUnitTest extends GWTTestCase {
         //прошел день полсе дня рождения
         assertEquals(2, new FDate(1,2,2000).getYearPeriod(new FDate(2,2,2002)));
 
-        assertEquals(2, new FDate(31,1,2002).setMonth1(2).getMonth());
+        assertEquals(2, new FDate(31, 1, 2002).setMonth1(2).getMonth());
 
-        assertEquals(2003, new FDate(31,9,2002).addMonth(4).getYear());
+        assertEquals(2003, new FDate(31, 9, 2002).addMonth(4).getYear());
 
         assertEquals("01.10.2015#00:00:00", new FDate(1, 1, 2016).clearTime().addMonth(-3).toStringFull());
 

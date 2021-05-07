@@ -37,12 +37,12 @@ public class StringUtils {
     public static boolean equalsTrim(String s1, String s2){
         if(s1 == null){
             return s2 == null;
-        }else{
+        } else {
             return s2 != null && s1.trim().equals(s2.trim());
         }
     }
 
-    public static boolean isEmpty(String str){
+    public static boolean isEmpty(String str) {
         return str == null || str.trim().length() == 0;
     }
 
