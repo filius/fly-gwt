@@ -21,10 +21,10 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Event;
 import ru.fly.client.ui.FElement;
 
+import java.util.List;
+
 /**
- * User: fil
- * Date: 04.09.13
- * Time: 23:40
+ * @author fil
  */
 public abstract class Expander {
 
@@ -37,8 +37,9 @@ public abstract class Expander {
     }
 
     private void addGlobalHideListener(){
-        if(hReg != null)
+        if (hReg != null) {
             removeGlobalHideListener();
+        }
         hReg = Event.addNativePreviewHandler(new Event.NativePreviewHandler() {
             @Override
             public void onPreviewNativeEvent(Event.NativePreviewEvent event) {
@@ -46,10 +47,20 @@ public abstract class Expander {
                     case Event.ONSCROLL:
                     case Event.ONCLICK:
                         Element target = event.getNativeEvent().getEventTarget().cast();
+                        boolean outside = !element.isOrHasChild(target);
                         Element expandElement = getExpandedElement();
-                        if (!element.isOrHasChild(target)
-                                && (expandElement == null || !expandElement.isOrHasChild(target)))
+                        if (expandElement != null) {
+                            outside &= !expandElement.isOrHasChild(target);
+                        }
+                        List<FElement> expElements = getExpandedElements();
+                        if (expElements != null) {
+                            for (Element expElement : expElements) {
+                                outside &= !expElement.isOrHasChild(target);
+                            }
+                        }
+                        if (outside) {
                             collapse();
+                        }
                 }
             }
         });
@@ -78,17 +89,25 @@ public abstract class Expander {
         onExpand();
     }
 
-    public void collapse(){
+    public void collapse() {
         expanded = false;
         removeGlobalHideListener();
         onCollapse();
     }
 
-    public boolean isExpanded(){
+    public boolean isExpanded() {
         return expanded;
     }
 
+    /**
+     * @return - expanded element
+     * @deprecated - use {@see getExpandedElements}
+     */
     protected abstract FElement getExpandedElement();
+
+    protected List<FElement> getExpandedElements() {
+        return null;
+    }
 
     public abstract void onExpand();
 

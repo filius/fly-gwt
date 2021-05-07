@@ -40,7 +40,9 @@ import ru.fly.client.util.LastPassExecutor;
 import ru.fly.shared.Getter;
 import ru.fly.shared.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author fil
@@ -73,6 +75,7 @@ public class ComboBox<T> extends Field<T> {
     private boolean alwaysLoad = false;
     private FElement viewElement;
     private FElement triggerElement;
+    private List<FElement> expandedElements;
 
     public ComboBox(Getter<T> getter) {
         this(GWT.<ComboBoxDecor>create(ComboBoxDecor.class), getter);
@@ -93,7 +96,12 @@ public class ComboBox<T> extends Field<T> {
         triggerController = new TriggerController(this, triggerElement) {
             @Override
             protected FElement getExpandedElement() {
-                return getListView().getElement();
+                return null;
+            }
+
+            @Override
+            protected List<FElement> getExpandedElements() {
+                return ComboBox.this.getExpandedElements();
             }
 
             @Override
@@ -142,10 +150,27 @@ public class ComboBox<T> extends Field<T> {
         }
     }
 
+    protected List<FElement> getExpandedElements() {
+        if (expandedElements == null) {
+            expandedElements = new ArrayList<>();
+            expandedElements.add(getListView().getElement());
+        }
+        return expandedElements;
+    }
+
     protected FElement buildViewElement() {
         FElement ret = DOM.createInputText().cast();
         ret.addClassName(decor.css().comboBoxView());
         return ret;
+    }
+
+    /**
+     * force collapse if view expanded
+     */
+    protected void forseCollapse() {
+        if (triggerController.isExpanded()) {
+            triggerController.collapse();
+        }
     }
 
     protected FElement getViewElement() {

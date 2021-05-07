@@ -21,9 +21,7 @@ import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
- * User: fil
- * Date: 05.08.13
- * Time: 23:52
+ * @author fil
  */
 public class UpdateEvent extends GwtEvent<UpdateEvent.UpdateHandler> {
 

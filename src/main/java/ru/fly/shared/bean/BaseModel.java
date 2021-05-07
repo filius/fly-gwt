@@ -21,9 +21,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 import java.io.Serializable;
 
 /**
- * User: fil
- * Date: 16.07.13
- * Time: 23:21
+ * @author fil
  */
 public interface BaseModel extends Serializable, IsSerializable {
 }

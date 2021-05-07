@@ -20,13 +20,12 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
- * User: fil
- * Date: 23.09.13
- * Time: 21:48
+ * @author fil
  */
-public abstract class LastRespAsyncCallback<T> implements AsyncCallback<T>{
+public abstract class LastRespAsyncCallback<T> implements AsyncCallback<T> {
 
     private static Map<String, Long> respQueue = new HashMap<String, Long>();
 
@@ -37,30 +36,32 @@ public abstract class LastRespAsyncCallback<T> implements AsyncCallback<T>{
     private String uid;
     private Long idx;
 
-    public LastRespAsyncCallback(String uid){
+    public LastRespAsyncCallback(String uid) {
         this.uid = uid;
         idx = respQueue.get(uid);
-        if(idx == null)
+        if (idx == null)
             idx = 0L;
         else
-            idx ++;
+            idx++;
         respQueue.put(uid, idx);
     }
 
-    private boolean allow(){
+    private boolean allow() {
         Long last = respQueue.get(uid);
-        return last == idx;
+        return Objects.equals(last, idx);
     }
 
     @Override
     public void onFailure(Throwable caught) {
-        if(allow())
+        if (allow()) {
             onFailureLast(caught);
+        }
     }
 
     @Override
     public void onSuccess(T result) {
-        if(allow())
+        if (allow()) {
             onSuccessLast(result);
+        }
     }
 }

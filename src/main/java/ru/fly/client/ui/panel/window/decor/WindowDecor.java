@@ -7,9 +7,7 @@ import com.google.gwt.resources.client.ImageResource;
 import ru.fly.client.ui.CommonDecor;
 
 /**
- * User: fil
- * Date: 09.01.14
- * Time: 19:59
+ * @author fil
  */
 public class WindowDecor {
 

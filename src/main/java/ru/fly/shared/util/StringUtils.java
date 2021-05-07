@@ -37,13 +37,27 @@ public class StringUtils {
     public static boolean equalsTrim(String s1, String s2){
         if(s1 == null){
             return s2 == null;
-        }else{
+        } else {
             return s2 != null && s1.trim().equals(s2.trim());
         }
     }
 
-    public static boolean isEmpty(String str){
+    public static boolean isEmpty(String str) {
         return str == null || str.trim().length() == 0;
+    }
+
+    public static boolean isNumeric(String cs) {
+        if (cs != null && cs.length() != 0) {
+            int sz = cs.length();
+            for (int i = 0; i < sz; ++i) {
+                if (!Character.isDigit(cs.charAt(i))) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

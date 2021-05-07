@@ -1,0 +1,23 @@
+.label {
+    font: bold 10px arial;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.progress {
+    border: 1px solid #aaa;
+    padding: 4px;
+    margin: 2px;
+}
+
+.bar {
+    border: 1px solid #666;
+    background: lightblue;
+    padding: 1px
+}
+
+.barBg {
+    background: dodgerblue;
+    height: 16px;
+    width: 0;
+}

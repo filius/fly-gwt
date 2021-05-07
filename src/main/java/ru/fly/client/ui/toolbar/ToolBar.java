@@ -24,9 +24,7 @@ import ru.fly.client.ui.Container;
 import ru.fly.client.ui.toolbar.decor.ToolbarDecor;
 
 /**
- * User: fil
- * Date: 31.08.13
- * Time: 19:26
+ * @author fil
  */
 public class ToolBar extends Container {
 

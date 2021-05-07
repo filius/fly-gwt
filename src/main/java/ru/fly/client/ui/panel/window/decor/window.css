@@ -11,7 +11,7 @@
 .header{
     color: pColorDarkBlue;
     font-weight: bold;
-    padding: 4px;
+    padding: 4px 20px 4px 4px;
     cursor: move;
 }
 .inner{

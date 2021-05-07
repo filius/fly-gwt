@@ -73,7 +73,7 @@ public class VariantTextField<T> extends TextField implements SelectEvent.HasSel
         this.expandGetter = expandGetter;
     }
 
-    private ListView<T> getListView() {
+    protected ListView<T> getListView() {
         if (listView == null) {
             listView = new ListView<T>(expandGetter);
             listView.setFireWalkingSelect(false);

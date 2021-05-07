@@ -23,9 +23,7 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
 
 /**
- * User: fil
- * Date: 12.08.13
- * Time: 17:53
+ * @author fil
  * TODO Element тут устарелый, но он необходим для совместимости с getElement из UIObject
  */
 public class FElement extends com.google.gwt.user.client.Element {

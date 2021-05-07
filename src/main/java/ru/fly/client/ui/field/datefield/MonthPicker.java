@@ -5,6 +5,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
+import ru.fly.client.CDate;
 import ru.fly.client.event.ClickEvent;
 import ru.fly.client.event.ValueChangeEvent;
 import ru.fly.client.ui.button.Button;
@@ -15,28 +16,26 @@ import ru.fly.client.ui.panel.HLayout;
 import ru.fly.client.ui.panel.Margin;
 import ru.fly.client.ui.panel.VHLayoutData;
 import ru.fly.client.ui.panel.VLayout;
-import ru.fly.shared.FDate;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
- * User: fil
- * Date: 18.10.15
+ * @author fil
  */
 public class MonthPicker extends VLayout implements ValueChangeEvent.HasValueChangeHandler<Date> {
 
     private DateFieldDecor decor;
-    private List<MonthButton> monthBtns = new ArrayList<>();
+    private List<MonthButton> monthBtns = new ArrayList<MonthButton>();
     private Date value;
     private Label yearLabel;
 
-    public MonthPicker(){
+    public MonthPicker() {
         this(GWT.<DateFieldDecor>create(DateFieldDecor.class));
     }
 
-    public MonthPicker(DateFieldDecor decor){
+    public MonthPicker(DateFieldDecor decor) {
         this.decor = decor;
         setStyleName(decor.css().monthPicker());
 
@@ -47,17 +46,17 @@ public class MonthPicker extends VLayout implements ValueChangeEvent.HasValueCha
         Button prev = new Button("<<", new ClickEvent.ClickHandler() {
             @Override
             public void onClick() {
-                setValue(new FDate(value).addYear(-1).asDate(), false);
+                setValue(new CDate(value).addYear(-1).asDate(), false);
             }
         });
         prev.addStyleName(decor.css().monthPickerPrevBtn());
         yearNavigationPanel.add(prev, new VHLayoutData(30, 1));
         yearLabel = new Label(null);
-        yearNavigationPanel.add(yearLabel, new VHLayoutData(1,1));
+        yearNavigationPanel.add(yearLabel, new VHLayoutData(1, 1));
         Button next = new Button(">>", new ClickEvent.ClickHandler() {
             @Override
             public void onClick() {
-                setValue(new FDate(value).addYear(1).asDate(), false);
+                setValue(new CDate(value).addYear(1).asDate(), false);
             }
         });
         next.addStyleName(decor.css().monthPickerNextBtn());
@@ -66,23 +65,23 @@ public class MonthPicker extends VLayout implements ValueChangeEvent.HasValueCha
         HLayout monthPanel = new HLayout();
         add(monthPanel, new VHLayoutData(1, 1, new Margin(4)));
         VLayout leftPanel = new VLayout();
-        monthPanel.add(leftPanel, new VHLayoutData(.5,1));
+        monthPanel.add(leftPanel, new VHLayoutData(.5, 1));
         VLayout rightPanel = new VLayout();
-        monthPanel.add(rightPanel, new VHLayoutData(.5,1));
+        monthPanel.add(rightPanel, new VHLayoutData(.5, 1));
 
-        for(int i=0; i<6; i++){
-            MonthButton btn = new MonthButton(i+1, FDate.monthNames.get(i));
+        for (int i = 1; i <= 6; i++) {
+            MonthButton btn = new MonthButton(i, CDate.getMonthName(i));
             monthBtns.add(btn);
             leftPanel.add(btn);
         }
-        for(int i=6; i<12; i++){
-            MonthButton btn = new MonthButton(i+1, FDate.monthNames.get(i));
+        for (int i = 7; i <= 12; i++) {
+            MonthButton btn = new MonthButton(i, CDate.getMonthName(i));
             monthBtns.add(btn);
             rightPanel.add(btn);
         }
 
         FlowLayout downBtnsPanel = new FlowLayout();
-        add(downBtnsPanel, new VHLayoutData(1,-1, new Margin(2)));
+        add(downBtnsPanel, new VHLayoutData(1, -1, new Margin(2)));
         downBtnsPanel.add(new Button("сегодня", new ClickEvent.ClickHandler() {
             @Override
             public void onClick() {
@@ -97,29 +96,29 @@ public class MonthPicker extends VLayout implements ValueChangeEvent.HasValueCha
         }));
     }
 
-    public void setValue(Date value){
+    public void setValue(Date value) {
         setValue(value, true);
     }
 
-    public void setValue(Date value, boolean fire){
-        for(MonthButton m : monthBtns){
+    public void setValue(Date value, boolean fire) {
+        for (MonthButton m : monthBtns) {
             m.removeStyleName(decor.css().monthPickerMonthValue());
         }
-        FDate d = new FDate(value).clearTime();
-        if(value == null){
+        CDate d = new CDate(value).clearTime();
+        if (value == null) {
             this.value = null;
-        }else{
+        } else {
             this.value = d.asDate();
             int month = d.getMonth();
-            monthBtns.get(month-1).addStyleName(decor.css().monthPickerMonthValue());
+            monthBtns.get(month - 1).addStyleName(decor.css().monthPickerMonthValue());
         }
         yearLabel.setHtml(String.valueOf(d.getYear()));
-        if(fire) {
+        if (fire) {
             fireEvent(new ValueChangeEvent<Date>(this.value));
         }
     }
 
-    public Date getValue(){
+    public Date getValue() {
         return value;
     }
 
@@ -132,7 +131,7 @@ public class MonthPicker extends VLayout implements ValueChangeEvent.HasValueCha
 
         int monthNum;
 
-        MonthButton (int num, String name){
+        MonthButton(int num, String name) {
             monthNum = num;
             setStyleName(decor.css().monthPickerMonth());
             getElement().setInnerHTML(name);
@@ -146,9 +145,9 @@ public class MonthPicker extends VLayout implements ValueChangeEvent.HasValueCha
                 @Override
                 public void onBrowserEvent(Event event) {
                     oldLnr.onBrowserEvent(event);
-                    switch (event.getTypeInt()){
+                    switch (event.getTypeInt()) {
                         case Event.ONMOUSEOVER:
-                            if(isAttached()) {
+                            if (isAttached()) {
                                 addStyleName(decor.css().over());
                             }
                             break;
@@ -157,7 +156,7 @@ public class MonthPicker extends VLayout implements ValueChangeEvent.HasValueCha
                             break;
                         case Event.ONCLICK:
                             removeStyleName(decor.css().over());
-                            setValue(new FDate(value == null ? new Date() : value).setMonth1(monthNum).asDate());
+                            setValue(new CDate(value == null ? new Date() : value).withMonth(monthNum).asDate());
                             break;
                     }
                 }

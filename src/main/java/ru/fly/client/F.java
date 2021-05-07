@@ -20,11 +20,9 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.AnchorElement;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.web.bindery.event.shared.Event;
 import ru.fly.client.ui.CommonDecor;
 import ru.fly.client.ui.Container;
 
@@ -180,8 +178,14 @@ public class F {
         }
     }-*/;
 
-    public static void startDownload(String url, boolean preventOpen){
-        if(BrowserDetect.isChrome() || BrowserDetect.isSafari()) {
+    /**
+     * start file downloading by URL
+     *
+     * @param url         - url
+     * @param preventOpen - (chrome only) TRUE if file not mus be opened in browser but just download
+     */
+    public static void startDownload(String url, boolean preventOpen) {
+        if (BrowserDetect.isChrome() || BrowserDetect.isSafari()) {
             AnchorElement link = DOM.createAnchor().cast();
             link.setHref(url);
             if (preventOpen) {
@@ -189,7 +193,7 @@ public class F {
                 link.setAttribute("download", fileName);
             }
             link.dispatchEvent(Document.get().createClickEvent(0, 0, 0, 0, 0, false, false, false, false));
-        }else{
+        } else {
             Window.open(url, "_blank", "");
         }
     }

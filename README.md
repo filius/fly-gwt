@@ -1,12 +1,20 @@
 ## Fly-GWT
 
 Small set of UI components for GWT applications
+[![Build Status](https://travis-ci.org/filius/fly-gwt.svg?branch=master)](https://travis-ci.org/filius/fly-gwt)
 
-##Current Snapshot
-0.5.0-SNAPSHOT-SNAPSHOT
+## Maven repository
 
-##Examples
+http://dl.bintray.com/fil/maven
+
+## Current actual version
+
+0.6.0
+
+## Examples
+
 http://filius.github.io/fly-gwt-examples/
 
-##License
+## License
+
 * Fly-GWT is freely distributable under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html)

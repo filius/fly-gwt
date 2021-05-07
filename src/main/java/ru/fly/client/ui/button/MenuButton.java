@@ -21,16 +21,14 @@ import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.RootPanel;
+import ru.fly.client.event.ClickEvent;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.ui.button.decor.BtnDecor;
 import ru.fly.client.ui.field.Expander;
-import ru.fly.client.event.ClickEvent;
 import ru.fly.client.ui.toolbar.Menu;
 
 /**
- * User: fil
- * Date: 04.09.13
- * Time: 23:17
+ * @author fil
  */
 public class MenuButton extends Button{
 

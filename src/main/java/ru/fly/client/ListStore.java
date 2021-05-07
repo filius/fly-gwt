@@ -19,15 +19,15 @@ package ru.fly.client;
 import com.google.gwt.event.shared.HandlerRegistration;
 import ru.fly.client.event.UpdateEvent;
 import ru.fly.client.ui.EventBase;
+import ru.fly.shared.KeyResolver;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 /**
- * User: fil
- * Date: 04.08.13
- * Time: 15:28
+ * @author fil
  */
 public class ListStore<T> extends EventBase {
 
@@ -35,10 +35,15 @@ public class ListStore<T> extends EventBase {
         boolean isVisible(T item);
     }
 
+    private KeyResolver<T> keyResolver;
     private List<T> list = new ArrayList<T>();
     private List<StoreFilter<T>> filters = new ArrayList<StoreFilter<T>>();
 
     public ListStore() {
+    }
+
+    public void setKeyResolver(KeyResolver<T> keyResolver) {
+        this.keyResolver = keyResolver;
     }
 
     public boolean isEmpty() {
@@ -61,34 +66,68 @@ public class ListStore<T> extends EventBase {
     }
 
     public void remove(T item) {
-        if (list.remove(item)) {
-            fireEvent(new UpdateEvent());
+        remove(item, true);
+    }
+
+    public void remove(T item, boolean fire) {
+        if (keyResolver == null) {
+            if (list.remove(item) && fire) {
+                fireEvent(new UpdateEvent());
+            }
+        } else {
+            int idx = indexOf(item);
+            if (idx > -1) {
+                list.remove(idx);
+                if (fire) {
+                    fireEvent(new UpdateEvent());
+                }
+            }
         }
     }
 
     public void insert(int idx, T item) {
-        list.remove(item);
+        remove(item, false);
         list.add(idx, item);
         fireEvent(new UpdateEvent());
     }
 
     public void replace(T item) {
-        int idx = list.indexOf(item);
-        if(idx > -1) {
-            list.remove(item);
+        int idx = indexOf(item);
+        if (idx > -1) {
+            list.remove(idx);
             list.add(idx, item);
-        }else{
+        } else {
             list.add(item);
         }
         fireEvent(new UpdateEvent());
     }
 
     public int indexOf(T item) {
-        return list.indexOf(item);
+        if (keyResolver == null) {
+            return list.indexOf(item);
+        } else {
+            for (int i = 0; i < list.size(); i++) {
+                if (isEquals(list.get(i), item)) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+    }
+
+    public boolean isEquals(T o1, T o2) {
+        if (o1 == null || o2 == null) {
+            return false;
+        }
+        if (keyResolver == null) {
+            return o1.equals(o2);
+        } else {
+            return Objects.equals(keyResolver.get(o1), keyResolver.get(o2));
+        }
     }
 
     public boolean contains(T item) {
-        return list.contains(item);
+        return indexOf(item) > -1;
     }
 
     /**
@@ -113,13 +152,14 @@ public class ListStore<T> extends EventBase {
     }
 
     public T get(T model) {
-        return list.get(list.indexOf(model));
+        return list.get(indexOf(model));
     }
 
     public void fill(Collection<T> list) {
         this.list.clear();
-        if (list != null)
+        if (list != null) {
             this.list.addAll(list);
+        }
         fireEvent(new UpdateEvent());
     }
 
@@ -132,23 +172,16 @@ public class ListStore<T> extends EventBase {
                     for (StoreFilter<T> f : filters) {
                         visible &= f.isVisible(item);
                     }
-                    if (visible)
+                    if (visible) {
                         view.add(item);
+                    }
                 }
-            } else
+            } else {
                 view.addAll(list);
+            }
         }
         return view;
     }
-
-//    public T get(String field, Object value){
-//        for(T item : list){
-//            if(value.equals(BeanModelUtil.createBean(item).get(field))){
-//                return item;
-//            }
-//        }
-//        return null;
-//    }
 
     public void addFilter(StoreFilter<T> filter) {
         filters.add(filter);

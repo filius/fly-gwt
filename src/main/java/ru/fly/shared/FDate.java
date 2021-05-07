@@ -21,9 +21,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * User: fil
- * Date: 20.08.13
- * Time: 15:40
+ * @author fil
+ * @deprecated use {CDate}
  */
 @SuppressWarnings("deprecation")
 public class FDate {
@@ -56,13 +55,17 @@ public class FDate {
     private static final int MAX_DAY_OF_WEEK = 6;
     private static final int ISO_THURSDAY = 4;
 
+    public static boolean equals(Date o1, Date o2) {
+        return (o1 == null && o2 == null) || (o1 != null && o2 != null && o1.getTime() == o2.getTime());
+    }
+
     private long time;
 
-    public FDate(){
+    public FDate() {
         this(new Date());
     }
 
-    public FDate(Date date){
+    public FDate(Date date) {
         setDate(date);
     }
 

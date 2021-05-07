@@ -19,22 +19,25 @@ package ru.fly.client.ui.grid;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
-import ru.fly.client.event.*;
-import ru.fly.client.ui.Component;
 import ru.fly.client.F;
 import ru.fly.client.ListStore;
+import ru.fly.client.event.GridColumnResizeEvent;
+import ru.fly.client.event.GridRowDblClickEvent;
+import ru.fly.client.event.OrderChangeEvent;
+import ru.fly.client.event.SelectEvent;
+import ru.fly.client.event.UpdateEvent;
+import ru.fly.client.ui.Component;
 import ru.fly.client.ui.grid.decor.GridDecor;
 
 import java.util.List;
 
 /**
- * User: fil
- * Date: 31.08.13
- * Time: 14:16
+ * @author fil
  */
 public class Grid<T> extends Component implements GridRowDblClickEvent.HasGridRowDblClickHandler<T>,
         OrderChangeEvent.HasOrderChangeHandler {
 
+    private final GridDecor decor;
     private LoadConfig<T> loadConfig = new LoadConfig<>();
     private ListStore<T> store;
     private Header<T> header;
@@ -50,6 +53,7 @@ public class Grid<T> extends Component implements GridRowDblClickEvent.HasGridRo
 
     public Grid(GridDecor decor, List<ColumnConfig<T>> cols, GridView<T> view) {
         super(DOM.createDiv());
+        this.decor = decor;
         setStyleName(decor.css().grid());
         header = new Header<>(cols);
         header.addOrderChangeHandler(new OrderChangeEvent.OrderChangeHandler() {
@@ -74,19 +78,29 @@ public class Grid<T> extends Component implements GridRowDblClickEvent.HasGridRo
                 redraw();
             }
         });
-        if(view == null)
+        if (view == null) {
             setGridView(new GridView<T>());
-        else
+        } else {
             setGridView(view);
+        }
     }
 
-    public void setColumnConfigs(List<ColumnConfig<T>> cc){
+    /**
+     * return decorator of Grid.
+     *
+     * @return - GridDecor
+     */
+    public GridDecor getDecor() {
+        return decor;
+    }
+
+    public void setColumnConfigs(List<ColumnConfig<T>> cc) {
         getHeader().getColumnConfigs().clear();
         getHeader().getColumnConfigs().addAll(cc);
         redraw();
     }
 
-    public void setGridView(GridView<T> view){
+    public void setGridView(GridView<T> view) {
         this.view = view;
         view.setGrid(this);
         header.setGridView(view);
@@ -105,19 +119,19 @@ public class Grid<T> extends Component implements GridRowDblClickEvent.HasGridRo
         }, GridRowDblClickEvent.<T>getType());
     }
 
-    public LoadConfig<T> getLoadConfig(){
+    public LoadConfig<T> getLoadConfig() {
         return loadConfig;
     }
 
-    public ListStore<T> getStore(){
+    public ListStore<T> getStore() {
         return store;
     }
 
-    public Header<T> getHeader(){
+    public Header<T> getHeader() {
         return header;
     }
 
-    public GridView<T> getView(){
+    public GridView<T> getView() {
         return view;
     }
 
@@ -129,34 +143,37 @@ public class Grid<T> extends Component implements GridRowDblClickEvent.HasGridRo
         redraw();
     }
 
-    public void redraw(){
-        if(!isAttached())
+    public void redraw() {
+        if (!isAttached()) {
             return;
+        }
         updateHeader();
         updateView();
     }
 
-    private void updateHeader(){
-        if(getHeader() != null)
+    private void updateHeader() {
+        if (getHeader() != null) {
             getHeader().redraw();
+        }
     }
 
-    private void updateView(){
-        if(getView() != null)
+    private void updateView() {
+        if (getView() != null) {
             getView().redraw();
+        }
     }
 
-    public T getSelected(){
+    public T getSelected() {
         T sel = getLoadConfig().getSelection();
         return store.contains(sel) ? store.get(sel) : null;
     }
 
-    public void select(T model){
+    public void select(T model) {
         getView().select(model);
         getLoadConfig().setSelection(model);
     }
 
-    public void selectFirst(){
+    public void selectFirst() {
         select(getStore().size() > 0 ? getStore().get(0) : null);
     }
 
@@ -166,12 +183,12 @@ public class Grid<T> extends Component implements GridRowDblClickEvent.HasGridRo
         redraw();
     }
 
-    public HandlerRegistration addSelectHandler(SelectEvent.SelectHandler<T> h){
+    public HandlerRegistration addSelectHandler(SelectEvent.SelectHandler<T> h) {
         return addHandler(h, SelectEvent.<T>getType());
     }
 
     @Override
-    public HandlerRegistration addOrderChangeHandler(OrderChangeEvent.OrderChangeHandler h){
+    public HandlerRegistration addOrderChangeHandler(OrderChangeEvent.OrderChangeHandler h) {
         return addHandler(h, OrderChangeEvent.getType());
     }
 

@@ -23,13 +23,12 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.ui.Widget;
 import ru.fly.client.F;
+import ru.fly.client.ListStore;
 import ru.fly.client.event.GridRowDblClickEvent;
 import ru.fly.client.event.SelectEvent;
 import ru.fly.client.ui.Component;
 import ru.fly.client.ui.FElement;
 import ru.fly.client.ui.grid.decor.GridDecor;
-
-import java.util.List;
 
 /**
  * @author fil
@@ -42,7 +41,7 @@ public class GridView<T> extends Component {
     protected FElement inner;
     private Element lastSelectedElement;
 
-    public GridView(){
+    public GridView() {
         this(GWT.<GridDecor>create(GridDecor.class));
     }
 
@@ -53,15 +52,15 @@ public class GridView<T> extends Component {
         setStyleName(decor.css().gridView());
     }
 
-    public void focus(){
+    public void focus() {
         getElement().focus();
     }
 
-    protected void setGrid(Grid<T> grid){
+    protected void setGrid(Grid<T> grid) {
         this.grid = grid;
     }
 
-    protected Grid<T> getGrid(){
+    protected Grid<T> getGrid() {
         return grid;
     }
 
@@ -76,37 +75,37 @@ public class GridView<T> extends Component {
         super.onAfterFirstAttach();
         getElement().setTabIndex(F.getNextTabIdx());
         addViewListeners();
-
         inner = DOM.createDiv().cast();
         getElement().appendChild(inner);
     }
 
-    protected void redraw(){
-        if(!isAttached())
+    protected void redraw() {
+        if (!isAttached()) {
             return;
+        }
         inner.removeAll();
         boolean strip = false;
-        for(T model : grid.getStore().getList()){
+        for (T model : grid.getStore().getList()) {
             renderRow(model, strip);
             strip = !strip;
         }
     }
 
-    protected FElement renderRow(T model, boolean strip){
+    protected FElement renderRow(T model, boolean strip) {
         final FElement row = DOM.createDiv().cast();
         row.setClassName(decor.css().gridViewRow());
         inner.appendChild(row);
-        if(strip) row.addClassName(decor.css().strip());
-        for(ColumnConfig<T> c : grid.getHeader().getColumnConfigs()){
+        if (strip) row.addClassName(decor.css().strip());
+        for (ColumnConfig<T> c : grid.getHeader().getColumnConfigs()) {
             FElement col = DOM.createDiv().cast();
             col.setClassName(decor.css().gridViewCol());
-            if(c.getRenderer() != null){
+            if (c.getRenderer() != null) {
                 Widget w = c.getRenderer().render(model);
-                if(w != null) {
+                if (w != null) {
                     col.appendChild(w.getElement());
                     F.attach(w);
                 }
-            }else{
+            } else {
                 String val = c.getGetter().get(model);
                 col.setInnerHTML(val == null ? "" : val);
             }
@@ -116,62 +115,67 @@ public class GridView<T> extends Component {
         }
         addRowListeners(row, model);
         T selected = grid.getSelected();
-        if(selected != null && selected.equals(model)){
+        if (grid.getStore().isEquals(selected, model)) {
             lastSelectedElement = row;
             row.addClassName(decor.css().selected());
         }
         return row;
     }
 
-    protected void onRowOver(FElement rowEl, T model){}
+    protected void onRowOver(FElement rowEl, T model) {
+    }
 
-    protected void onRowOut(FElement rowEl, T model){}
+    protected void onRowOut(FElement rowEl, T model) {
+    }
 
-    public void select(T model){
-        int idx = grid.getStore().getList().indexOf(model);
+    public void select(T model) {
+        int idx = grid.getStore().indexOf(model);
         setSelected(getRowElement(idx), model, true);
     }
 
     /**
      * Scroll view to selected Row
      */
-    public void checkView(){
+    public void checkView() {
         T selected = grid.getSelected();
-        if(selected == null)
+        if (selected == null) {
             return;
-        int idx = grid.getStore().getList().indexOf(selected);
+        }
+        int idx = grid.getStore().indexOf(selected);
         int top = idx * rowHeight;
         int bottom = top + rowHeight;
         int h = getHeight(true);
-        int scroolTop = getElement().getScrollTop();
-        if(bottom > h+scroolTop){
+        int scrollTop = getElement().getScrollTop();
+        if (bottom > h + scrollTop) {
             getElement().setScrollTop(bottom - h);
-        }else if(top < scroolTop){
+        } else if (top < scrollTop) {
             getElement().setScrollTop(top);
         }
     }
 
-    private void setSelected(Element rowEl, T model, boolean force){
-        if(lastSelectedElement != null)
+    private void setSelected(Element rowEl, T model, boolean force) {
+        if (lastSelectedElement != null) {
             lastSelectedElement.removeClassName(decor.css().selected());
+        }
         T selected = grid.getSelected();
-        if(model == null || (model.equals(selected) && !force)){
+        if (model == null || (grid.getStore().isEquals(model, selected) && !force)) {
             selected = null;
-        }else{
+        } else {
             lastSelectedElement = rowEl;
-            if(lastSelectedElement != null)
+            if (lastSelectedElement != null) {
                 lastSelectedElement.addClassName(decor.css().selected());
+            }
             selected = model;
         }
         fireEvent(new SelectEvent<T>(selected));
     }
 
-    private void addViewListeners(){
+    private void addViewListeners() {
         final EventListener oldLnr = DOM.getEventListener(getElement());
         DOM.setEventListener(getElement(), new EventListener() {
             @Override
             public void onBrowserEvent(Event event) {
-                if(grid == null || !grid.isEnabled())
+                if (grid == null || !grid.isEnabled())
                     return;
                 if (oldLnr != null)
                     oldLnr.onBrowserEvent(event);
@@ -195,13 +199,13 @@ public class GridView<T> extends Component {
         DOM.sinkEvents(getElement(), DOM.getEventsSunk(getElement()) | Event.ONKEYDOWN | Event.ONCLICK);
     }
 
-    private void addRowListeners(final FElement el, final T model){
+    private void addRowListeners(final FElement el, final T model) {
         DOM.setEventListener(el, new EventListener() {
             @Override
             public void onBrowserEvent(Event event) {
-                if(grid == null || !grid.isEnabled())
+                if (grid == null || !grid.isEnabled())
                     return;
-                switch (event.getTypeInt()){
+                switch (event.getTypeInt()) {
                     case Event.ONMOUSEOVER:
                         el.addClassName(decor.css().over());
                         onRowOver(el, model);
@@ -223,33 +227,39 @@ public class GridView<T> extends Component {
         DOM.sinkEvents(el, Event.ONMOUSEOVER | Event.ONMOUSEOUT | Event.ONCLICK | Event.ONDBLCLICK);
     }
 
-    protected FElement getRowElement(int idx){
-        if(inner != null)
+    protected FElement getRowElement(int idx) {
+        if (inner != null)
             return inner.getChildNodes().getItem(idx).cast();
         else
             return null;
     }
 
-    private void selectNext(){
-        List<T> l = grid.getStore().getList();
+    private void selectNext() {
+        ListStore<T> store = grid.getStore();
         T selected = grid.getSelected();
-        int idx = selected == null ? 0 : (l.indexOf(selected) + 1);
-        if(idx >= l.size()) idx = l.size()-1;
-        T now = l.get(idx);
-        if(now.equals(selected))
+        int idx = selected == null ? 0 : (store.indexOf(selected) + 1);
+        if (idx >= store.size()) {
+            idx = store.size() - 1;
+        }
+        T now = store.get(idx);
+        if (store.isEquals(now, selected)) {
             return;
+        }
         setSelected(getRowElement(idx), now, true);
         checkView();
     }
 
-    private void selectPrev(){
-        List<T> l = grid.getStore().getList();
+    private void selectPrev() {
+        ListStore<T> store = grid.getStore();
         T selected = grid.getSelected();
-        int idx = selected == null ? (l.size()-1) : (l.indexOf(selected) - 1);
-        if(idx < 0) idx = 0;
-        T now = l.get(idx);
-        if(now.equals(selected))
+        int idx = selected == null ? (store.size() - 1) : (store.indexOf(selected) - 1);
+        if (idx < 0) {
+            idx = 0;
+        }
+        T now = store.get(idx);
+        if (store.isEquals(now, selected)) {
             return;
+        }
         setSelected(getRowElement(idx), now, true);
         checkView();
     }

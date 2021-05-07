@@ -286,8 +286,9 @@ public class ListView<T> extends Component implements SelectEvent.HasSelectHandl
 
     private FElement getItemElement(T model) {
         int pos = store.getList().indexOf(model);
-        if (pos == -1)
+        if (pos == -1) {
             return null;
+        }
         if (hasEmpty)
             pos++;
         if (getElement().getChildCount() <= pos)

@@ -10,8 +10,7 @@ import ru.fly.client.ui.Component;
 import ru.fly.client.ui.FElement;
 
 /**
- * User: fil
- * Date: 18.11.15
+ * @author fil
  */
 public abstract class TriggerController extends Expander {
 
@@ -40,12 +39,14 @@ public abstract class TriggerController extends Expander {
                             expandCollapse();
                             break;
                         case Event.ONMOUSEOVER:
-                            if(isEnabled())
+                            if (isEnabled()) {
                                 tr.addClassName(decor.css().over());
+                            }
                             break;
                         case Event.ONMOUSEOUT:
-                            if(isEnabled())
+                            if (isEnabled()) {
                                 tr.removeClassName(decor.css().over());
+                            }
                             break;
                     }
                 }

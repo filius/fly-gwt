@@ -46,9 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: fil
- * Date: 09.01.14
- * Time: 19:40
+ * @author fil
  */
 public class FWindow extends SingleLayout implements HasCloseHandlers<FWindow>, KeyEnterEvent.HasKeyEnterHandler {
 

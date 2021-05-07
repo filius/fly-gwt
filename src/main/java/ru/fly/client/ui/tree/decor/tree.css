@@ -9,18 +9,31 @@
     -webkit-box-sizing: border-box;
     overflow: auto;
 }
-.tree.disabled{
+
+.tree.disabled {
     opacity: .5;
 }
-.treeRowItem{
+
+.treeView {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: auto;
+}
+
+.treeRowItem {
     font: pFont;
 }
-.treeRowItemHeader{
+
+.treeRowItemHeader {
     padding: 3px 3px;
     border: 1px solid transparent;
     cursor: default;
 }
-.treeRowItemHeaderInner{
+
+.treeRowItemHeaderInner {
     display: inline-block;
     white-space: nowrap;
 }
@@ -133,4 +146,40 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     cursor: default;
+}
+
+.treeLazyLoadMask {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 20px;
+    border: 1px solid #F2BD54;
+    z-index: 2;
+}
+
+.treeLazyLoadMask #glbg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #f5d38a;
+    opacity: .7;
+    filter: literal("alpha(opacity=70)");
+    z-index: 1;
+}
+
+.treeLazyLoadMask #gltxt {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    color: #f2850a;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 20px;
+    z-index: 2;
 }

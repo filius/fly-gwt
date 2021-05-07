@@ -21,9 +21,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.PopupPanel;
 
 /**
- * User: fil
- * Date: 10.09.13
- * Time: 21:59
+ * @author fil
  */
 public class Tooltip extends PopupPanel {
 
@@ -40,14 +38,27 @@ public class Tooltip extends PopupPanel {
         setStyleName(decor.css().tooltip());
     }
 
-    public void setContent(String html){
+    public void setContent(String html) {
         clear();
         add(new HTML(html));
     }
 
-    public void show(int x, int y){
+    public void show(int x, int y) {
         setPopupPosition(x, y);
         show();
+    }
+
+    /**
+     * locate popup to the left side from target x coordinate, analogue of setRight
+     *
+     * @param x - absolute coordinate for right
+     * @param y - top absolute coordinate
+     */
+    public void showToTheLeft(int x, int y) {
+        setPopupPosition(x, y);
+        show();
+        // after width calculation
+        setPopupPosition(x - getOffsetWidth(), y);
     }
 
 }
