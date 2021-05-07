@@ -27,10 +27,8 @@ import ru.fly.shared.rpc.LoggingService;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,8 +95,7 @@ public class LoggingServiceImpl implements LoggingService{
 
     // -------------------- privates --------------------
 
-    private String getSymbolNameForModule(String moduleName)
-            throws FileNotFoundException {
+    private String getSymbolNameForModule(String moduleName) {
         String rootHome = req.getServletContext().getRealPath("/");
         return rootHome + "/WEB-INF/deploy/" + moduleName + "/symbolMaps/";
     }

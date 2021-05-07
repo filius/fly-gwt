@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ru.fly</groupId>
     <artifactId>fly-gwt</artifactId>
-    <version>0.7.1-SNAPSHOT</version>
+    <version>0.8.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -16,33 +14,20 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.javadoc.skip>true</maven.javadoc.skip>
         <version.gwt>2.9.0</version.gwt>
-        <version.slf4j>1.7.21</version.slf4j>
+        <version.slf4j>1.7.30</version.slf4j>
     </properties>
 
     <scm>
-        <connection>scm:git:https://github.com/filius/fly-gwt.git</connection>
-        <developerConnection>scm:git:git@github.com:filius/fly-gwt.git</developerConnection>
-        <url>https://github.com/filius/fly-gwt</url>
+        <connection>scm:git:https://filus@gitlab.com/filus/fly-gwt.git</connection>
+        <developerConnection>scm:git:git@gitlab.com:filus/fly-gwt.git</developerConnection>
+        <url>https://gitlab.com/filus/fly-gwt</url>
         <tag>HEAD</tag>
     </scm>
 
-    <repositories>
-        <repository>
-            <id>bintray</id>
-            <url>http://dl.bintray.com/fil/maven</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
     <distributionManagement>
         <repository>
-            <id>bintray</id>
-            <url>https://api.bintray.com/maven/fil/maven/fly-gwt</url>
+            <id>gitlab-maven</id>
+            <url>https://gitlab.com/api/v4/projects/9746146/packages/maven</url>
         </repository>
     </distributionManagement>
 
@@ -63,6 +48,7 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${version.slf4j}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>javax.inject</groupId>
@@ -70,10 +56,12 @@
             <version>1</version>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.7.1</version>
+            <scope>test</scope>
         </dependency>
+
     </dependencies>
 
     <build>
@@ -91,7 +79,7 @@
         <plugins>
             <plugin>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>2.2.1</version>
+                <version>3.2.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>

@@ -18,8 +18,8 @@ package ru.fly.shared.rpc;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-import ru.fly.shared.log.LogRecord;
 import ru.fly.shared.FlyException;
+import ru.fly.shared.log.LogRecord;
 
 /**
  * User: fil
@@ -29,6 +29,6 @@ import ru.fly.shared.FlyException;
 @RemoteServiceRelativePath("rpc/log")
 public interface LoggingService extends RemoteService {
 
-    public LogRecord log(String level, LogRecord rec) throws FlyException;
+    LogRecord log(String level, LogRecord rec) throws FlyException;
 
 }

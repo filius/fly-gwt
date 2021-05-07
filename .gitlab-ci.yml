@@ -1,10 +1,71 @@
+image: maven:3-jdk-8
+cache:
+  paths:
+    - .m2/repository
+
+stages:
+  - test
+  - release
+
 variables:
-  MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
-  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
+  RELEASE_FROM_BRANCH: 'master'
 
-image: maven:3.3.9-jdk-8
+test:
+  stage: test
 
-deploy-step:
-  stage: deploy
+  variables:
+    MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+    MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
+
   script:
     - mvn install -B
+
+.setup-git: &setup-git
+  - eval $(ssh-agent -s)
+  - echo "${GITBOT_SSH_KEY}" | ssh-add -
+  - git config --global user.email "fly-gitbot"
+  - git config --global user.name "Project Buildmaster"
+  - mkdir -p ~/.ssh
+  - ssh-keyscan gitlab.com > ~/.ssh/known_hosts
+
+
+.checkout-release-from: &checkout-release-from
+  - git fetch
+  - git checkout ${RELEASE_FROM_BRANCH}
+  - git pull origin ${RELEASE_FROM_BRANCH}
+
+.calculate-version-info: &calculate-version-info
+  - #determine current patch version
+    patch=$(echo -e $CI_COMMIT_TAG  | sed -r 's/.+\.([0-9]+)\.RELEASE$/\1/'); echo patch=${patch}
+  - #increment patch if release
+    echo $CI_COMMIT_TAG | grep -q '\.RELEASE$' && patch=$((patch +1)); echo new path=${patch}
+  - 'releaseVersion=$(echo $CI_COMMIT_TAG | sed -r "s/([0-9]+)\.([0-9]+)\.([0-9]+).+/\1\.\2\.\3/"); echo releaseVersion: $releaseVersion'
+  - 'nextVersion=$(echo $CI_COMMIT_TAG | sed -r "s/([0-9]+)\.([0-9]+)\.([0-9]+)\..+/\1.\2\.${patch}-SNAPSHOT/"); echo nextVersion: $nextVersion'
+  - 'tagByMvn=${CI_COMMIT_TAG}-tbm; echo tagByMvn: ${tagByMvn}'
+
+.move-tag: &move-tag
+  - sha1ForTagByMvn=$(git show-ref -s ${tagByMvn})
+  - git tag --force ${CI_COMMIT_TAG} ${sha1ForTagByMvn}
+  - echo $CI_REPOSITORY_URL | sed -r 's/^.+gitlab.com\//git@gitlab.com:/'
+  - git remote set-url --push origin "$(echo $CI_REPOSITORY_URL | sed -r 's/^.+gitlab.com\//git@gitlab.com:/')"
+  - git push --force --tags
+  - git tag -d ${tagByMvn}
+  - git push --delete origin ${tagByMvn}
+
+release:
+  stage: release
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^([0-9]+\.){3}RELEASE$/'
+      when: manual
+    - when: never
+  variables:
+    MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+    MAVEN_CLI_OPTS: "-Pprod"
+  before_script:
+    - *setup-git
+  script:
+    - 'bash -e'
+    - *checkout-release-from
+    - *calculate-version-info
+    - 'mvn $MAVEN_CLI_OPTS --settings $MAVEN_SETTINGS_XML -Dtag=${tagByMvn} -DreleaseVersion=${releaseVersion} -DdevelopmentVersion=${nextVersion} release:prepare release:perform'
+    - *move-tag

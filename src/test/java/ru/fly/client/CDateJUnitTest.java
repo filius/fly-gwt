@@ -1,4 +1,4 @@
-package ru.fly.client;/*
+/*
  * Copyright 2015 Valeriy Filatov.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -13,30 +13,29 @@ package ru.fly.client;/*
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+package ru.fly.client;
 
-import com.google.gwt.junit.client.GWTTestCase;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author fil
  */
-public class CDateJUnitTest extends GWTTestCase {
-
-    @Override
-    public String getModuleName() {
-        return null;
-    }
+public class CDateJUnitTest {
 
     @Test
-    public void getWeek() throws Exception {
+    public void testGetWeek() throws Exception {
         assertEquals(1, CDate.newDate(2016, 1, 1).getWeek());
         assertEquals(46, CDate.newDate(2016, 11, 16).getWeek());
     }
 
     @Test
-    public void getDayOfWeek() throws Exception {
+    public void testGetDayOfWeek() throws Exception {
         assertEquals(1, CDate.newDate(2016, 11, 14).getDayOfWeek());
         assertEquals(3, CDate.newDate(2016, 11, 16).getDayOfWeek());
         assertEquals(7, CDate.newDate(2016, 11, 20).getDayOfWeek());

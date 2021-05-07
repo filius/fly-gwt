@@ -1,3 +1,10 @@
+## 0.8.0
+
+### New feature
+
+- migration project to gitLab infrastructure
+- increase GWT version to 2.9.0
+
 ## 0.7.0
 
 ### New feature

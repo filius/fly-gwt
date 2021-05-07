@@ -1,4 +1,4 @@
-package ru.fly.shared;/*
+/*
  * Copyright 2015 Valeriy Filatov.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -13,19 +13,18 @@ package ru.fly.shared;/*
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+package ru.fly.shared;
 
-import com.google.gwt.junit.client.GWTTestCase;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author fil
  */
-public class FDateJUnitTest extends GWTTestCase {
-
-    @Override
-    public String getModuleName() {
-        return null;
-    }
+public class FDateJUnitTest {
 
     @Test
     public void testGetYearPeriod() {
