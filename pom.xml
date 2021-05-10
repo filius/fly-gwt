@@ -18,9 +18,9 @@
     </properties>
 
     <scm>
-        <connection>scm:git:https://filus@gitlab.com/filus/fly-gwt.git</connection>
-        <developerConnection>scm:git:git@gitlab.com:filus/fly-gwt.git</developerConnection>
-        <url>https://gitlab.com/filus/fly-gwt</url>
+        <connection>scm:git:https://gitlab.com/bonasorto/fly-gwt.git</connection>
+        <developerConnection>scm:git:git@gitlab.com:bonasorto/fly-gwt.git</developerConnection>
+        <url>https://gitlab.com/bonasorto/fly-gwt</url>
         <tag>HEAD</tag>
     </scm>
 
