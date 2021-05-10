@@ -60,7 +60,7 @@ release:
     - when: never
   variables:
     MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
-    MAVEN_CLI_OPTS: "-Pprod"
+    MAVEN_CLI_OPTS: ""
   before_script:
     - *setup-git
   script:
