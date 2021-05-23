@@ -43,6 +43,7 @@ public class MaskedTextField extends TextField {
     private String maskFormat = null;
     private String out;
     private boolean seekToEnd = false;
+    private boolean mouseDown = false;
     private int selectionLength = 0;
     private boolean ctrlvFixed = false;
 
@@ -99,31 +100,56 @@ public class MaskedTextField extends TextField {
     }
 
     @Override
+    protected void onFocus() {
+        super.onFocus();
+        Scheduler.get().scheduleFixedDelay(new Scheduler.RepeatingCommand() {
+            @Override
+            public boolean execute() {
+                correctPosition(false);
+                return false;
+            }
+        }, 50);
+    }
+
+    @Override
     public void onBrowserEvent(Event e) {
         switch (e.getTypeInt()) {
             case Event.ONMOUSEDOWN:
-                if (!isFocused()) {
-                    seekToEnd = true;
+                try {
+                    if (!isFocused()) {
+                        seekToEnd = true;
+                    }
+                } finally {
+                    mouseDown = true;
                 }
                 break;
             case Event.ONMOUSEUP:
-                boolean positionCorrected = false;
-                int pos = impl.getCursorPos(getInputElement());
-                if (seekToEnd) {
-                    if (pos == out.length()) {
-                        pos = seekToEnd();
-                        if (pos != -1) {
-                            impl.setSelectionRange(getInputElement(), pos, 0);
-                            positionCorrected = true;
+                try {
+                    boolean positionCorrected = false;
+                    int pos = impl.getCursorPos(getInputElement());
+                    if (seekToEnd) {
+                        if (pos == out.length()) {
+                            pos = seekToEnd();
+                            if (pos != -1) {
+                                impl.setSelectionRange(getInputElement(), pos, 0);
+                                positionCorrected = true;
+                            }
                         }
+                        seekToEnd = false;
                     }
-                    seekToEnd = false;
-                }
-                if (!positionCorrected) {
-                    correctPosition();
+                    if (!positionCorrected) {
+                        correctPosition(false);
+                    }
+                } finally {
+                    mouseDown = false;
                 }
                 break;
             case Event.ONKEYPRESS:
+                if (mouseDown) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    return;
+                }
                 if (e.getKeyCode() != KeyCodes.KEY_LEFT && e.getKeyCode() != KeyCodes.KEY_RIGHT) {
                     char code = (char) e.getCharCode();
                     onInput(code, impl.getCursorPos(getInputElement()));
@@ -132,6 +158,11 @@ public class MaskedTextField extends TextField {
                 }
                 break;
             case Event.ONKEYDOWN:
+                if (mouseDown) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    return;
+                }
                 selectionLength = impl.getSelectionLength(getInputElement());
                 if (e.getKeyCode() == KeyCodes.KEY_BACKSPACE) {
                     if (selectionLength == out.length()) {
@@ -156,8 +187,13 @@ public class MaskedTextField extends TextField {
                 }
                 break;
             case Event.ONKEYUP:
+                if (mouseDown) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    return;
+                }
                 if (e.getKeyCode() == KeyCodes.KEY_LEFT || e.getKeyCode() == KeyCodes.KEY_RIGHT) {
-                    correctPosition();
+                    correctPosition(e.getKeyCode() == KeyCodes.KEY_LEFT);
                 } else {
                     if (ctrlvFixed) {//CTRL+v
                         ctrlv(impl.getCursorPos(getInputElement()));
@@ -168,6 +204,8 @@ public class MaskedTextField extends TextField {
         }
         super.onBrowserEvent(e);
     }
+
+    // ---------- privates ------------
 
     private boolean isEmptyMask(String val) {
         for (int i = 0; i < val.length(); i++) {
@@ -299,20 +337,9 @@ public class MaskedTextField extends TextField {
         impl.setSelectionRange(getInputElement(), pos, 0);
     }
 
-    @Override
-    protected void onFocus() {
-        super.onFocus();
-        Scheduler.get().scheduleFixedDelay(new Scheduler.RepeatingCommand() {
-            @Override
-            public boolean execute() {
-                correctPosition();
-                return false;
-            }
-        }, 50);
-    }
-
-    private void correctPosition() {
-        int pos = getValidPositionOrNext(impl.getCursorPos(getInputElement()));
+    private void correctPosition(boolean forceLeft) {
+        int pos = impl.getCursorPos(getInputElement());
+        pos = forceLeft ? getValidPositionOrPrev(pos) : getValidPositionOrNext(pos);
         if (pos > -1) {
             impl.setSelectionRange(getInputElement(), pos, 0);
         }
